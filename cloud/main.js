@@ -46,11 +46,11 @@ return;
 }
 
 var cardQuery = new Parse.Query("Card");
-cardQuery.get(request.params.cardID, {
+cardQuery.get({ useMasterKey: true },request.params.cardID, {
 success:function(card)
 {
 var databaseQuery = new Parse.Query("Database");
-databaseQuery.first({
+databaseQuery.first({ useMasterKey: true },{
 success: function(database) {
 //give the card an ID
 var idNumber = database.get("cardIdCounter");
@@ -71,7 +71,7 @@ sale.set("tags", card.get("tags"));
 request.user.increment("blankCards", -1);
 setOwnedCard(request.user, idNumber, true);
 
-Parse.Object.saveAll([request.user, card, database, sale], {
+Parse.Object.saveAll({ useMasterKey: true },[request.user, card, database, sale], {
 success: function(list) {
 //assumes all are saved
 response.success();
