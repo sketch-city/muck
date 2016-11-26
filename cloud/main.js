@@ -46,7 +46,7 @@ return;
 }
 
 var cardQuery = new Parse.Query("Card");
-cardQuery.get({ useMasterKey: true ,request.params.cardID, {
+cardQuery.get(request.params.cardID, {
 success:function(card)
 {
 var databaseQuery = new Parse.Query("Database");
@@ -89,5 +89,5 @@ response.error(-1);
 error: function() {
 response.error("Couldn't find card");
 }
-}})
+})
 });
