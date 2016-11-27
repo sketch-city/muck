@@ -63,10 +63,10 @@ cardQuery.first({
      databaseQuery.first({useMasterKey: true,
      success: function(database) {
        //give the card an ID
-
-       /*
        var idNumber = database.get("cardIdCounter");
        database.increment("cardIdCounter");
+       /*
+       
        card.set("idNumber", idNumber);
 
        var sale = new Parse.Object("Sale");
