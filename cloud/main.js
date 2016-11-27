@@ -46,6 +46,8 @@ return;
 }
 var cardQuery = new Parse.Query("Card");
 var retrievedCard;
+var retrievedDatabase;
+var createdSale;
 cardQuery.equalTo("objectId", request.params.cardID);
 
 cardQuery.first({
@@ -64,8 +66,9 @@ cardQuery.first({
      databaseQuery.first({useMasterKey: true,
      success: function(database) {
        //give the card an ID
-       var idNumber = database.get("cardIdCounter");
-       database.increment("cardIdCounter");
+       retrievedDatabase = database;
+       var idNumber = retrievedDatabase.get("cardIdCounter");
+       retrievedDatabase.increment("cardIdCounter");
        retrievedCard.set("idNumber", idNumber);
        var sale = new Parse.Object("Sale");
        sale.set("cardID", idNumber);
@@ -75,7 +78,7 @@ cardQuery.first({
        sale.set("card", retrievedCard);
        sale.set("name", retrievedCard.get("name"));
        sale.set("tags", retrievedCard.get("tags"));
-
+       createdSale = sale;
        //TODO go through each tag and increment tag counters
 
        request.user.increment("blankCards", -1);
@@ -86,11 +89,24 @@ cardQuery.first({
 
 
        */
-       response.success("finished this 2nd successfully");
+
      },
      error: function(error) {
      response.error("Couldn't query database");
      }
+   });
+ }).then(function(savethestuff)
+ {
+   console.log ("got to saving!")
+   Parse.Object.saveAll([request.user, retrievedCard, retrievedDatabase, createdSale], {
+
+   success: function(list) {
+   //assumes all are saved
+   response.success("saved all the stuff!");
+   },
+   error: function(error) {
+   response.error("Couldn't save");
+   }
    });
  });
 
