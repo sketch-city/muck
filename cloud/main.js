@@ -348,6 +348,163 @@ cardQuery.first({
    });
  });
 
+ /**
+ * Like a card. Needs both Card and Sale objects for updating
+ *
+ * cardID - Card's objectID
+ * saleID - Sale's objectID
+ *
+ **/
+ Parse.Cloud.define("likeCard", function(request, response) {
+ //console.log("start");
+   var cardQuery = new Parse.Query("Card");
+   cardQuery.get(request.params.cardID, {
+     useMasterKey:true,
+     success:function(card)
+     {
+       //console.log("card");
+       var saleQuery = new Parse.Query("Sale");
+       saleQuery.get(request.params.saleID, {
+         useMasterKey:true,
+         success:function(sale)
+         {
+           //console.log("sale");
+           var userLikes = request.user.get("likes");
+           if (userLikes <= 0)
+             response.error("User has no likes left");
+           else if (getLikedCard(request.user, card.get("idNumber")))
+             response.error("User already liked card");
+           else
+           {
+             //console.log("enough likes");
+             request.user.increment("likes", -1);
+             var originalLikes = card.get("likes");
+
+             card.increment("likes", 1);
+             sale.increment("likes", 1);
+
+             //TODO can do a push later
+             request.user.increment("gold", 5);
+
+             var cardname = card.get("name");
+             var fullString;
+             var doUpdate = "NO"
+             if(originalLikes ==0)
+             {
+               fullString = "Your Card " +cardname + " received its first like!  Get more likes to increase the card's power & rarity."
+               doUpdate = "YES";
+             }
+             if(originalLikes ==9)
+             {
+               fullString = "Your Card " +cardname + " received its tenth like!  Get more likes to increase the card's power & rarity."
+               doUpdate = "YES";
+             }
+             if(originalLikes ==50)
+             {
+               fullString = "Your Card " +cardname + " received its 50 like!  Look at you, Mr/Ms popular!"
+               doUpdate = "YES";
+             }
+             //get the userID of the card owner to notify them about the like
+
+             if(doUpdate =="YES")
+             {
+
+
+               var parseUserID = sale.get("seller");
+               //notify the parseUserID
+
+               /*
+               commenting out nov 29, need to put back in eventually
+               Parse.Cloud.run('pushNotificationForUser', { userID: parseUserID, messageText:fullString, messageType:"likeNotification" }, {
+                 success: function(userNotified) {
+                   // ratings should be 4.5
+                   console.log("user successfully notified");
+                 },
+                 error: function(error) {
+                   console.log("error notifying user");
+                 }
+               });
+               */
+
+               Parse.Cloud.run('createMessageForUser', { userID: parseUserID, messageTitle:"Card Like!",messageText:fullString, messageType:"likeNotification" }, {
+                 success: function(userNotified) {
+                   // ratings should be 4.5
+                   console.log("user message created");
+                 },
+                 error: function(error) {
+                   console.log("error creating user message");
+                 }
+               });
+
+             }
+
+             //saves user
+             setLikedCard(request.user, card.get("idNumber"), true);
+             console.log("liked: " + getLikedCard(request.user, card.get("idNumber")));
+
+             Parse.Object.saveAll([request.user, card, sale], {
+               useMasterKey:true,
+               success: function(list) {
+               //console.log("saved");
+               //assumes all are saved
+                 response.success();
+               },
+               error: function(error) {
+                 response.error("Couldn't save");
+               }
+             });
+           }
+         },
+         error:function() {
+           response.error("Couldn't find sale");
+         }
+       });
+     },
+     error:function() {
+      response.error("Couldn't find Card");
+     }
+   });
+ });
+
+
+
+ Parse.Cloud.define('createMessageForUser', function(request, response)
+ {
+     var ParseUserPointer = request.params.userID;
+     var msgTxt = request.params.messageText;
+     var msgType = request.params.messageType;
+     var msgTitle = request.params.messageTitle;
+     var rareCardID = request.params.rareCardID;
+
+     console.log(ParseUserPointer);
+     console.log(msgTxt);
+     console.log(msgType);
+
+     var userMsg = new Parse.Object("Message");
+     userMsg.set("userPointer", ParseUserPointer);
+     userMsg.set("body",msgTxt);
+     userMsg.set("title",msgTitle);
+     userMsg.set("msgType",msgType);
+     if(rareCardID === null || rareCardID === "null")
+     {
+
+     }
+     else
+     {
+       console.log("rare card ID for Message");
+       console.log(rareCardID);
+       userMsg.set("rareCardID",rareCardID);
+     }
+     userMsg.save(null, { useMasterKey: true ,
+     success: function() {
+     response.success();
+     },
+     error: function(error) {
+     response.error("Failed to sell");
+     }
+     });
+ });
+
  /***************************************************
  Functions for setting user's interacted cards
  ***************************************************/
