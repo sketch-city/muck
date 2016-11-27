@@ -63,6 +63,8 @@ cardQuery.first({
      databaseQuery.first({useMasterKey: true,
      success: function(database) {
        //give the card an ID
+
+       /*
        var idNumber = database.get("cardIdCounter");
        database.increment("cardIdCounter");
        card.set("idNumber", idNumber);
@@ -80,7 +82,7 @@ cardQuery.first({
 
        request.user.increment("blankCards", -1);
        setOwnedCard(request.user, idNumber, true);
-
+       */
        response.success("finished this 2nd successfully");
      },
      error: function(error) {
