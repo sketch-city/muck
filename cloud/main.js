@@ -60,7 +60,7 @@ cardQuery.first({
    {
      console.log("got here too!");
      response.success("holy cow success");
-   }
+   });
 
 
  });
