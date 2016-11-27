@@ -426,7 +426,7 @@ cardQuery.first({
                });
                */
 
-               Parse.Cloud.run('createMessageForUser', useMasterKey:true { userID: parseUserID, messageTitle:"Card Like!",messageText:fullString, messageType:"likeNotification" }, {
+               Parse.Cloud.run('createMessageForUser', { userID: parseUserID, messageTitle:"Card Like!",messageText:fullString, messageType:"likeNotification" }, {
                  success: function(userNotified) {
                    // ratings should be 4.5
                    console.log("user message created");
