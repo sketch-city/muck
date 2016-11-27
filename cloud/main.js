@@ -50,6 +50,7 @@ cardQuery.equalTo("objectId", request.params.cardID);
 cardQuery.first({
        useMasterKey: true, // <--- here
        success: function(card) {
+         console.log(card.objectId);
        },
        error: function(error) {
        response.error("Couldn't query database");
@@ -77,6 +78,8 @@ cardQuery.first({
 
             request.user.increment("blankCards", -1);
             setOwnedCard(request.user, idNumber, true);
+
+            response.success("finished this successfully");
           },
         error: function(error) {
         response.error("Couldn't query database");
