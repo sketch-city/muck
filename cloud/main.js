@@ -51,39 +51,10 @@ cardQuery.first({
        useMasterKey: true, // <--- here
        success: function(card) {
          console.log(card.objectId);
+         response.success("holy cow success");
        },
        error: function(error) {
        response.error("Couldn't query database");
      }
-   }).then(function(findDB)
-   {
-          var databaseQuery = new Parse.Query("Database");
-          databaseQuery.first({useMasterKey: true,
-          success: function(database) {
-            //give the card an ID
-            var idNumber = database.get("cardIdCounter");
-            database.increment("cardIdCounter");
-            card.set("idNumber", idNumber);
-
-            var sale = new Parse.Object("Sale");
-            sale.set("cardID", idNumber);
-            sale.set("likes", 0);
-            sale.set("seller", card.get("creator"));
-            sale.set("stock", 10);
-            sale.set("card", card);
-            sale.set("name", card.get("name"));
-            sale.set("tags", card.get("tags"));
-
-            //TODO go through each tag and increment tag counters
-
-            request.user.increment("blankCards", -1);
-            setOwnedCard(request.user, idNumber, true);
-
-            response.success("finished this successfully");
-          },
-        error: function(error) {
-        response.error("Couldn't query database");
-        }
-      })
-    });
-    });
+   });
+ });
