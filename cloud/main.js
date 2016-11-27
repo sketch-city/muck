@@ -65,9 +65,10 @@ cardQuery.first({
        //give the card an ID
        var idNumber = database.get("cardIdCounter");
        database.increment("cardIdCounter");
+       card.set("idNumber", idNumber);
        /*
        
-       card.set("idNumber", idNumber);
+
 
        var sale = new Parse.Object("Sale");
        sale.set("cardID", idNumber);
