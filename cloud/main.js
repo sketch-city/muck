@@ -48,6 +48,8 @@ var cardQuery = new Parse.Query("Card");
 var retrievedCard;
 var retrievedDatabase;
 var createdSale;
+var updatedObjects = new Array();
+
 cardQuery.equalTo("objectId", request.params.cardID);
 
 cardQuery.first({
@@ -69,7 +71,7 @@ cardQuery.first({
        retrievedDatabase = database;
        var idNumber = retrievedDatabase.get("cardIdCounter");
        console.log(idNumber);
-       
+
        retrievedDatabase.increment("cardIdCounter");
        retrievedCard.set("idNumber", idNumber);
        var sale = new Parse.Object("Sale");
@@ -85,12 +87,11 @@ cardQuery.first({
 
        request.user.increment("blankCards", -1);
        setOwnedCard(request.user, idNumber, true);
-       /*
+      updatedObjects.push(sale);
+      updatedObjects.push(retrievedDatabase);
+      updatedObjects.push(retrievedCard);
+      updatedObjects.push(request.user);
 
-
-
-
-       */
 
      },
      error: function(error) {
@@ -100,7 +101,7 @@ cardQuery.first({
  }).then(function(savethestuff)
  {
    console.log ("got to saving!")
-   Parse.Object.saveAll([request.user, retrievedCard, retrievedDatabase, createdSale], {
+   Parse.Object.saveAll(updatedObjects, {
     useMasterKey: true,
    success: function(list) {
    //assumes all are saved
