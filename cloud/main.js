@@ -71,25 +71,14 @@ cardQuery.first({
 
             request.user.increment("blankCards", -1);
             setOwnedCard(request.user, idNumber, true);
-
-                Parse.Object.saveAll([request.user, card, database, sale], {
-                  useMasterKey: true,
-                  success: function(list) {
-                    //assumes all are saved
-                    response.success();
-                  },
-                  error: function(error) {
-                    response.error("Couldn't save");
-                  }
-                  });
-            },
-            error: function(error) {
-            response.error("Couldn't query database");
-            }
-          });
-        },
+          },
         error: function(error) {
-        response.error("Couldn't query card");
+        response.error("Couldn't query database");
         }
-      });
+      })
+    },
+    error: function(error) {
+    response.error("Couldn't query database");
+    }
+  });
     });
