@@ -44,20 +44,52 @@ if (request.user.get("blankCards") <= 0)
 response.error("No blank cards left");
 return;
 }
-
 var cardQuery = new Parse.Query("Card");
-
 cardQuery.equalTo("objectId", request.params.cardID);
 
 cardQuery.first({
        useMasterKey: true, // <--- here
-       success: function(object) {
-      response.success();
-    },
-    error: function(error) {
-    response.error("Couldn't query");
-    }
-  });
+       success: function(card) {
+          var databaseQuery = new Parse.Query("Database");
+          databaseQuery.first({useMasterKey: true,
+          success: function(database) {
+            //give the card an ID
+            var idNumber = database.get("cardIdCounter");
+            database.increment("cardIdCounter");
+            card.set("idNumber", idNumber);
 
+            var sale = new Parse.Object("Sale");
+            sale.set("cardID", idNumber);
+            sale.set("likes", 0);
+            sale.set("seller", card.get("creator"));
+            sale.set("stock", 10);
+            sale.set("card", card);
+            sale.set("name", card.get("name"));
+            sale.set("tags", card.get("tags"));
 
-});
+            //TODO go through each tag and increment tag counters
+
+            request.user.increment("blankCards", -1);
+            setOwnedCard(request.user, idNumber, true);
+
+                Parse.Object.saveAll([request.user, card, database, sale], {
+                  useMasterKey: true,
+                  success: function(list) {
+                    //assumes all are saved
+                    response.success();
+                  },
+                  error: function(error) {
+                    response.error("Couldn't save");
+                  }
+                  });
+            },
+            error: function(error) {
+            response.error("Couldn't query database");
+            }
+          });
+        },
+        error: function(error) {
+        response.error("Couldn't query card");
+        }
+      });
+    });
