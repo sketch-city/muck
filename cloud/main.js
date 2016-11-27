@@ -113,6 +113,241 @@ cardQuery.first({
 
  });
 
+ /**
+ * Finishes a multiplayer match, function sent by winner of match
+ * User1 - ParseUserID of Winner
+ * User2 - ParseUserID of Loser
+ * MatchType--Ladder or Casual
+ **/
+ Parse.Cloud.define("mpMatchComplete", function(request, response) {
+   var matchWinner = request.params.User1;
+   var matchLoser = request.params.User2;
+
+   console.log(matchWinner);
+   console.log(matchLoser);
+
+   var matchWinnerEloRating = request.params.User1Rating;
+   var matchLoserEloRating = request.params.User2Rating;
+
+   console.log(matchWinnerEloRating);
+
+   console.log(matchLoserEloRating);
+
+   //calculate elo changes
+   //elo depends upon a table illustrated as such
+   //ELO difference  Expected score:
+   //  0 0.50
+   //  20  0.53
+   //  40  0.58
+   //  60  0.62
+   //  80  0.66
+   //  100 0.69
+   //  120 0.73
+   //  140 0.76
+   //  160 0.79
+   //  180 0.82
+   //  200 0.84
+   //  300 0.93
+   //  400 0.97
+   //
+   //The formula to calculate a player's new rating based on his/her previous one is:
+   //Rn = Ro + C * (S - Se)      (1)
+   //where:
+   //Rn = new rating
+   //Ro = old rating
+   //S  = score  --this is usually 1, representing the "weight" of the match
+   //Se = expected score
+   //C  = constant --this represents the speed/volatility at which ratings will change, we'll use a value of 30
+
+   var C = 30;
+   var eloDifference = Math.abs(matchWinnerEloRating-matchLoserEloRating);
+   console.log("eloDiff");
+   console.log(eloDifference);
+
+   var playerOneNewRating;
+   var playerTwoNewRating;
+   var scoreRatio;
+   if(eloDifference <=20 && eloDifference >=0)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(0.51);
+   }
+   else
+   if(eloDifference <=40)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.53);
+   }
+   else
+   if(eloDifference <=60)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.58);
+   }
+   else
+   if(eloDifference <=80)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.62);
+   }
+   else
+   if(eloDifference <=100)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.66);
+   }
+   else
+   if(eloDifference <=120)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.69);
+   }
+   else
+   if(eloDifference <=140)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.73);
+   }
+   else
+   if(eloDifference <=160)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.76);
+   }
+   else
+   if(eloDifference <=180)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.79);
+   }
+   else
+   if(eloDifference <=200)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.82);
+   }
+   else
+   if(eloDifference <=300)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.87);
+   }
+   else
+   if(eloDifference <=400)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.93);
+   }
+   else
+   if(eloDifference >=401)
+   {
+     playerOneNewRating = matchWinnerEloRating + C *(1-0.95);
+   }
+
+   //subtract the difference of playerOneNewRating to set playerTwoNewRating
+   var player1EloChange = playerOneNewRating-matchWinnerEloRating;
+   playerTwoNewRating = matchLoserEloRating-player1EloChange;
+
+   playerOneNewRating = Math.ceil(playerOneNewRating);
+   playerTwoNewRating = Math.ceil(playerTwoNewRating);
+
+   console.log("player1NewRating");
+   console.log(playerOneNewRating);
+   console.log("player2NewRating");
+   console.log(playerTwoNewRating);
+
+   var parseUserPointers = new Array();
+   var updatedUserObjects = new Array();
+   parseUserPointers.push(matchWinner);
+   parseUserPointers.push(matchLoser);
+
+   console.log("players ids:");
+   console.log(parseUserPointers);
+   console.log("player1 ID: ");
+   console.log(matchWinner);
+   console.log("player2 ID: ");
+   console.log(matchLoser);
+
+   //query for the two PFUser Objects based on the parameters
+   var userQuery = new Parse.Query(Parse.User);
+   userQuery.containedIn("objectId",parseUserPointers);
+   userQuery.find({
+     useMasterKey: true,
+     success: function(results) {
+       console.log(results.count);
+
+       var userObject1 = results[0];
+       var userObject2 = results[1];
+       if(userObject1.objectId ==matchWinner)
+       {
+         userObject1.set("eloRating",playerOneNewRating);
+         userObject2.set("eloRating",playerTwoNewRating);
+       }
+       else
+       {
+         userObject2.set("eloRating",playerOneNewRating);
+         userObject1.set("eloRating",playerTwoNewRating);
+
+       }
+       updatedUserObjects.push(userObject1);
+       updatedUserObjects.push(userObject2);
+
+     },
+     error: function() {
+       response.error("Query Failed");
+     }
+   }).then(function(saveObjects)
+   {
+     Parse.Object.saveAll(updatedUserObjects, {
+       useMasterKey:true,
+       success: function(list) {
+       //assumes all are saved
+         response.success("user EloRatings Saved Successfully");
+       },
+       error: function(error) {
+         response.error("Couldn't save");
+         console.error("Got an error " + error.code + " : " + error.message);
+       }
+     });
+   });
+ });
+
+ /**
+ //afterSave function for notifying user about a like received on their cards
+ //client will open a notification and bring the user to the editing screen to increase the power level of their card
+ //notification will send out on first, 10th, and 50th likes
+ //notification will contain separate data indicating when the card
+ has reached a new tier in rarity and the player can modify its stats
+
+ //get cardID from cardLike
+ //query for card object
+ //check number of likes
+ //
+ **/
+
+ Parse.Cloud.afterSave("cardLike", function(request) {
+   var cardID = request.params.cardID;
+
+   cardQuery = new Parse.Query("Card");
+   query.get(request.params.cardID, {
+     useMasterKey:true,
+   success:function(card)
+   {
+
+       var originalLikes = card.get("likes");
+       //add to card likes
+       card.increment("likes");
+
+       if(originalLikes==0)
+       {
+         //send a message for the first like notification
+         console.log("first");
+       }
+       elseif(originalLikes==9)
+       {
+         console.log("10th");
+         //send a message for the 10th like notification
+       }
+       elseif(originalLikes==49)
+       {
+         //send a message for the 50th like notification
+       }
+
+   },
+     error: function(error) {
+       console.error("Got an error " + error.code + " : " + error.message);
+   }
+   });
+ });
+
  /***************************************************
  Functions for setting user's interacted cards
  ***************************************************/
