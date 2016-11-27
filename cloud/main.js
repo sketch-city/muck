@@ -426,8 +426,8 @@ cardQuery.first({
              {
 
 
-               var parseUserID = sale.get("seller");
-               console.log("seller:" +parseUserID);
+               var parseUserID = retrieveCard.get("creator");
+               console.log("creator:" +parseUserID);
                //notify the parseUserID
 
                /*
@@ -479,7 +479,7 @@ cardQuery.first({
            response.error("Couldn't find sale");
          }
        });
-     }); 
+     });
  });
 
 
@@ -517,7 +517,7 @@ cardQuery.first({
      response.success();
      },
      error: function(error) {
-     response.error("Failed to sell");
+     response.error("Failed to create message");
      }
      });
  });
