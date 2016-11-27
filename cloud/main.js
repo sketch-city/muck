@@ -99,7 +99,7 @@ cardQuery.first({
  {
    console.log ("got to saving!")
    Parse.Object.saveAll([request.user, retrievedCard, retrievedDatabase, createdSale], {
-
+    useMasterKey: true,
    success: function(list) {
    //assumes all are saved
    response.success("saved all the stuff!");
