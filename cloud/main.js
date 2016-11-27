@@ -46,48 +46,18 @@ return;
 }
 
 var cardQuery = new Parse.Query("Card");
-cardQuery.get(request.params.cardID, {
-success:function(card)
-{
-var databaseQuery = new Parse.Query("Database");
-databaseQuery.first({
-success: function(database) {
-//give the card an ID
-var idNumber = database.get("cardIdCounter");
-database.increment("cardIdCounter");
-card.set("idNumber", idNumber);
 
-var sale = new Parse.Object("Sale");
-sale.set("cardID", idNumber);
-sale.set("likes", 0);
-sale.set("seller", card.get("creator"));
-sale.set("stock", 10);
-sale.set("card", card);
-sale.set("name", card.get("name"));
-sale.set("tags", card.get("tags"));
+cardQuery.equalTo("objectId", request.params.cardID);
 
-//TODO go through each tag and increment tag counters
+cardQuery.first({
+       useMasterKey: true, // <--- here
+       success: function(object) {
+      response.success();
+    },
+    error: function(error) {
+    response.error("Couldn't query");
+    }
+  });
 
-request.user.increment("blankCards", -1);
-setOwnedCard(request.user, idNumber, true);
 
-Parse.Object.saveAll([request.user, card, database, sale], {
-success: function(list) {
-//assumes all are saved
-response.success();
-},
-error: function(error) {
-response.error("Couldn't save");
-}
-});
-},
-error: function() {
-response.error(-1);
-}
-});
-},
-error: function() {
-response.error("Couldn't find card");
-}
-})
 });
