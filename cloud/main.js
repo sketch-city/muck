@@ -360,11 +360,22 @@ cardQuery.first({
  Parse.Cloud.define("likeCard", function(request, response) {
  //console.log("start");
    var cardQuery = new Parse.Query("Card");
+   var retrievedCard;
+
    cardQuery.get(request.params.cardID, {
      useMasterKey:true,
      success:function(card)
      {
        console.log("retrieved card for like");
+       retrievedCard = card;
+     },
+     error:function() {
+      response.error("Couldn't find Card");
+     }
+   }).then(function(getSale)
+   {
+      console.log("getting sale");
+
        var saleQuery = new Parse.Query("Sale");
        saleQuery.get(request.params.saleID, {
          useMasterKey:true,
@@ -374,26 +385,26 @@ cardQuery.first({
            var userLikes = request.user.get("likes");
            if (userLikes <= 0)
              response.error("User has no likes left");
-           else if (getLikedCard(request.user, card.get("idNumber")))
+           else if (getLikedCard(request.user, retrievedCard.get("idNumber")))
              response.error("User already liked card");
            else
            {
              //console.log("enough likes");
              request.user.increment("likes", -1);
-             var originalLikes = card.get("likes");
+             var originalLikes = retrievedCard.get("likes");
 
-             card.increment("likes", 1);
+             retrievedCard.increment("likes", 1);
              sale.increment("likes", 1);
 
              //TODO can do a push later
              request.user.increment("gold", 5);
 
-             var cardname = card.get("name");
+             var cardname = retrievedCard.get("name");
              var fullString;
              var doUpdate = "NO"
 
              console.log("originalLikes:" +originalLikes);
-             
+
              if(originalLikes ==0)
              {
                fullString = "Your Card " +cardname + " received its first like!  Get more likes to increase the card's power & rarity."
@@ -447,11 +458,11 @@ cardQuery.first({
              }
 
              //saves user
-             setLikedCard(request.user, card.get("idNumber"), true);
-             console.log("liked: " + getLikedCard(request.user, card.get("idNumber")));
+             setLikedCard(request.user, retrievedCard.get("idNumber"), true);
+             console.log("liked: " + getLikedCard(request.user, retrievedCard.get("idNumber")));
 
 
-             Parse.Object.saveAll([request.user, card, sale], {
+             Parse.Object.saveAll([request.user, retrievedCard, sale], {
                useMasterKey:true,
                success: function(list) {
                console.log("saved card likes");
@@ -468,11 +479,7 @@ cardQuery.first({
            response.error("Couldn't find sale");
          }
        });
-     },
-     error:function() {
-      response.error("Couldn't find Card");
-     }
-   });
+     }); 
  });
 
 
