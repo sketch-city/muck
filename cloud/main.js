@@ -50,11 +50,17 @@ cardQuery.equalTo("objectId", request.params.cardID);
 cardQuery.first({
        useMasterKey: true, // <--- here
        success: function(card) {
-         console.log(card.objectId);
-         response.success("holy cow success");
+         console.log("got to card query yo");
+
        },
        error: function(error) {
        response.error("Couldn't query database");
      }
-   });
+   }).then(function(donextstuff)
+   {
+     console.log("got here too!");
+     response.success("holy cow success");
+   }
+
+
  });
