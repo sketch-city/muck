@@ -362,13 +362,13 @@ cardQuery.first({
      useMasterKey:true,
      success:function(card)
      {
-       //console.log("card");
+       console.log("retrieved card for like");
        var saleQuery = new Parse.Query("Sale");
        saleQuery.get(request.params.saleID, {
          useMasterKey:true,
          success:function(sale)
          {
-           //console.log("sale");
+           console.log("retrieved card for sale");
            var userLikes = request.user.get("likes");
            if (userLikes <= 0)
              response.error("User has no likes left");
@@ -442,10 +442,11 @@ cardQuery.first({
              setLikedCard(request.user, card.get("idNumber"), true);
              console.log("liked: " + getLikedCard(request.user, card.get("idNumber")));
 
+
              Parse.Object.saveAll([request.user, card, sale], {
                useMasterKey:true,
                success: function(list) {
-               //console.log("saved");
+               console.log("saved card likes");
                //assumes all are saved
                  response.success();
                },
@@ -554,4 +555,46 @@ cardQuery.first({
 
  interactionDic[cardID+""] = interaction;
  user.set("interactedCards", interactionDic);
+ }
+
+ /***************************************************
+ Functions for getting user's interacted cards
+ ***************************************************/
+
+ function getLikedCard(user, cardID)
+ {
+ return getCardInteraction(user, cardID, 0);
+ }
+
+ function getEditedCard(user, cardID)
+ {
+ return getCardInteraction(user, cardID, 1);
+ }
+
+ function getOwnedCard(user, cardID)
+ {
+ return getCardInteraction(user, cardID, 2);
+ }
+
+ function getReportedCard(user, cardID)
+ {
+   return getCardInteraction(user, cardID, 3);
+ }
+
+ function getCardInteraction(user, cardID, atBit){
+ var interactionDic = user.get("interactedCards");
+
+ if (interactionDic == null)
+ return false;
+
+ var interaction = interactionDic[cardID+""];
+ if (interaction == null)
+ return false;
+ else
+ {
+ if ((interaction >> atBit) % 2 == 1)
+ return true;
+ }
+
+ return false;
  }
