@@ -426,7 +426,7 @@ cardQuery.first({
              {
 
 
-               var parseUserID = retrieveCard.get("creator");
+               var parseUserID = retrievedCard.get("creator");
                console.log("creator:" +parseUserID);
                //notify the parseUserID
 
