@@ -45,13 +45,14 @@ response.error("No blank cards left");
 return;
 }
 var cardQuery = new Parse.Query("Card");
+var retrievedCard;
 cardQuery.equalTo("objectId", request.params.cardID);
 
 cardQuery.first({
        useMasterKey: true, // <--- here
        success: function(card) {
          console.log("got to card query yo");
-
+         retrievedCard = card;
        },
        error: function(error) {
        response.error("Couldn't query database");
@@ -65,9 +66,9 @@ cardQuery.first({
        //give the card an ID
        var idNumber = database.get("cardIdCounter");
        database.increment("cardIdCounter");
-       card.set("idNumber", idNumber);
+       retrievedCard.set("idNumber", idNumber);
        /*
-       
+
 
 
        var sale = new Parse.Object("Sale");
