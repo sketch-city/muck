@@ -92,24 +92,22 @@ cardQuery.first({
       updatedObjects.push(retrievedCard);
       updatedObjects.push(request.user);
 
+      console.log ("got to saving!")
+      Parse.Object.saveAll(updatedObjects, {
+       useMasterKey: true,
+      success: function(list) {
+      //assumes all are saved
+      response.success("saved all the stuff!");
+      },
+      error: function(error) {
+      response.error("Couldn't save");
+      }
+      });
 
      },
      error: function(error) {
      response.error("Couldn't query database");
      }
-   });
- }).then(function(savethestuff)
- {
-   console.log ("got to saving!")
-   Parse.Object.saveAll(updatedObjects, {
-    useMasterKey: true,
-   success: function(list) {
-   //assumes all are saved
-   response.success("saved all the stuff!");
-   },
-   error: function(error) {
-   response.error("Couldn't save");
-   }
    });
  });
 
