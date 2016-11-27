@@ -50,6 +50,12 @@ cardQuery.equalTo("objectId", request.params.cardID);
 cardQuery.first({
        useMasterKey: true, // <--- here
        success: function(card) {
+       },
+       error: function(error) {
+       response.error("Couldn't query database");
+     }
+   }).then(function(findDB)
+   {
           var databaseQuery = new Parse.Query("Database");
           databaseQuery.first({useMasterKey: true,
           success: function(database) {
@@ -76,9 +82,5 @@ cardQuery.first({
         response.error("Couldn't query database");
         }
       })
-    },
-    error: function(error) {
-    response.error("Couldn't query database");
-    }
-  });
+    });
     });
