@@ -68,6 +68,8 @@ cardQuery.first({
        //give the card an ID
        retrievedDatabase = database;
        var idNumber = retrievedDatabase.get("cardIdCounter");
+       console.log(idNumber);
+       
        retrievedDatabase.increment("cardIdCounter");
        retrievedCard.set("idNumber", idNumber);
        var sale = new Parse.Object("Sale");
