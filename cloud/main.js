@@ -433,6 +433,8 @@ cardQuery.first({
                  },
                  error: function(error) {
                    console.log("error creating user message");
+                   console.log(error.code);
+
                  }
                });
 
@@ -471,6 +473,7 @@ cardQuery.first({
 
  Parse.Cloud.define('createMessageForUser', function(request, response)
  {
+      console.log("attempting to create message");
      var ParseUserPointer = request.params.userID;
      var msgTxt = request.params.messageText;
      var msgType = request.params.messageType;
