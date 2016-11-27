@@ -59,8 +59,85 @@ cardQuery.first({
    }).then(function(donextstuff)
    {
      console.log("got here too!");
-     response.success("holy cow success");
-   });
+     var databaseQuery = new Parse.Query("Database");
+     databaseQuery.first({useMasterKey: true,
+     success: function(database) {
+       //give the card an ID
+       var idNumber = database.get("cardIdCounter");
+       database.increment("cardIdCounter");
+       card.set("idNumber", idNumber);
 
+       var sale = new Parse.Object("Sale");
+       sale.set("cardID", idNumber);
+       sale.set("likes", 0);
+       sale.set("seller", card.get("creator"));
+       sale.set("stock", 10);
+       sale.set("card", card);
+       sale.set("name", card.get("name"));
+       sale.set("tags", card.get("tags"));
+
+       //TODO go through each tag and increment tag counters
+
+       request.user.increment("blankCards", -1);
+       setOwnedCard(request.user, idNumber, true);
+
+       response.success("finished this 2nd successfully");
+     },
+     error: function(error) {
+     response.error("Couldn't query database");
+     }
+   });
+ });
 
  });
+
+ /***************************************************
+ Functions for setting user's interacted cards
+ ***************************************************/
+
+ function setLikedCard(user, cardID, state)
+ {
+ return setCardInteraction(user, cardID, 0, state);
+ }
+
+ function setEditedCard(user, cardID, state)
+ {
+ return setCardInteraction(user, cardID, 1, state);
+ }
+
+ function setOwnedCard(user, cardID, state)
+ {
+ return setCardInteraction(user, cardID, 2, state);
+ }
+
+ function setReportedCard(user, cardID, state)
+ {
+   return setCardInteraction(user, cardID, 3, state);
+ }
+
+ /** NOTE that this does NOT save the user */
+ function setCardInteraction(user, cardID, atBit, state){
+ var interactionDic = user.get("interactedCards");
+
+ if (interactionDic == null)
+ interactionDic = [];
+
+ var interaction = interactionDic[cardID+""];
+ if (interaction == null)
+ {
+ if (state)
+ interaction = 1 << atBit;
+ else
+ interaction = 0;
+ }
+ else
+ {
+ if (state)
+ interaction = interaction | (1 << atBit);
+ else
+ interaction = interaction & ~(1 << atBit);
+ }
+
+ interactionDic[cardID+""] = interaction;
+ user.set("interactedCards", interactionDic);
+ }
