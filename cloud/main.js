@@ -314,6 +314,8 @@ cardQuery.first({
  **/
 
  Parse.Cloud.afterSave("cardLike", function(request) {
+   console.log ("afterSaveEvent Firing");
+
    var cardID = request.params.cardID;
 
    cardQuery = new Parse.Query("Card");
@@ -389,6 +391,9 @@ cardQuery.first({
              var cardname = card.get("name");
              var fullString;
              var doUpdate = "NO"
+
+             console.log("originalLikes:" +originalLikes);
+             
              if(originalLikes ==0)
              {
                fullString = "Your Card " +cardname + " received its first like!  Get more likes to increase the card's power & rarity."
@@ -411,6 +416,7 @@ cardQuery.first({
 
 
                var parseUserID = sale.get("seller");
+               console.log("seller:" +parseUserID);
                //notify the parseUserID
 
                /*
