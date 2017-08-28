@@ -35,17 +35,7 @@
 
         // Replace this line with the one on your Quickstart Guide Page
         Parse.initialize("cardforgegame"); // Your App Name
-        Parse.masterKey = "Turtle93";
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
-
-        var Foo = Parse.Object.extend("Foo");
-        var object = new Foo();
-        object.set("bar", 1);
-        object.save(null, {useMasterKey: true}).then(function (savedObject) {
-              alert('saved');("object ID: " + savedObject.id);
-        }, function (error) {
-            alert('Failed to create new object, with error code: ' + error.message);
-        });
 
         Parse.User.logIn("texrescue", "rescue").then (
         function(user) {
@@ -59,7 +49,7 @@
       gameScore.set("playerName", "brian test");
       gameScore.set("cheatMode", false);
 
-      gameScore.save(null, {useMasterKey: true}).then(function(obj) {
+      gameScore.save(null).then(function(obj) {
   // the object was saved successfully.
     alert('saved');
 }, function(error) {
