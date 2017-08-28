@@ -60,7 +60,7 @@ function retrieveGPSMarkers ()
   Parse.initialize("cardforgegame","brian"); // Your App Name
   Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
   Parse.useMasterKey = true;
-  
+
   var gpsMarker = Parse.Object.extend("GPSMarkerObject");
   var query = new Parse.Query(gpsMarker);
   query.find({
@@ -69,7 +69,7 @@ function retrieveGPSMarkers ()
       // Do something with the returned Parse.Object values
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
-        alert(object.id + ' - ' + object.get('name'));
+        //alert(object.id + ' - ' + object.get('name'));
 
       }
         return results;
