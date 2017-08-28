@@ -18,6 +18,26 @@
 
 <div id="googleMap" style="width:100%;height:800px;"></div>
 
+<div>
+            Click to automatically mark your location for rescue: 
+            <button id="markRescueButton">Mark</button>
+        </div>
+        
+        
+        <div id="newEntryDialog">
+            <form>
+            <fieldset>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+              <label for="description">Description</label>
+              <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+
+              <!-- Allow form submission with keyboard without duplicating the dialog button -->
+              <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+          </form>
+        </div>
+
 <script>
     function myMap() {
         var mapProp= {
@@ -91,52 +111,82 @@
                           infowindow.open(map,markerVisual);
             });
         }
+        
+        document.getElementById("markRescueButton").addEventListener("click", function(){
+                markLocation();
+            });
+            
+        function markLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        
+        function showPosition(position) {
+            alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude); 
+
+            var currentMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
+                        map: map
+                      });
+            currentMarker.setMap(map);
+
+            map.setZoom(14);
+            map.setCenter(currentMarker.getPosition());
+            
+            addMarker(currentMarker.position);
+            
+            currentMarker.setMap(null); //removes temporary marker
+        }
+
 
         loadMarkers();
 
         google.maps.event.addListener(map, 'click', function(event) {
-            //setTimeout(function() {
-                //if (mapClicked) {
-                    //addEntryDialogue();
-                    //alert("Hello, World.");
-                    //dialog.dialog( "open" );
-                    var dialog = $("#newEntryDialog").dialog({
-                        buttons: {
-                            "Add": function () {
-                                dialog.dialog('close');
-                                addEntry();
-                            },
-                                "Cancel": function () {
-                                dialog.dialog('close');
-                            }
-                        }
-                    });
-                    dialog.dialog('open');
-
-                    var form,
-                    name = $( "#name" ),
-                    description = $( "#description" );
-
-                    function addEntry() {
-                        //name.val();
-                        //description.val();
-                        alert("Adding entry: " + name.val() + " " + description.val());
-
-                        var marker = new google.maps.Marker({
-                            position: event.latLng,
-                            map: map
-                          });
-                        var infowindow = new google.maps.InfoWindow({
-                            content: 'Name: ' + name.val() +
-                            '<br>Description: ' + description.val()
-                          });
-                          infowindow.open(map,marker);
-                    }
-                //}
-            //}, 500);
+            addMarker(event.latLng);
         });
+        
+        function addMarker(latLng)
+        {
+            var dialog = $("#newEntryDialog").dialog({
+                buttons: {
+                    "Add": function () {
+                        dialog.dialog('close');
+                        addEntry();
+                    },
+                        "Cancel": function () {
+                        dialog.dialog('close');
+                    }
+                }
+            });
+            dialog.dialog('open');
 
+            var form,
+            name = $( "#name" ),
+            description = $( "#description" );
 
+            function addEntry() {
+                //name.val();
+                //description.val();
+                alert("Adding entry: " + name.val() + " " + description.val());
+
+                //TODO this needs to be added to global array markers instead
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                  });
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Name: ' + name.val() +
+                    '<br>Description: ' + description.val()
+                  });
+                  infowindow.open(map,marker);
+            }
+        }
+
+       
     }
     
     function submitComment(objectId)
@@ -149,25 +199,11 @@
 
 
 
-
-
         </script>
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
 
-        <div id="newEntryDialog">
-            <form>
-            <fieldset>
-              <label for="name">Name</label>
-              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
-              <label for="description">Description</label>
-              <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
-
-              <!-- Allow form submission with keyboard without duplicating the dialog button -->
-              <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-            </fieldset>
-          </form>
-        </div>
+        
 
 </body>
 </html>
