@@ -6,6 +6,7 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
           <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
+          <script src="/public/assets/js/briantest.js"></script>
         <!-- Lodash -->
         <script src="//cdn.jsdelivr.net/lodash/4.17.3/lodash.min.js"></script>
         <!-- Backbone.js -->
@@ -29,35 +30,6 @@
             zoom:12,
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
-        Parse.$ = jQuery;
-
-        // Replace this line with the one on your Quickstart Guide Page
-        Parse.initialize("TexasRescueMap","hxZFQObeqpWxpilyZAnNHkZT8P1ENvUkHx5aDx1u"); // Your App Name
-        Parse.serverURL = 'https://parseapi.back4app.com'; // Your Server URL
-        //parse.useMasterKey = true;
-
-
-  var GameScore = Parse.Object.extend("GameScore");
-  var gameScore = new GameScore();
-
-  gameScore.set("score", 1337);
-  gameScore.set("playerName", "Sean Plott");
-  gameScore.set("cheatMode", false);
-
-  gameScore.save(null, {
-    success: function(gameScore) {
-      // Execute any logic that should take place after the object is saved.
-      alert('New object created with objectId: ' + gameScore.id);
-    },
-    error: function(gameScore, error) {
-      // Execute any logic that should take place if the save fails.
-      // error is a Parse.Error with an error code and message.
-      alert('Failed to create new object, with error code: ' + error.message);
-    }
-  });
-
-
 
 
         google.maps.event.addListener(map, 'click', function() {
@@ -118,6 +90,8 @@
             </fieldset>
           </form>
         </div>
+
+<input id="clickMe" type="button" value="clickme" onclick="helloMyParse();" />
 
 </body>
 </html>
