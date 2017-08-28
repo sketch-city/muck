@@ -37,6 +37,14 @@
         Parse.initialize("cardforgegame",null, "Turtle93"); // Your App Name
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
 
+        var Foo = Parse.Object.extend("Foo");
+        var object = new Foo(); //create a new object
+        object.set("bar", 1); //set a value
+        object.save().then(function (savedObject) { //save the object
+            console.log("object ID: " + savedObject.id);
+        }, function (error) {
+            console.log(error);
+        }
 
         Parse.User.logIn("texrescue", "rescue").then (
         function(user) {
@@ -54,7 +62,7 @@
   // the object was saved successfully.
     alert('saved');
 }, function(error) {
-    alert('failed');
+    alert('Failed to create new object, with error code: ' + error.message);
   // the save failed.
 });
     },
