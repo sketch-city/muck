@@ -128,6 +128,7 @@
                             '<br>Description: ' + description.val()
                           });
                           infowindow.open(map,marker);
+                          createNewGPSMarker(name.val(),description.val(),event.latLng);
                     }
                 //}
             //}, 500);
