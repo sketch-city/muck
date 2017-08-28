@@ -42,13 +42,14 @@
             // Do stuff after successful login.
               alert('user logged in');
 
+
               var GameScore = Parse.Object.extend("GameScore");
               var gameScore = new GameScore();
 
               gameScore.set("score", 1337);
       gameScore.set("playerName", "brian test");
       gameScore.set("cheatMode", false);
-      gameScore.save(null).then(function(obj) {
+      gameScore.save().then(function(obj) {
   // the object was saved successfully.
     alert('saved');
 }, function(error) {
