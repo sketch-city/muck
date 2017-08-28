@@ -28,39 +28,13 @@
 
         function loadMarkers()
         {
-            var markers = []; //load from parse here
+
+
+            var markers = retrieveGPSMarkers(); //load from parse here
             //TODO: placeholder markers
-            var tempMarker = {
-                name: "person1",
-                description: "description1",
-                positionData: new google.maps.LatLng(29.7602626,-95.3702536)
-            };
-            markers.push(tempMarker); 
-            tempMarker = {
-                name: "person2",
-                description: "description2",
-                positionData: new google.maps.LatLng(29.7612629,-95.3902536)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                name: "person3",
-                description: "description3",
-                positionData: new google.maps.LatLng(29.7722616,-95.3802536)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                name: "person4",
-                description: "description4",
-                positionData: new google.maps.LatLng(29.7332636,-95.3602526)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                name: "person5",
-                description: "description5",
-                positionData: new google.maps.LatLng(29.7542646,-95.3302516)
-            };
-            markers.push(tempMarker);
+
             
+
             markers.forEach(function(marker, index, array)
             {
                 var markerVisual = new google.maps.Marker({
@@ -74,7 +48,7 @@
                           infowindow.open(map,markerVisual);
             });
         }
-        
+
         loadMarkers();
 
         google.maps.event.addListener(map, 'click', function(event) {
@@ -95,16 +69,16 @@
                         }
                     });
                     dialog.dialog('open');
-                    
-                    var form, 
+
+                    var form,
                     name = $( "#name" ),
                     description = $( "#description" );
-       
+
                     function addEntry() {
                         //name.val();
                         //description.val();
                         alert("Adding entry: " + name.val() + " " + description.val());
-                        
+
                         var marker = new google.maps.Marker({
                             position: event.latLng,
                             map: map
@@ -119,7 +93,7 @@
             //}, 500);
         });
 
-        
+
     }
 
 
@@ -137,7 +111,7 @@
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
               <label for="description">Description</label>
               <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
-              
+
               <!-- Allow form submission with keyboard without duplicating the dialog button -->
               <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
             </fieldset>
