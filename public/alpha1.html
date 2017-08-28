@@ -5,7 +5,8 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+        <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
+        <script src="/public/assets/js/testingfunctions.js"></script>
         <style>
             #newEntryDialog {
                 display:none;
@@ -22,7 +23,7 @@
             Click to automatically mark your location for rescue:
             <button id="markRescueButton">Mark</button>
         </div>
-        
+
         <div id="newEntryDialog">
             <form>
             <fieldset>
@@ -45,59 +46,28 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-        function loadMarkers()
-        {
-            var markers = []; //load from parse here
-            //TODO: placeholder markers
-            var tempMarker = {
-                objectId : "1001",
-                name: "person1",
-                description: "description1",
-                positionData: new google.maps.LatLng(29.7602626,-95.3702536)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                objectId : "1002",
-                name: "person2",
-                description: "description2",
-                positionData: new google.maps.LatLng(29.7612629,-95.3902536)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                objectId : "1003",
-                name: "person3",
-                description: "description3",
-                positionData: new google.maps.LatLng(29.7722616,-95.3802536)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                objectId : "1004",
-                name: "person4",
-                description: "description4",
-                positionData: new google.maps.LatLng(29.7332636,-95.3602526)
-            };
-            markers.push(tempMarker);
-            tempMarker = {
-                objectId : "1005",
-                name: "person5",
-                description: "description5",
-                positionData: new google.maps.LatLng(29.7542646,-95.3302516)
-            };
-            markers.push(tempMarker);
+        function callbackMarkersQuery(datamarkers)
+      {
+        //alert("callback function handling " + datamarkers.length + "data markers");
+          var markers = []; //load from parse here
+          //TODO: placeholder markers
 
-            markers.forEach(function(marker, index, array)
-            {
-                var markerVisual = new google.maps.Marker({
-                            position: marker.positionData,
-                            map: map
-                          });
+          datamarkers.forEach(function(marker, index, array)
+          {
+            //alert("for each loop handling datamarker");
+            //alert("posdata" + marker.get("positionData"));
+          //  alert("name" + marker.get("name"));
+              var markerVisual = new google.maps.Marker({
+                          position: marker.get("positionData"),
+                          map: map
+                        });
                         /*var infowindow = new google.maps.InfoWindow({
                             content: 'Name: ' + marker.name +
                             '<br>Description: ' + marker.description
                           });*/
                           var infowindow = new google.maps.InfoWindow({
-                            content: 'Name: ' + marker.name +
-                            '<br>Description: ' + marker.description + "<br><br>" +
+                            content: 'Name: ' + marker.get("name") +
+                              '<br>Description: ' + marker.get("description") + "<br><br>" +
                             "<div id=\"commentEntry" + marker.objectId +  "\">" +
                             "<form>" +
                             "Add Comment:<br>"  +
@@ -109,7 +79,17 @@
 
                           infowindow.open(map,markerVisual);
             });
-        }
+        };
+
+        function loadMarkers()
+      {
+        alert("loading markers");
+
+        var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+
+      }
+
+        loadMarkers();
 
         document.getElementById("markRescueButton").addEventListener("click", function(){
                 markLocation();
@@ -141,8 +121,6 @@
             currentMarker.setMap(null); //removes temporary marker
         }
 
-
-        loadMarkers();
 
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
@@ -182,6 +160,7 @@
                     '<br>Description: ' + description.val()
                   });
                   infowindow.open(map,marker);
+                  createNewGPSMarker(name.val(),description.val(),latLng);
             }
         }
 
@@ -199,7 +178,7 @@
 
 
         </script>
-
+<input id="refresh" type="button" value="refresh" onclick="loadMarkers()" />
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
 
 
