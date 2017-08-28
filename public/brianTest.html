@@ -49,7 +49,9 @@
               gameScore.set("score", 1337);
       gameScore.set("playerName", "brian test");
       gameScore.set("cheatMode", false);
-      gameScore.save().then(function(obj) {
+      gameScore.save().then(function(gameScore)
+
+       {
   // the object was saved successfully.
     alert('saved');
 }, function(error) {
