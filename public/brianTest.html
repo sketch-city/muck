@@ -38,13 +38,13 @@
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
 
         var Foo = Parse.Object.extend("Foo");
-        var object = new Foo(); //create a new object
-        object.set("bar", 1); //set a value
-        object.save().then(function (savedObject) { //save the object
+        var object = new Foo();
+        object.set("bar", 1);
+        object.save(null, {useMasterKey: true}).then(function (savedObject) {
             console.log("object ID: " + savedObject.id);
         }, function (error) {
             console.log(error);
-        }
+        });
 
         Parse.User.logIn("texrescue", "rescue").then (
         function(user) {
