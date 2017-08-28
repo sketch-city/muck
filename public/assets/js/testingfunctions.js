@@ -2,7 +2,7 @@ function helloMyParse()
 {
     alert("attempting save");
     // Replace this line with the one on your Quickstart Guide Page
-    Parse.initialize("cardforgegame"); // Your App Name
+    Parse.initialize("cardforgegame","brian"); // Your App Name
     Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
     Parse.useMasterKey = true;
 
