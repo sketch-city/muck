@@ -4,7 +4,7 @@ function helloMyParse()
     // Replace this line with the one on your Quickstart Guide Page
     Parse.initialize("cardforgegame"); // Your App Name
     Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
-    //parse.useMasterKey = true;
+    parse.useMasterKey = true;
 
     var TestObject = Parse.Object.extend("TestObject");
     var testObject = new TestObject();
