@@ -49,3 +49,26 @@ function createNewGPSMarker (name, description, positionData)
   }
 })
 }
+
+function retrieveGPSMarkers ()
+{
+  alert("querying list of gps markers");
+
+  var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+  var query = new Parse.Query(gpsMarker);
+  query.find({
+    success: function(results) {
+      alert("Successfully retrieved " + results.length + " gps markers.");
+      // Do something with the returned Parse.Object values
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        alert(object.id + ' - ' + object.get('name'));
+
+      }
+        return results;
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+}
