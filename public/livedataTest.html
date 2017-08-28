@@ -5,7 +5,8 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+        <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
+        <script src="/public/assets/js/testingfunctions.js"></script>
         <style>
             #newEntryDialog {
                 display:none;
@@ -31,8 +32,8 @@
         {
           alert("loading markers");
 
-          //var datamarkers = retrieveGPSMarkers();
-          //alert (datamarkers.count);
+          var datamarkers = retrieveGPSMarkers();
+          alert (datamarkers.count);
             var markers = []; //load from parse here
             //TODO: placeholder markers
             var tempMarker = {
@@ -66,7 +67,7 @@
             };
             markers.push(tempMarker);
 
-            markers.forEach(function(marker, index, array)
+            datamarkers.forEach(function(marker, index, array)
             {
                 var markerVisual = new google.maps.Marker({
                             position: marker.positionData,
