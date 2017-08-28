@@ -31,30 +31,35 @@
             var markers = []; //load from parse here
             //TODO: placeholder markers
             var tempMarker = {
+                id : "1001",
                 name: "person1",
                 description: "description1",
                 positionData: new google.maps.LatLng(29.7602626,-95.3702536)
             };
             markers.push(tempMarker);
             tempMarker = {
+                id : "1002",
                 name: "person2",
                 description: "description2",
                 positionData: new google.maps.LatLng(29.7612629,-95.3902536)
             };
             markers.push(tempMarker);
             tempMarker = {
+                id : "1003",
                 name: "person3",
                 description: "description3",
                 positionData: new google.maps.LatLng(29.7722616,-95.3802536)
             };
             markers.push(tempMarker);
             tempMarker = {
+                id : "1004",
                 name: "person4",
                 description: "description4",
                 positionData: new google.maps.LatLng(29.7332636,-95.3602526)
             };
             markers.push(tempMarker);
             tempMarker = {
+                id : "1005",
                 name: "person5",
                 description: "description5",
                 positionData: new google.maps.LatLng(29.7542646,-95.3302516)
@@ -67,10 +72,22 @@
                             position: marker.positionData,
                             map: map
                           });
-                        var infowindow = new google.maps.InfoWindow({
+                        /*var infowindow = new google.maps.InfoWindow({
                             content: 'Name: ' + marker.name +
                             '<br>Description: ' + marker.description
+                          });*/
+                          var infowindow = new google.maps.InfoWindow({
+                            content: 'Name: ' + marker.name +
+                            '<br>Description: ' + marker.description + "<br><br>" +
+                            "<div id=\"commentEntry" + marker.id +  "\">" +
+                            "<form>" +
+                            "Add Comment:<br>"  +
+                            "<input type=\"text\" name=\"comment" + marker.id + "\" id=\"comment" + marker.id + "\"><br>" +
+                            "<input type=\"submit\" onclick=\"submitComment(" + marker.id + ")\" value=\"Submit\">" +
+                            "</form></div>"
                           });
+                        
+        
                           infowindow.open(map,markerVisual);
             });
         }
@@ -120,6 +137,14 @@
         });
 
 
+    }
+    
+    function submitComment(id)
+    {
+        var commentDiv = $( "#comment" + id );
+  
+        alert("id is: " + id + " comment is: " + commentDiv.val());
+        //TODO send this info to parse
     }
 
 
