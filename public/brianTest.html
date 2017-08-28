@@ -36,7 +36,7 @@
         // Replace this line with the one on your Quickstart Guide Page
         Parse.initialize("cardforgegame"); // Your App Name
         Parse.serverURL = "https://cardforge.herokuapp.com/parse"; // Your Server URL
-
+        Parse.Cloud.useMasterKey();
 
         var user = new Parse.User();
         user.set("username", "bubbawat");
