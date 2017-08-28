@@ -50,7 +50,7 @@
       gameScore.set("playerName", "brian test");
       gameScore.set("cheatMode", false);
 
-      gameScore.save().then(function(obj) {
+      gameScore.save(null, {useMasterKey: true}).then(function(obj) {
   // the object was saved successfully.
     alert('saved');
 }, function(error) {
