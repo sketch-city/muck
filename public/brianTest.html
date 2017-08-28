@@ -38,7 +38,7 @@
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
 
 
-        Parse.User.logIn("texrescue", "rescue").then{
+        Parse.User.logIn("texrescue", "rescue").then (
         function(user) {
             // Do stuff after successful login.
               alert('user logged in');
@@ -56,7 +56,7 @@
             // The login failed. Check error to see why.
               alert('login failed');
           }
-        });
+        );
 
 
 
