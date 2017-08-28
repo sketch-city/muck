@@ -27,7 +27,7 @@
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
 
-        google.maps.event.addListener(map, 'click', function() {
+        google.maps.event.addListener(map, 'click', function(event) {
             //setTimeout(function() {
                 //if (mapClicked) {
                     //addEntryDialogue();
@@ -54,6 +54,16 @@
                         //name.val();
                         //description.val();
                         alert("Adding entry: " + name.val() + " " + description.val());
+                        
+                        var marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
+                          });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: 'Name: ' + name.val() +
+                            '<br>Description: ' + description.val()
+                          });
+                          infowindow.open(map,marker);
                     }
                 //}
             //}, 500);
