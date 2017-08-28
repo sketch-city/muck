@@ -66,6 +66,7 @@
 
             datamarkers.forEach(function(marker, index, array)
             {
+              alert("for each loop handling datamarker");
                 var markerVisual = new google.maps.Marker({
                             position: marker.positionData,
                             map: map
@@ -83,7 +84,7 @@
           alert("loading markers");
 
           var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
-          
+
         }
 
           loadMarkers();
