@@ -50,7 +50,13 @@
       gameScore.set("playerName", "brian test");
       gameScore.set("cheatMode", false);
 
-      gameScore.save(null);
+      gameScore.save().then(function(obj) {
+  // the object was saved successfully.
+    alert('saved');
+}, function(error) {
+    alert('failed');
+  // the save failed.
+});
     },
     function(user, error) {
             // The login failed. Check error to see why.
