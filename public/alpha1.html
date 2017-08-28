@@ -19,11 +19,6 @@
 
 <div id="googleMap" style="width:100%;height:800px;"></div>
 
-<div>
-            Click to automatically mark your location for rescue:
-            <button id="markRescueButton">Mark</button>
-        </div>
-
         <div id="newEntryDialog">
             <form>
             <fieldset>
@@ -91,10 +86,7 @@
 
         loadMarkers();
 
-        document.getElementById("markRescueButton").addEventListener("click", function(){
-                markLocation();
-            });
-
+        
         function markLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -105,26 +97,30 @@
 
 
         function showPosition(position) {
-            alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
 
-            var currentMarker = new google.maps.Marker({
-                        position: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
-                        map: map
-                      });
-            currentMarker.setMap(map);
+            var currentLocation = new google.maps.Circle({
+                center:new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
+                radius:100,
+                strokeColor:"#0000FF",
+                strokeOpacity:0.8,
+                strokeWeight:2,
+                fillColor:"#0000FF",
+                fillOpacity:0.4
+              });
+            currentLocation.setMap(map);
 
             map.setZoom(14);
-            map.setCenter(currentMarker.getPosition());
+            map.setCenter(currentLocation.center);
 
-            addMarker(currentMarker.position);
-
-            currentMarker.setMap(null); //removes temporary marker
         }
+        markLocation();
 
 
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
         });
+        
+        
 
         function addMarker(latLng)
         {
