@@ -67,8 +67,8 @@
             datamarkers.forEach(function(marker, index, array)
             {
               alert("for each loop handling datamarker");
-              alert("posdata" + marker.positionData);
-              alert("name" + marker.name);
+              alert("posdata" + marker.get(positionData));
+              alert("name" + marker.get(name));
                 var markerVisual = new google.maps.Marker({
                             position: marker.positionData,
                             map: map
