@@ -31,6 +31,14 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
+        Parse.$ = jQuery;
+
+        // Replace this line with the one on your Quickstart Guide Page
+        Parse.initialize("texasRescue"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        
+        var GameScore = Parse.Object.extend("GameScore");
+        var gameScore = new GameScore();
 
         google.maps.event.addListener(map, 'click', function() {
             //setTimeout(function() {
@@ -59,23 +67,7 @@
                         //name.val();
                         //description.val();
                         alert("Adding entry: " + name.val() + " " + description.val());
-                        var GameScore = Parse.Object.extend("GameScore");
-                        var gameScore = new GameScore();
 
-                        gameScore.set("score", 1337);
-                        gameScore.set("playerName", "Sean Plott");
-                        gameScore.set("cheatMode", false);
-
-                        gameScore.save(null, {
-                          success: function(gameScore) {
-                            // Execute any logic that should take place after the object is saved.
-                            alert('New object created with objectId: ' + gameScore.id);
-                          },
-                          error: function(gameScore, error) {
-                            // Execute any logic that should take place if the save fails.
-                            // error is a Parse.Error with an error code and message.
-                            alert('Failed to create new object, with error code: ' + error.message);
-                          }
                     }
                 //}
             //}, 500);
