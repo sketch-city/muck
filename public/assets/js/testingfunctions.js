@@ -32,6 +32,8 @@ function createNewGPSMarker (name, description, positionData)
   Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
   Parse.useMasterKey = true;
 
+
+
   var TestObject = Parse.Object.extend("GPSMarkerObject");
   var testObject = new TestObject();
 
@@ -54,6 +56,11 @@ function retrieveGPSMarkers ()
 {
   alert("querying list of gps markers");
 
+  Parse.$ = jQuery;
+  Parse.initialize("cardforgegame","brian"); // Your App Name
+  Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+  Parse.useMasterKey = true;
+  
   var gpsMarker = Parse.Object.extend("GPSMarkerObject");
   var query = new Parse.Query(gpsMarker);
   query.find({
