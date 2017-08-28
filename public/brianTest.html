@@ -37,6 +37,18 @@
         Parse.initialize("cardforgegame"); // Your App Name
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
 
+
+        Parse.User.logIn("texrescue", "rescue", {
+          success: function(user) {
+            // Do stuff after successful login.
+              alert('user logged in');
+          },
+          error: function(user, error) {
+            // The login failed. Check error to see why.
+              alert('login failed');
+          }
+        });
+
         var GameScore = Parse.Object.extend("GameScore");
         var gameScore = new GameScore();
 
