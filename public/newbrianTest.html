@@ -65,8 +65,9 @@
                             '<br>Description: ' + description.val()
                           });
                           infowindow.open(map,marker);
-                          helloMyParse();
-                          //createNewGPSMarker(name.val(),description.val(),event.LatLng());
+                          //helloMyParse();
+
+                          createNewGPSMarker(name.val(),description.val(),event.latLng);
                     }
                 //}
             //}, 500);
