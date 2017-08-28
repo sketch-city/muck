@@ -56,8 +56,19 @@
                         //description.val();
 
                         alert("Adding entry: " + name.val() + " " + description.val());
+
+                        var marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
+                          });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: 'Name: ' + name.val() +
+                            '<br>Description: ' + description.val()
+                          });
+                          infowindow.open(map,marker);
+                          
                         createNewGPSMarker(name.val(),description.val(),event.LatLng());
-                        
+
                     }
                 //}
             //}, 500);
@@ -80,7 +91,7 @@
               <label for="name">Name</label>
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
               <label for="description">Description</label>
-              <input type="text" name="description" id="email" value="" class="text ui-widget-content ui-corner-all">
+              <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
 
               <!-- Allow form submission with keyboard without duplicating the dialog button -->
               <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
