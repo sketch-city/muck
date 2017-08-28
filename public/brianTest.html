@@ -86,20 +86,7 @@
                     function addEntry() {
                         //name.val();
                         //description.val();
-                        var GameScore = Parse.Object.extend("GameScore");
-                        var gameScore = new GameScore();
-
-                        gameScore.set("score", 1337);
-                    gameScore.set("playerName", "brian test");
-                    gameScore.set("cheatMode", false);
-                    gameScore.save().then(function(gameScore)
-                     {
-                // the object was saved successfully.
-                  alert('saved');
-              }, function(error) {
-                  alert('Failed to create new object, with error code: ' + error.message);
-                // the save failed.
-              });
+                        
                         alert("Adding entry: " + name.val() + " " + description.val());
 
                     }
