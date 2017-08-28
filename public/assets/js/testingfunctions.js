@@ -8,7 +8,7 @@ function helloMyParse()
 
     var TestObject = Parse.Object.extend("TestObject");
     var testObject = new TestObject();
-    testObject.set("whatev",: "whatwwhat");
+    testObject.set("whatev", "whatwwhat");
 
     testObject.save(null, {
     success: function(testObject) {
