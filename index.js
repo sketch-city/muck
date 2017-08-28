@@ -61,7 +61,7 @@ app.get('/steeleTest', function(req, res) {
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 app.get('/brianTest', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/brianTest.html'));
+  res.sendFile(path.join(__dirname, '/public/newbrianTest.html'));
 });
 
 var port = process.env.PORT || 1337;
