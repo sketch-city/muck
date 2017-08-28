@@ -31,45 +31,54 @@
         function loadMarkers()
         {
           alert("loading markers");
-          var markers = []; //load from parse here
-          //TODO: placeholder markers
 
-          Parse.$ = jQuery;
-          Parse.initialize("cardforgegame","brian"); // Your App Name
-          Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
-          Parse.useMasterKey = true;
+          var datamarkers = retrieveGPSMarkers();
+          alert (datamarkers.count);
+            var markers = []; //load from parse here
+            //TODO: placeholder markers
+            var tempMarker = {
+                name: "person1",
+                description: "description1",
+                positionData: new google.maps.LatLng(29.7602626,-95.3702536)
+            };
+            markers.push(tempMarker);
+            tempMarker = {
+                name: "person2",
+                description: "description2",
+                positionData: new google.maps.LatLng(29.7612629,-95.3902536)
+            };
+            markers.push(tempMarker);
+            tempMarker = {
+                name: "person3",
+                description: "description3",
+                positionData: new google.maps.LatLng(29.7722616,-95.3802536)
+            };
+            markers.push(tempMarker);
+            tempMarker = {
+                name: "person4",
+                description: "description4",
+                positionData: new google.maps.LatLng(29.7332636,-95.3602526)
+            };
+            markers.push(tempMarker);
+            tempMarker = {
+                name: "person5",
+                description: "description5",
+                positionData: new google.maps.LatLng(29.7542646,-95.3302516)
+            };
+            markers.push(tempMarker);
 
-          var gpsMarker = Parse.Object.extend("GPSMarkerObject");
-          var query = new Parse.Query(gpsMarker);
-          query.find({
-            success: function(results) {
-              alert("Successfully retrieved " + results.length + " gps markers.");
-              // Do something with the returned Parse.Object values
-              for (var i = 0; i < results.length; i++) {
-                var object = results[i];
-                //alert(object.id + ' - ' + object.get('name'));
-                markers.push(object);
-              }
-
-              markers.forEach(function(marker, index, array)
-              {
-                  var markerVisual = new google.maps.Marker({
-                              position: marker.positionData,
-                              map: map
-                            });
-                          var infowindow = new google.maps.InfoWindow({
-                              content: 'Name: ' + marker.name +
-                              '<br>Description: ' + marker.description
-                            });
-                            infowindow.open(map,markerVisual);
-              });
-            },
-            error: function(error) {
-              alert("Error: " + error.code + " " + error.message);
-            }
-          });
-
-        
+            markers.forEach(function(marker, index, array)
+            {
+                var markerVisual = new google.maps.Marker({
+                            position: marker.positionData,
+                            map: map
+                          });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: 'Name: ' + marker.name +
+                            '<br>Description: ' + marker.description
+                          });
+                          infowindow.open(map,markerVisual);
+            });
         }
 
           loadMarkers();
