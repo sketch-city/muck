@@ -58,6 +58,12 @@ app.get('/steeleTest', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/steeleTest.html'));
 });
 
+// There will be a test page available on the /test path of your server url
+// Remove this before launching your app
+app.get('/brianTest', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/brianTest.html'));
+});
+
 var port = process.env.PORT || 1337;
 var httpServer = require('http').createServer(app);
 httpServer.listen(port, function() {
