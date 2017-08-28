@@ -28,12 +28,9 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-        function loadMarkers()
+        function callbackMarkersQuery(datamarkers)
         {
-          alert("loading markers");
-
-          var datamarkers = retrieveGPSMarkers();
-          alert("Successfully retrieved " + datamarkers.length + "data markers");
+          alert("callback function handling " + datamarkers.length + "data markers");
             var markers = []; //load from parse here
             //TODO: placeholder markers
             var tempMarker = {
@@ -79,6 +76,14 @@
                           });
                           infowindow.open(map,markerVisual);
             });
+        }
+
+        function loadMarkers()
+        {
+          alert("loading markers");
+
+          var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+          
         }
 
           loadMarkers();

@@ -52,7 +52,7 @@ function createNewGPSMarker (name, description, positionData)
 })
 }
 
-function retrieveGPSMarkers ()
+function retrieveGPSMarkers (callbackFunction)
 {
   alert("querying list of gps markers");
 
@@ -72,10 +72,11 @@ function retrieveGPSMarkers ()
         //alert(object.id + ' - ' + object.get('name'));
 
       }
-        return results;
+        callbackFunction(results);
     },
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
+      callbackFunction(error);
     }
   });
 }
