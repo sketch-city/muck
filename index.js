@@ -88,14 +88,9 @@ app.get('/alpha1', function(req, res) {
 
 var port = process.env.PORT || 1337;
 
-var httpsServer = require('https').createServer(app);
-
-httpsServer.listen(1337, function() {
-    console.log('parse-server-example running on port 1337.');
-
-//var httpServer = require('http').createServer(app);
-//httpServer.listen(port, function() {
-    //console.log('parse-server-example running on port ' + port + '.');
+var httpServer = require('http').createServer(app);
+httpServer.listen(port, function() {
+    console.log('parse-server-example running on port ' + port + '.');
 });
 
 
