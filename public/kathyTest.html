@@ -22,20 +22,20 @@
 <div id="newEntryDialog">
     <form>
     <fieldset>
-        <label for="name">Name<br></label>
+      <label for="name">Name<br></label>
       <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
       <label for="name"><br>Phone Number<br></label>
       <input type="number" name="phone" id="phone" value="">
       <label for="description"><br>Description<br></label>
       <textarea id="description" rows="4" cols="22"></textarea>
       <label for="markerType"><br>Your situation:<br></label>
-        <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
-        <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
-        <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
-        <label for="pin"><br>PIN for later edits:<br></label>
-        <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4">
-        </fieldset>
-      </form>
+      <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
+      <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
+      <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
+      <label for="pin"><br>PIN for later edits:<br></label>
+      <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4">
+      </fieldset>
+    </form>
 </div>
 
 <script>
@@ -56,7 +56,7 @@
           {
             //alert("for each loop handling datamarker");
             //alert("posdata" + marker.get("positionData"));
-          //  alert("name" + marker.get("name"));
+            //alert("name" + marker.get("name"));
               var markerVisual = new google.maps.Marker({
                   position: marker.get("positionData"),
                   map: map,
@@ -102,7 +102,7 @@
                     "<form>" +
                     "Add Comment:<br>"  +
                     "<input type=\"text\" name=\"comment" + marker.objectId + "\" id=\"comment" + marker.objectId + "\"><br>" +
-                    "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
+                    "<input class=\"btn btn-primary\" type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
                     "</form></div>"
                   });
                   
