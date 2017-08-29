@@ -73,7 +73,7 @@
                   else if (type === "rescueVehicle" )
                   {
                       typeString = "Has Rescue Vehicle";
-                      markerVisual.icon = "/public/assets/images/rescueVehicle.png";
+                      markerVisual.icon = "/public/assets/images/vehicle.png";
                   }
                   else if (type === "rescued" )
                   {
@@ -197,7 +197,7 @@
                 else if (type === "rescueVehicle" )
                 {
                     typeString = "Has Rescue Vehicle";
-                    iconName = "/public/assets/images/rescueVehicle.png";
+                    iconName = "/public/assets/images/vehicle.png";
                 }
                 else if (type === "rescued" )
                 {
@@ -220,7 +220,7 @@
                     content: typeString +  
                     '<br>Name: ' + name.val() +
                     '<br>Description: ' + description.val() +
-                    '<br>Date: ' + marker.get("updatedAt") 
+                    '<br>Date: Just Now '
                   });
                   infowindow.open(map,marker);
                   createNewGPSMarker(name.val(),description.val(),latLng,type);
