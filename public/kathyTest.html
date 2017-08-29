@@ -92,22 +92,22 @@
                         markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                     }
                 } else {
-                    if (markType === "shelter")
+                    if (type === markType)
                     {
                         typeString = "Providing Shelter";
                         markerVisual.icon = "/public/assets/images/Shelter_Small.png";
                     }
-                    else if (markType === "rescueVehicle" )
+                    else if (type === markType)
                     {
                         typeString = "Has Rescue Vehicle";
                         markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
                     }
-                    else if (markType === "rescued" )
+                    else if (type === markType)
                     {
                         typeString = "Rescued";
                         markerVisual.icon = "/public/assets/images/rescued.png";
                     }
-                    else
+                    else if (type === markType)
                     {
                         typeString = "Need Rescue";
                         markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
