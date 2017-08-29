@@ -112,6 +112,9 @@
                         typeString = "Need Rescue";
                         markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                     }
+                    else {
+                        marker.setMap(null);
+                    }
                 }
 
                   var infowindow = new google.maps.InfoWindow({
