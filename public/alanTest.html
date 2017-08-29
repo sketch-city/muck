@@ -158,7 +158,7 @@
         markLocation();
 
 
-        google.maps.event.addListener(map, 'click', function(event) {
+        google.maps.event.addListener(currentLocation, 'click', function(event) {
             addMarker(event.latLng);
         });
         google.maps.event.addListener(currentLocation, 'click', function(event) {

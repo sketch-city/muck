@@ -44,6 +44,7 @@ function createNewGPSMarker (name, description, positionData,type,phone,pin)
   testObject.set("type",type);
   testObject.set("phone",phone);
   testObject.set("pin",pin);
+
   
   testObject.save(null, {
   success: function(testObject) {

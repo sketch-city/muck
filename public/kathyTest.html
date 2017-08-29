@@ -69,7 +69,7 @@
                   });*/
                   var type = marker.get("type");
                   var typeString;
-                  
+
                   if (type === "shelter")
                   {
                       typeString = "Providing Shelter";
@@ -94,10 +94,10 @@
                   var infowindow = new google.maps.InfoWindow({
                     content: typeString +
                       '<br>Name: ' + marker.get("name") +
-                      '<br>Phone Number: ' + marker.get("phone") +
+                      '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
                       '<br>Description: ' + marker.get("description") +
-                      '<br>Date: ' + marker.get("updatedAt") 
-                      
+                      '<br>Date: ' + marker.get("updatedAt")
+
                     + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
@@ -106,10 +106,10 @@
                     "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
                     "</form></div>"
                   });
-                  
-                  
 
-                  
+
+
+
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
                   });
@@ -128,7 +128,7 @@
 
         loadMarkers();
 
-        
+
         function markLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -161,8 +161,8 @@
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
         });
-        
-        
+
+
 
         function addMarker(latLng)
         {
@@ -170,7 +170,7 @@
             var description = $( "#description" );
             var phone = $("#phone");
             var pin = $("#pin");
-            
+
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
@@ -236,7 +236,7 @@
                     icon: iconName
                   });
                 var infowindow = new google.maps.InfoWindow({
-                    content: typeString +  
+                    content: typeString +
                     '<br>Name: ' + name.val() +
                     '<br>Phone Number: ' + phone.val() +
                     '<br>Description: ' + description.val() +

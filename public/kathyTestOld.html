@@ -61,7 +61,7 @@
               var markerVisual = new google.maps.Marker({
                   position: marker.get("positionData"),
                   map: map,
-                  icon: "/public/assets/images/Shelter_Small.png"
+                  icon: "/public/assets/images/shelter.png"
                 });
                 /*var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.name +
@@ -69,35 +69,35 @@
                   });*/
                   var type = marker.get("type");
                   var typeString;
-
+                  
                   if (type === "shelter")
                   {
                       typeString = "Providing Shelter";
-                      markerVisual.icon = "/public/assets/images/Shelter_Small.png";
+                      markerVisual.icon = "/public/assets/images/shelter.png";
                   }
                   else if (type === "rescueVehicle" )
                   {
                       typeString = "Has Rescue Vehicle";
-                      markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
+                      markerVisual.icon = "/public/assets/images/vehicle.png";
                   }
                   else if (type === "rescued" )
                   {
                       typeString = "Rescued";
-                      markerVisual.icon = "/public/assets/images/saved.png";
+                      markerVisual.icon = "/public/assets/images/rescued.png";
                   }
                   else
                   {
                       typeString = "Need Rescue";
-                      markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
+                      markerVisual.icon = "/public/assets/images/need-rescue.png";
                   }
 
                   var infowindow = new google.maps.InfoWindow({
                     content: typeString +
                       '<br>Name: ' + marker.get("name") +
-                      '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
+                      '<br>Phone Number: ' + marker.get("phone") +
                       '<br>Description: ' + marker.get("description") +
-                      '<br>Date: ' + marker.get("updatedAt")
-
+                      '<br>Date: ' + marker.get("updatedAt") 
+                      
                     + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
@@ -106,10 +106,10 @@
                     "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
                     "</form></div>"
                   });
+                  
+                  
 
-
-
-
+                  
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
                   });
@@ -128,7 +128,7 @@
 
         loadMarkers();
 
-
+        
         function markLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -161,8 +161,8 @@
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
         });
-
-
+        
+        
 
         function addMarker(latLng)
         {
@@ -170,7 +170,7 @@
             var description = $( "#description" );
             var phone = $("#phone");
             var pin = $("#pin");
-
+            
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
@@ -236,7 +236,7 @@
                     icon: iconName
                   });
                 var infowindow = new google.maps.InfoWindow({
-                    content: typeString +
+                    content: typeString +  
                     '<br>Name: ' + name.val() +
                     '<br>Phone Number: ' + phone.val() +
                     '<br>Description: ' + description.val() +
@@ -246,6 +246,8 @@
                   createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
             }
         }
+
+
     }
 
     function submitComment(objectId)
@@ -256,9 +258,13 @@
         //TODO send this info to parse
     }
 
+
+
         </script>
 <input id="refresh" type="button" value="refresh" onclick="loadMarkers()" />
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
+
+
 
 </body>
 </html>
