@@ -85,26 +85,31 @@
             markers.forEach(function(marker, index, array)
             {
                 var markerVisual = new google.maps.Marker({
-                            position: marker.positionData,
-                            map: map
-                          });
-                        /*var infowindow = new google.maps.InfoWindow({
-                            content: 'Name: ' + marker.name +
-                            '<br>Description: ' + marker.description
-                          });*/
-                          var infowindow = new google.maps.InfoWindow({
-                            content: 'Name: ' + marker.name +
-                            '<br>Description: ' + marker.description + "<br><br>" +
-                            "<div id=\"commentEntry" + marker.objectId +  "\">" +
-                            "<form>" +
-                            "Add Comment:<br>"  +
-                            "<input type=\"text\" name=\"comment" + marker.objectId + "\" id=\"comment" + marker.objectId + "\"><br>" +
-                            "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
-                            "</form></div>"
-                          });
+                    position: marker.positionData,
+                    map: map
+                  });
+                /*var infowindow = new google.maps.InfoWindow({
+                    content: 'Name: ' + marker.name +
+                    '<br>Description: ' + marker.description
+                  });*/
 
 
-                          infowindow.open(map,markerVisual);
+                  var infowindow = new google.maps.InfoWindow({
+                    content: 'Name: ' + marker.name +
+                    '<br>Description: ' + marker.description/* + "<br><br>" +
+                    "<div id=\"commentEntry" + marker.objectId +  "\">" +
+                    "<form>" +
+                    "Add Comment:<br>"  +
+                    "<input type=\"text\" name=\"comment" + marker.objectId + "\" id=\"comment" + marker.objectId + "\"><br>" +
+                    "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
+                    "</form></div>"*/
+                  });
+
+                  google.maps.event.addListener(markerVisual, 'click', function() {
+                    infowindow.open(map,markerVisual);
+                    });
+
+                   markerVisual.setMap(map);
             });
         }
 
