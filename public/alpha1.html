@@ -59,7 +59,10 @@
                   });*/
                   var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.get("name") +
-                      '<br>Description: ' + marker.get("description")/* + "<br><br>" +
+                      '<br>Description: ' + marker.get("description") +
+                      '<br>Date: ' + marker.get("updatedAt")
+              
+                    /* + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
                     "Add Comment:<br>"  +
