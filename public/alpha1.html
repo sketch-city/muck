@@ -33,7 +33,7 @@
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
                 <label for="pin"><br>PIN for later edits:<br></label>
-                <input type="number" name="pin" pattern="[0-9]{4}" maxlength="4">
+                <input type="text" name="pin" pattern="[0-9]{4}" maxlength="4">
                 </fieldset>
               </form>
         </div>
@@ -168,16 +168,25 @@
             var name = $( "#name" );
             var description = $( "#description" );
             var phone = $("#phone");
+            var pin = $("pin");
             
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
-                        dialog.dialog('close');
-                        addEntry();
-                        name.val("");
-                        description.val("");
-                        $("input:radio[name=markerType]")[0].checked = true;
-                        phone.val("");
+                        if (isNaN(pin.val()) || pin.val().length !== 4)
+                        {
+                            alert("Invalid PIN, must be 4 digits");
+                        }
+                        else
+                        {
+                            dialog.dialog('close');
+                            addEntry();
+                            name.val("");
+                            description.val("");
+                            $("input:radio[name=markerType]")[0].checked = true;
+                            phone.val("");
+                            pin.val("");
+                        }
                     },
                         "Cancel": function () {
                          name.val("");
@@ -185,6 +194,7 @@
                         dialog.dialog('close');
                         $("input:radio[name=markerType]")[0].checked = true;
                         phone.val("");
+                        pin.val("");
                     }
                 }
             });
@@ -231,7 +241,7 @@
                     '<br>Date: Just Now '
                   });
                   infowindow.open(map,marker);
-                  createNewGPSMarker(name.val(),description.val(),latLng,type,phone);
+                  createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val()),pin.val());
             }
         }
 
