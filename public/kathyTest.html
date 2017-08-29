@@ -182,14 +182,14 @@
 
         var shelterBtn = document.getElementById("shelterBtn");
 
-        shelterBtn.addListener('click', function(event) {
-            loadShelter();
-        });
+        document.addEventListener('click', loadShelter);
 
-        function loadShelter() {
-            var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
-            callbackMarkersQuery(datamarkers, "shelter");
-
+        function loadShelter(event){
+            var element = event.target;
+            if(element.tagName == "BUTTON" && element.classList.contains("shelterBtn")){
+                var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+                callbackMarkersQuery(datamarkers, "shelter");
+            }
         }
 
         function addMarker(latLng)
@@ -290,7 +290,7 @@
 
         </script>
 <input id="refresh" type="button" value="refresh" onclick="loadMarkers()" />
-<input id="shelterBtn" type="button" value="shelters"/>
+<button class="shelterBtn"/>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
 
 
