@@ -162,6 +162,7 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
+            var type = $("markerType");
     
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
@@ -170,11 +171,13 @@
                         addEntry();
                         name.val("");
                         description.val("");
+                        type.val("needRescue");
                     },
                         "Cancel": function () {
                          name.val("");
                         description.val("");
                         dialog.dialog('close');
+                        type.val("needRescue");
                     }
                 }
             });
