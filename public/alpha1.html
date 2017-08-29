@@ -87,7 +87,7 @@
                   }
 
                   var infowindow = new google.maps.InfoWindow({
-                    content: "<br>" + typeString +
+                    content: typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt") 
@@ -162,7 +162,7 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
-            var type = $("markerType");
+            var type = $("input:radio[name=markerType:checked").val();
     
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
@@ -171,13 +171,14 @@
                         addEntry();
                         name.val("");
                         description.val("");
-                        type.val("needRescue");
+                        $("input:radio[name=markerType")[0].checked = true;
                     },
                         "Cancel": function () {
                          name.val("");
                         description.val("");
                         dialog.dialog('close');
-                        type.val("needRescue");
+                        typeRadio.val("needRescue");
+                        $("input:radio[name=markerType")[0].checked = true;
                     }
                 }
             });
@@ -186,7 +187,7 @@
             function addEntry() {
                 //name.val();
                 //description.val();
-                alert("Adding entry: " + name.val() + " " + description.val());
+                alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
 
                 //TODO this needs to be added to global array markers instead
                 var marker = new google.maps.Marker({
@@ -198,7 +199,7 @@
                     '<br>Description: ' + description.val()
                   });
                   infowindow.open(map,marker);
-                  createNewGPSMarker(name.val(),description.val(),latLng);
+                  createNewGPSMarker(name.val(),description.val(),latLng,type);
             }
         }
 
