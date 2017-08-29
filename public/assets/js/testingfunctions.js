@@ -37,6 +37,10 @@ function createNewGPSMarker (name, description, positionData)
   var TestObject = Parse.Object.extend("GPSMarkerObject");
   var testObject = new TestObject();
 
+  var postACL = new Parse.ACL(Parse.User.current());
+  postACL.setPublicReadAccess(true);
+  testObject.setACL(postACL);
+
   testObject.set("name", name);
   testObject.set("description",description);
   testObject.set("positionData",positionData);
@@ -53,6 +57,35 @@ function createNewGPSMarker (name, description, positionData)
 }
 
 function retrieveGPSMarkers (callbackFunction)
+{
+  alert("querying list of gps markers");
+
+  Parse.$ = jQuery;
+  Parse.initialize("cardforgegame","brian"); // Your App Name
+  Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+  Parse.useMasterKey = true;
+
+  var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+  var query = new Parse.Query(gpsMarker);
+  query.find({
+    success: function(results) {
+      alert("Successfully retrieved " + results.length + " gps markers.");
+      // Do something with the returned Parse.Object values
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        //alert(object.id + ' - ' + object.get('name'));
+
+      }
+        callbackFunction(results);
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+      callbackFunction(error);
+    }
+  });
+}
+
+function deleteGPSMarker (callbackFunction)
 {
   alert("querying list of gps markers");
 
