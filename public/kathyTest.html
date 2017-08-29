@@ -47,7 +47,7 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-        function callbackMarkersQuery(datamarkers, markType=null)
+        function callbackMarkersQuery(datamarkers)
       {
         //alert("callback function handling " + datamarkers.length + "data markers");
           var markers = []; //load from parse here
@@ -70,51 +70,26 @@
                   var type = marker.get("type");
                   var typeString;
 
-                  if (!markType) {
-                    if (type === "shelter")
-                    {
-                        typeString = "Providing Shelter";
-                        markerVisual.icon = "/public/assets/images/Shelter_Small.png";
-                    }
-                    else if (type === "rescueVehicle" )
-                    {
-                        typeString = "Has Rescue Vehicle";
-                        markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
-                    }
-                    else if (type === "rescued" )
-                    {
-                        typeString = "Rescued";
-                        markerVisual.icon = "/public/assets/images/rescued.png";
-                    }
-                    else
-                    {
-                        typeString = "Need Rescue";
-                        markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
-                    }
-                } else {
-                    if (type == markType && type == "shelter")
-                    {
-                        typeString = "Providing Shelter";
-                        markerVisual.icon = "/public/assets/images/Shelter_Small.png";
-                    }
-                    else if (type == markType && type == "rescueVehicle")
-                    {
-                        typeString = "Has Rescue Vehicle";
-                        markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
-                    }
-                    else if (type === markType && type == "rescued")
-                    {
-                        typeString = "Rescued";
-                        markerVisual.icon = "/public/assets/images/rescued.png";
-                    }
-                    else if (type === markType && type == "needRescue")
-                    {
-                        typeString = "Need Rescue";
-                        markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
-                    }
-                    else {
-                        markerVisual.icon = null;
-                    }
+                  
+                if (type === "shelter")
+                {
+                    typeString = "Providing Shelter";
+                    markerVisual.icon = "/public/assets/images/Shelter_Small.png";
+                }
+                else if (type === "rescueVehicle" )
+                {
+                    typeString = "Has Rescue Vehicle";
+                    markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
+                }
+                else if (type === "rescued" )
+                {
+                    typeString = "Rescued";
+                    markerVisual.icon = "/public/assets/images/rescued.png";
+                }
+                else
+                {
+                    typeString = "Need Rescue";
+                    markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 
                   var infowindow = new google.maps.InfoWindow({
@@ -189,17 +164,6 @@
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
         });
-
-        var shelterBtn = document.getElementById("shelterBtn");
-
-        document.addEventListener('click', loadShelter);
-
-        function loadShelter(event){
-            var element = event.target;
-            if(element.tagName == "BUTTON" && element.classList.contains("shelterBtn")){
-                var datamarkers = retrieveGPSMarkers(callbackMarkersQuery, "shelter");
-            }
-        }
 
         function addMarker(latLng)
         {

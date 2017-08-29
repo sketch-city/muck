@@ -58,7 +58,7 @@ function createNewGPSMarker (name, description, positionData,type,phone,pin)
 })
 }
 
-function retrieveGPSMarkers (callbackFunction, markerType=null)
+function retrieveGPSMarkers (callbackFunction)
 {
   //alert("querying list of gps markers");
 
@@ -78,7 +78,7 @@ function retrieveGPSMarkers (callbackFunction, markerType=null)
         //alert(object.id + ' - ' + object.get('name'));
 
       }
-        callbackFunction(results, markerType);
+        callbackFunction(results);
     },
     error: function(error) {
       //alert("Error: " + error.code + " " + error.message);
