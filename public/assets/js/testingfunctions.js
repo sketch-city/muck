@@ -1,6 +1,6 @@
 function helloMyParse()
 {
-    alert("attempting save");
+    //alert("attempting save");
     // Replace this line with the one on your Quickstart Guide Page
     Parse.initialize("cardforgegame","brian"); // Your App Name
     Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
@@ -25,7 +25,7 @@ function helloMyParse()
 
 function createNewGPSMarker (name, description, positionData,type,phone,pin)
 {
-  alert("attempting save gps marker");
+  //alert("attempting save gps marker");
   // Replace this line with the one on your Quickstart Guide Page
   Parse.initialize("cardforgegame","brian"); // Your App Name
   Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
@@ -45,22 +45,22 @@ function createNewGPSMarker (name, description, positionData,type,phone,pin)
   testObject.set("phone",phone);
   testObject.set("pin",pin);
 
-  
+
   testObject.save(null, {
   success: function(testObject) {
-    alert('New object created with objectId: ' + testObject.id);
+    alert('New gps marker created with objectId: ' + testObject.id);
   },
   error: function(testObject, error) {
     // Execute any logic that should take place if the save fails.
     // error is a Parse.Error with an error code and message.
-    alert('Failed to create new object, with error code: ' + error.message);
+    alert('Failed to create gps marker, with error code: ' + error.message);
   }
 })
 }
 
 function retrieveGPSMarkers (callbackFunction)
 {
-  alert("querying list of gps markers");
+  //alert("querying list of gps markers");
 
   Parse.$ = jQuery;
   Parse.initialize("cardforgegame","brian"); // Your App Name
@@ -71,7 +71,7 @@ function retrieveGPSMarkers (callbackFunction)
   var query = new Parse.Query(gpsMarker);
   query.find({
     success: function(results) {
-      alert("Successfully retrieved " + results.length + " gps markers.");
+      //alert("Successfully retrieved " + results.length + " gps markers.");
       // Do something with the returned Parse.Object values
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
@@ -81,7 +81,7 @@ function retrieveGPSMarkers (callbackFunction)
         callbackFunction(results);
     },
     error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
+      //alert("Error: " + error.code + " " + error.message);
       callbackFunction(error);
     }
   });
@@ -89,7 +89,7 @@ function retrieveGPSMarkers (callbackFunction)
 
 function deleteGPSMarker (callbackFunction)
 {
-  alert("querying list of gps markers");
+  //alert("querying list of gps markers");
 
   Parse.$ = jQuery;
   Parse.initialize("cardforgegame","brian"); // Your App Name
