@@ -185,18 +185,42 @@
 
             function addEntry() {
                 var type = $("input:radio[name=markerType]:checked").val();
-    
-                
+
                 alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
+                var typeString, iconName;
+
+                if (type === "shelter")
+                {
+                    typeString = "Providing Shelter";
+                    iconName = "/public/assets/images/shelter.png";
+                }
+                else if (type === "rescueVehicle" )
+                {
+                    typeString = "Has Rescue Vehicle";
+                    iconName = "/public/assets/images/rescueVehicle.png";
+                }
+                else if (type === "rescued" )
+                {
+                    typeString = "Rescued";
+                    iconName = "/public/assets/images/rescued.png";
+                }
+                else
+                {
+                    typeString = "Need Rescue";
+                    iconName = "/public/assets/images/need-rescue.png";
+                }
 
                 //TODO this needs to be added to global array markers instead
                 var marker = new google.maps.Marker({
                     position: latLng,
-                    map: map
+                    map: map,
+                    icon: iconName
                   });
                 var infowindow = new google.maps.InfoWindow({
-                    content: 'Name: ' + name.val() +
-                    '<br>Description: ' + description.val()
+                    content: typeString +  
+                    '<br>Name: ' + name.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: ' + marker.get("updatedAt") 
                   });
                   infowindow.open(map,marker);
                   createNewGPSMarker(name.val(),description.val(),latLng,type);
