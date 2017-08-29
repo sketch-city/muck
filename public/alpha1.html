@@ -27,7 +27,7 @@
               <label for="description">Description</label>
               <textarea id="description" rows="4" cols="22"></textarea>
               <label for="markerType"><br>Your situation:<br></label>
-                <input type="radio" name="markerType" value="needRscue" checked> Need Rescue<br>
+                <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
                 </fieldset>
@@ -162,7 +162,7 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
-            var type = $("input:radio[name=markerType]:checked").val();
+            var type = $("input[name=markerType]:checked").val();
     
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
@@ -177,7 +177,6 @@
                          name.val("");
                         description.val("");
                         dialog.dialog('close');
-                        typeRadio.val("needRescue");
                         $("input:radio[name=markerType]")[0].checked = true;
                     }
                 }
