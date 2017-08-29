@@ -8,6 +8,11 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
         <script src="/public/assets/js/testingfunctions.js"></script>
+        <link rel="stylesheet" href="assets/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
         <style>
             #newEntryDialog {
                 display:none;
@@ -309,18 +314,38 @@
 <button class="shelterBtn"></button> -->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
 
-<h2>If you need rescue or if you are a rescuer or open shelter, tap on the map to mark your location!</h2>
-<p>Texas Rescue Map aims to make it simpler for people needing rescue to coordinate with nearby rescuers and shelters. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you.</p>
-<h3>If you need rescue:</h3>
-<p>Pin your location to let volunteers know where you are and make it easier for them to find you.</p>
-<h3>If you are a rescuer:</h3>
-<p>Pin your location to let people in the area know you have a water vehicle or shelter available. Find people who have marked themselves as needing rescue.</p>
-<h2>Resources:</h2>
-<h3><a href="https://www.reddit.com/r/houston/comments/6wnw3j/harvey_emergency_quick_reference/">Emergency Quick Reference</a></h3>
-<h3><a href="https://docs.google.com/spreadsheets/d/14GHRHQ_7cqVrj0B7HCTVE5EbfpNFMbSI9Gi8azQyn-k/edit#gid=0">Shelter Availability Reference</a></h3>
-<h3><a href="http://houstonharveyrescue.com/rescuesindex.php"> Additional Site Inputting People Needing Hurricane Rescue</a></h3>
-<p>Disclaimer: Texasrescuemap.com is not liable for damages, including loss of life, limb, or property. This site is a volunteer-run website and is not affiliated with any government organization. Please do not wait for rescue! If someone else shows up first, go with them! We cannot guarantee rescues. Please call 911 for emergencies.</p>
-
-
+  <div class="container my-5">
+    <section id="intro">
+      <h2>If you need rescue or if you are a rescuer or open shelter, tap on the map to mark your location!</h2>
+      <p class="lead">Texas Rescue Map aims to make it simpler for people needing rescue to coordinate with nearby rescuers and shelters. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you.</p>
+      <div class="card-deck mb-5">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> If you need rescue:</h4>
+            <p class="card-text">Pin your location to let volunteers know where you are and make it easier for them to find you.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> If you are a rescuer:</h4>
+            <p class="card-text">Pin your location to let people in the area know you have a water vehicle or shelter available. Find people who have marked themselves as needing rescue.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="resources" class="mb-5">
+      <h2>Resources:</h2>
+      <ul class="list-group">
+        <li class="list-group-item"><a href="https://www.reddit.com/r/houston/comments/6wnw3j/harvey_emergency_quick_reference/">Emergency Quick Reference</a></li>
+        <li class="list-group-item"><a href="http://houstonharveyrescue.com/rescuesindex.php"> Additional Site Inputting People Needing Hurricane Rescue</a></li>
+        <li class="list-group-item"><a href="https://docs.google.com/spreadsheets/d/14GHRHQ_7cqVrj0B7HCTVE5EbfpNFMbSI9Gi8azQyn-k/edit#gid=0">Shelter Availability Reference</a></li>
+      </ul>
+    </section>
+  </div>
+  <footer>
+    <div class="container">
+      <p class="small">Disclaimer: Texasrescuemap.com is not liable for damages, including loss of life, limb, or property. This site is a volunteer-run website and is not affiliated with any government organization. Please do not wait for rescue! If someone else shows up first, go with them! We cannot guarantee rescues. Please call 911 for emergencies.</p>
+    </div>
+  </footer>
 </body>
 </html>

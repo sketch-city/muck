@@ -242,3 +242,17 @@ a:visited {
   }
 }
 
+/*====================================
+=       Bootstrap overrides         =
+====================================*/
+
+.list-group-item {
+  padding: 0;
+}
+.list-group-item a {
+  display: block;
+  text-decoration: none;
+  padding: .75rem 1.25rem;
+}
+
+/*=====  End of Bootstrap overrides  ======*/
