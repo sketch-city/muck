@@ -162,17 +162,8 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
-            var type;// = $("input[name=markerType]:checked").val();
-            var radios = document.getElementsByName('markerType');
-
-            for (var i = 0, length = radios.length; i < length; i++) {
-                if (radios[i].checked) {
-                    alert(radios[i].value);
-                    type = radios[i].value;
-                    break;
-                }
-            }
-    
+            
+            
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
@@ -193,8 +184,9 @@
             dialog.dialog('open');
 
             function addEntry() {
-                //name.val();
-                //description.val();
+                var type = $("input:radio[name=markerType]:checked").val();
+    
+                
                 alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
 
                 //TODO this needs to be added to global array markers instead
