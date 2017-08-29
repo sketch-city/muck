@@ -55,7 +55,8 @@
           //  alert("name" + marker.get("name"));
               var markerVisual = new google.maps.Marker({
                   position: marker.get("positionData"),
-                  map: map
+                  map: map,
+                  icon: "/public/assets/images/shelter.png"
                 });
                 /*var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.name +
@@ -86,10 +87,11 @@
                   }
 
                   var infowindow = new google.maps.InfoWindow({
-                    content: 'Name: ' + marker.get("name") +
+                    content: "<br>" + 
+                      '<br>Name: ' + marker.get("name") +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt") +
-                      "<br>" + typeString
+                      
                     /* + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
