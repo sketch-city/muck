@@ -93,14 +93,21 @@
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 
-                  var infowindow = new google.maps.InfoWindow({
-                    content: typeString +
+                var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
                       '<br>Description: ' + marker.get("description") +
-                      '<br>Date: ' + marker.get("updatedAt")
-
-                    + "<br><br>"
+                      '<br>Date: ' + marker.get("updatedAt");
+              
+                  if (type === "needRescue")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
+                  }
+              
+                
+                  var infowindow = new google.maps.InfoWindow({
+                    content: contentString
 
 
                   });
@@ -258,6 +265,37 @@
 
         //alert("objectId is: " + objectId + " comment is: " + commentDiv.val());
         //TODO send this info to parse
+    }
+    
+    function markerRescued(objectId)
+    {       
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+        
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+        
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "rescued");
+                  markerParse.save();
+                  alert("You are now marked as rescued! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
     }
 
 
