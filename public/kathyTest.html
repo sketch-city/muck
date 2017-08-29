@@ -105,7 +105,7 @@
 
                   });
 
-
+                  /*
                   document.getElementById("refresh").addEventListener('click', function(){
                     var mapProp= {
                         center:new google.maps.LatLng(29.7602626,-95.3702536),
@@ -113,7 +113,7 @@
                     };
                     var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
                     markLocation();
-                  });
+                  });*/
 
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
@@ -176,7 +176,7 @@
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
-                        alert(pin.val() + " " + pin.val().length);
+                        //alert(pin.val() + " " + pin.val().length);
                         if (isNaN(pin.val()) || pin.val().length !== 4)
                         {
                             alert("Invalid PIN, must be 4 digits");
