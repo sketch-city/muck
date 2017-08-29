@@ -89,21 +89,34 @@
                       typeString = "Need Rescue";
                       markerVisual.icon = "/public/assets/images/need-rescue.png";
                   }
-
-                  var infowindow = new google.maps.InfoWindow({
-                    content: typeString +
+                  
+                  var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
                       '<br>Description: ' + marker.get("description") +
-                      '<br>Date: ' + marker.get("updatedAt")
-
-                    + "<br><br>" +
+                      '<br>Date: ' + marker.get("updatedAt");
+              
+                  if (type === "needRescue")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerRescued(" + marker.get("objectId") + ")\"I Am Rescued!</button>"
+                  }
+              
+              
+                    //below is for commenting feature
+                    /* + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
                     "Add Comment:<br>"  +
                     "<input type=\"text\" name=\"comment" + marker.objectId + "\" id=\"comment" + marker.objectId + "\"><br>" +
                     "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
                     "</form></div>"
+                    */
+
+                  var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+
+                    
                   });
 
 
@@ -253,6 +266,11 @@
 
         alert("objectId is: " + objectId + " comment is: " + commentDiv.val());
         //TODO send this info to parse
+    }
+    
+    function markerRescued(objectId)
+    {
+        alert("objectId is rescued: " + objectId);
     }
 
 
