@@ -22,14 +22,18 @@
         <div id="newEntryDialog">
             <form>
             <fieldset>
-              <label for="name">Name</label>
+                <label for="name">Name<br></label>
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
-              <label for="description">Description</label>
+              <label for="name"><br>Phone Number<br></label>
+              <input type="number" name="phone" id="phone" value="">
+              <label for="description"><br>Description<br></label>
               <textarea id="description" rows="4" cols="22"></textarea>
               <label for="markerType"><br>Your situation:<br></label>
-                <input type="radio" name="markerType" value="needRscue" checked> Need Rescue<br>
+                <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
+                <label for="pin"><br>PIN for later edits:<br></label>
+                <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4">
                 </fieldset>
               </form>
         </div>
@@ -73,7 +77,7 @@
                   else if (type === "rescueVehicle" )
                   {
                       typeString = "Has Rescue Vehicle";
-                      markerVisual.icon = "/public/assets/images/rescueVehicle.png";
+                      markerVisual.icon = "/public/assets/images/vehicle.png";
                   }
                   else if (type === "rescued" )
                   {
@@ -87,18 +91,19 @@
                   }
 
                   var infowindow = new google.maps.InfoWindow({
-                    content: "<br>" + typeString +
+                    content: typeString +
                       '<br>Name: ' + marker.get("name") +
+                      '<br>Phone Number: ' + marker.get("phone") +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt") 
                       
-                    /* + "<br><br>" +
+                    + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
                     "Add Comment:<br>"  +
                     "<input type=\"text\" name=\"comment" + marker.objectId + "\" id=\"comment" + marker.objectId + "\"><br>" +
                     "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
-                    "</form></div>"*/
+                    "</form></div>"
                   });
                   
                   
@@ -162,40 +167,82 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
-    
+            var phone = $("#phone");
+            var pin = $("#pin");
+            
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
-                        dialog.dialog('close');
-                        addEntry();
-                        name.val("");
-                        description.val("");
+                        alert(pin.val() + " " + pin.val().length);
+                        if (isNaN(pin.val()) || pin.val().length !== 4)
+                        {
+                            alert("Invalid PIN, must be 4 digits");
+                        }
+                        else
+                        {
+                            dialog.dialog('close');
+                            addEntry();
+                            name.val("");
+                            description.val("");
+                            $("input:radio[name=markerType]")[0].checked = true;
+                            phone.val("");
+                            pin.val("");
+                        }
                     },
                         "Cancel": function () {
                          name.val("");
                         description.val("");
                         dialog.dialog('close');
+                        $("input:radio[name=markerType]")[0].checked = true;
+                        phone.val("");
+                        pin.val("");
                     }
                 }
             });
             dialog.dialog('open');
 
             function addEntry() {
-                //name.val();
-                //description.val();
-                alert("Adding entry: " + name.val() + " " + description.val());
+                var type = $("input:radio[name=markerType]:checked").val();
+
+                alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
+                var typeString, iconName;
+
+                if (type === "shelter")
+                {
+                    typeString = "Providing Shelter";
+                    iconName = "/public/assets/images/shelter.png";
+                }
+                else if (type === "rescueVehicle" )
+                {
+                    typeString = "Has Rescue Vehicle";
+                    iconName = "/public/assets/images/vehicle.png";
+                }
+                else if (type === "rescued" )
+                {
+                    typeString = "Rescued";
+                    iconName = "/public/assets/images/rescued.png";
+                }
+                else
+                {
+                    typeString = "Need Rescue";
+                    iconName = "/public/assets/images/need-rescue.png";
+                }
 
                 //TODO this needs to be added to global array markers instead
                 var marker = new google.maps.Marker({
                     position: latLng,
-                    map: map
+                    map: map,
+                    icon: iconName
                   });
                 var infowindow = new google.maps.InfoWindow({
-                    content: 'Name: ' + name.val() +
-                    '<br>Description: ' + description.val()
+                    content: typeString +  
+                    '<br>Name: ' + name.val() +
+                    '<br>Phone Number: ' + phone.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: Just Now '
                   });
                   infowindow.open(map,marker);
-                  createNewGPSMarker(name.val(),description.val(),latLng);
+                  createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
             }
         }
 
