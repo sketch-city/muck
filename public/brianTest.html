@@ -61,7 +61,7 @@
               var markerVisual = new google.maps.Marker({
                   position: marker.get("positionData"),
                   map: map,
-                  icon: "/public/assets/images/shelterFinal.png"
+                  icon: "/public/assets/images/Shelter_Small.png"
                 });
                 /*var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.name +
@@ -73,12 +73,12 @@
                   if (type === "shelter")
                   {
                       typeString = "Providing Shelter";
-                      markerVisual.icon = "/public/assets/images/shelterFinal.png";
+                      markerVisual.icon = "/public/assets/images/Shelter_Small.png";
                   }
                   else if (type === "rescueVehicle" )
                   {
                       typeString = "Has Rescue Vehicle";
-                      markerVisual.icon = "/public/assets/images/rescuerFinal.png";
+                      markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
                   }
                   else if (type === "rescued" )
                   {
@@ -88,7 +88,7 @@
                   else
                   {
                       typeString = "Need Rescue";
-                      markerVisual.icon = "/public/assets/images/needsFinal.png";
+                      markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                   }
 
                   var infowindow = new google.maps.InfoWindow({

@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+          <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
+          <script src="/public/assets/js/testingfunctions.js"></script>
+        <style>
+            #newEntryDialog {
+                display:none;
+            }
+        </style>
+</head>
+<body>
+
+<h1>Houston Rescue Map, tap on map to mark your location</h1>
+
+<div id="googleMap" style="width:100%;height:800px;"></div>
+
+<script>
+    function myMap() {
+        var mapProp= {
+            center:new google.maps.LatLng(29.7602626,-95.3702536),
+            zoom:12,
+        };
+        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+        google.maps.event.addListener(map, 'click', function() {
+            //setTimeout(function() {
+                //if (mapClicked) {
+                    //addEntryDialogue();
+                    //alert("Hello, World.");
+                    //dialog.dialog( "open" );
+                    var dialog = $("#newEntryDialog").dialog({
+                        buttons: {
+                            "Add": function () {
+                                dialog.dialog('close');
+                                addEntry();
+                            },
+                                "Cancel": function () {
+                                dialog.dialog('close');
+                            }
+                        }
+                    });
+                    dialog.dialog('open');
+
+                    var form,
+                    name = $( "#name" ),
+                    description = $( "#description" );
+
+                    function addEntry() {
+                        //name.val();
+                        //description.val();
+
+                        alert("Adding entry: " + name.val() + " " + description.val());
+
+                        var marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
+                          });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: 'Name: ' + name.val() +
+                            '<br>Description: ' + description.val()
+                          });
+                          infowindow.open(map,marker);
+                          
+                        createNewGPSMarker(name.val(),description.val(),event.LatLng());
+
+                    }
+                //}
+            //}, 500);
+        });
+
+
+    }
+
+
+
+
+
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
+
+        <div id="newEntryDialog">
+            <form>
+            <fieldset>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+              <label for="description">Description</label>
+              <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+
+              <!-- Allow form submission with keyboard without duplicating the dialog button -->
+              <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+          </form>
+        </div>
+
+<input id="clickMe" type="button" value="clickme" onclick="helloMyParse()" />
+
+</body>
+</html>
