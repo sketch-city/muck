@@ -76,6 +76,10 @@ app.get('/kathyTest', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/kathyTest.html'));
 });
 
+app.get('/alanTest', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/alanTest.html'));
+});
+
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 app.get('/alpha1', function(req, res) {
