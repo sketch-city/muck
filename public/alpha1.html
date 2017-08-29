@@ -269,11 +269,7 @@
     }
     
     function markerRescued(objectId)
-    {
-        alert("objectId is rescued: " + objectId);
-        
-        
-        
+    {       
         var enteredPin = prompt("Please enter your 4-digit PIN:");
         
         Parse.$ = jQuery;
@@ -288,11 +284,13 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
+                  markerParse.set("type", "rescued");
+                  markerParse.save();
                   alert("You are now marked as rescued!");
               }
               else
               {
-                  alert("Incorrect PIN");
+                  alert("Incorrect PIN, please try again.");
               }
             },
             error: function(error) {
