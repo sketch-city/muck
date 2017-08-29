@@ -48,7 +48,7 @@ function createNewGPSMarker (name, description, positionData,type,phone,pin)
 
   testObject.save(null, {
   success: function(testObject) {
-    alert('New gps marker created with objectId: ' + testObject.id);
+    //alert('New gps marker created with objectId: ' + testObject.id);
   },
   error: function(testObject, error) {
     // Execute any logic that should take place if the save fails.
