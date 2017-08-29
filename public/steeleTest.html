@@ -149,10 +149,16 @@
 
         function addMarker(latLng)
         {
+            var form,
+            name = $( "#name" ),
+            description = $( "#description" );
+    
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
                         dialog.dialog('close');
+                        name.val("");
+                        description.value = "";
                         addEntry();
                     },
                         "Cancel": function () {
@@ -162,9 +168,7 @@
             });
             dialog.dialog('open');
 
-            var form,
-            name = $( "#name" ),
-            description = $( "#description" );
+            
 
             function addEntry() {
                 //name.val();
