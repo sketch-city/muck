@@ -24,6 +24,8 @@
             <fieldset>
               <label for="name">Name</label>
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+              <label for="name">Phone Number</label>
+              <input type="number" name="phone" id="phone" value="">
               <label for="description">Description</label>
               <textarea id="description" rows="4" cols="22"></textarea>
               <label for="markerType"><br>Your situation:<br></label>
@@ -89,6 +91,7 @@
                   var infowindow = new google.maps.InfoWindow({
                     content: typeString +
                       '<br>Name: ' + marker.get("name") +
+                      '<br>Phone Number ' + marker.get("phone") +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt") 
                       
@@ -162,6 +165,7 @@
         {
             var name = $( "#name" );
             var description = $( "#description" );
+            var phone = $("#phone");
             
             
             var dialog = $("#newEntryDialog").dialog({
@@ -219,6 +223,7 @@
                 var infowindow = new google.maps.InfoWindow({
                     content: typeString +  
                     '<br>Name: ' + name.val() +
+                    '<br>Phone Number ' + phone.val() +
                     '<br>Description: ' + description.val() +
                     '<br>Date: Just Now '
                   });
