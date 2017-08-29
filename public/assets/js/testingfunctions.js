@@ -20,11 +20,10 @@ function helloMyParse()
       alert('Failed to create new object, with error code: ' + error.message);
     }
 })
-
 };
 
 
-function createNewGPSMarker (name, description, positionData)
+function createNewGPSMarker (name, description, positionData,type,phone,pin)
 {
   alert("attempting save gps marker");
   // Replace this line with the one on your Quickstart Guide Page
@@ -32,18 +31,20 @@ function createNewGPSMarker (name, description, positionData)
   Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
   Parse.useMasterKey = true;
 
-
-
   var TestObject = Parse.Object.extend("GPSMarkerObject");
   var testObject = new TestObject();
 
-  var postACL = new Parse.ACL(Parse.User.current());
-  postACL.setPublicReadAccess(true);
-  testObject.setACL(postACL);
-
+//  var postACL = new Parse.ACL(Parse.User.current());
+  //postACL.setPublicReadAccess(true);
+  //postACL.setPublicWriteAccess(false);
+  //testObject.setACL(postACL);
   testObject.set("name", name);
   testObject.set("description",description);
   testObject.set("positionData",positionData);
+  testObject.set("type",type);
+  testObject.set("phone",phone);
+  testObject.set("pin",pin);
+  
   testObject.save(null, {
   success: function(testObject) {
     alert('New object created with objectId: ' + testObject.id);
