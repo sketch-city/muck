@@ -236,3 +236,9 @@ a:visited {
   content: "";
 }
 
+@media (max-width: 600px) {
+  .ui-dialog {
+    left: 50px;
+  }
+}
+
