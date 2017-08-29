@@ -283,10 +283,8 @@
         
         var gpsMarker = Parse.Object.extend("GPSMarkerObject");
         var query = new Parse.Query(gpsMarker);
-        query.equalTo("_id", objectId);
-        query.find({
-            success: function(results) {
-              var markerParse = results[0];
+        query.get(objectId, {
+            success: function(markerParse) {
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
