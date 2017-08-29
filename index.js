@@ -72,6 +72,12 @@ app.get('/livedataTest', function(req, res) {
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
+app.get('/kathyTest', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/kathyTest.html'));
+});
+
+// There will be a test page available on the /test path of your server url
+// Remove this before launching your app
 app.get('/alpha1', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/alpha1.html'));
 });
