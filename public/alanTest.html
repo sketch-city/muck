@@ -94,7 +94,7 @@
                   var infowindow = new google.maps.InfoWindow({
                     content: typeString +
                       '<br>Name: ' + marker.get("name") +
-                      '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' + 
+                      '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt")
 
@@ -159,6 +159,9 @@
 
 
         google.maps.event.addListener(map, 'click', function(event) {
+            addMarker(event.latLng);
+        });
+        google.maps.event.addListener(currentLocation, 'click', function(event) {
             addMarker(event.latLng);
         });
 
