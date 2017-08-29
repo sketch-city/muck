@@ -125,22 +125,25 @@
 
         function addMarker(latLng)
         {
+            var name = $( "#name" );
+            var description = $( "#description" );
+    
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
                         dialog.dialog('close');
+                        name.value = "";
+                        description.value = "";
                         addEntry();
                     },
                         "Cancel": function () {
+                         name.value = "";
+                        description.value = "";
                         dialog.dialog('close');
                     }
                 }
             });
             dialog.dialog('open');
-
-            var form,
-            name = $( "#name" ),
-            description = $( "#description" );
 
             function addEntry() {
                 //name.val();
