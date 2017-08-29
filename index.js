@@ -18,7 +18,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'https://localhost:1337/parse',  // Don't forget to change to https if needed
   javascriptKey: process.env.JAVASCRIPT_KEY || '',  //** add this line no need to set values, they will be overwritten by heroku config vars
  restAPIKey: process.env.REST_API_KEY || '', //** add this line
  dotNetKey: process.env.DOT_NET_KEY || '', //** add this line
@@ -87,10 +87,18 @@ app.get('/alpha1', function(req, res) {
 });
 
 var port = process.env.PORT || 1337;
-var httpServer = require('http').createServer(app);
-httpServer.listen(port, function() {
-    console.log('parse-server-example running on port ' + port + '.');
+
+var httpsServer = require('https').createServer(options,app);
+
+httpsServer.listen(1337, function() {
+    console.log('parse-server-example running on port 1337.');
+
+//var httpServer = require('http').createServer(app);
+//httpServer.listen(port, function() {
+    //console.log('parse-server-example running on port ' + port + '.');
 });
+
+
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
