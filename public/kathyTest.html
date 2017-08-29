@@ -47,7 +47,7 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-        function callbackMarkersQuery(datamarkers)
+        function callbackMarkersQuery(datamarkers, markType=null)
       {
         //alert("callback function handling " + datamarkers.length + "data markers");
           var markers = []; //load from parse here
@@ -70,26 +70,49 @@
                   var type = marker.get("type");
                   var typeString;
 
-                  if (type === "shelter")
-                  {
-                      typeString = "Providing Shelter";
-                      markerVisual.icon = "/public/assets/images/Shelter_Small.png";
-                  }
-                  else if (type === "rescueVehicle" )
-                  {
-                      typeString = "Has Rescue Vehicle";
-                      markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
-                  }
-                  else if (type === "rescued" )
-                  {
-                      typeString = "Rescued";
-                      markerVisual.icon = "/public/assets/images/rescued.png";
-                  }
-                  else
-                  {
-                      typeString = "Need Rescue";
-                      markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
-                  }
+                  if (!markType) {
+                    if (type === "shelter")
+                    {
+                        typeString = "Providing Shelter";
+                        markerVisual.icon = "/public/assets/images/Shelter_Small.png";
+                    }
+                    else if (type === "rescueVehicle" )
+                    {
+                        typeString = "Has Rescue Vehicle";
+                        markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
+                    }
+                    else if (type === "rescued" )
+                    {
+                        typeString = "Rescued";
+                        markerVisual.icon = "/public/assets/images/rescued.png";
+                    }
+                    else
+                    {
+                        typeString = "Need Rescue";
+                        markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
+                    }
+                } else {
+                    if (markType === "shelter")
+                    {
+                        typeString = "Providing Shelter";
+                        markerVisual.icon = "/public/assets/images/Shelter_Small.png";
+                    }
+                    else if (markType === "rescueVehicle" )
+                    {
+                        typeString = "Has Rescue Vehicle";
+                        markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
+                    }
+                    else if (markType === "rescued" )
+                    {
+                        typeString = "Rescued";
+                        markerVisual.icon = "/public/assets/images/rescued.png";
+                    }
+                    else
+                    {
+                        typeString = "Need Rescue";
+                        markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
+                    }
+                }
 
                   var infowindow = new google.maps.InfoWindow({
                     content: typeString +
@@ -114,10 +137,10 @@
             });
         };
 
-        function loadMarkers()
-      {
+        function loadMarkers() {
 
         var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+        callbackMarkersQuery(datamarkers, "shelter");
 
       }
 
@@ -159,6 +182,11 @@
         });
 
 
+        function loadShelter() {
+            var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+
+
+        }
 
         function addMarker(latLng)
         {
