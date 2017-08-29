@@ -187,8 +187,7 @@
         function loadShelter(event){
             var element = event.target;
             if(element.tagName == "BUTTON" && element.classList.contains("shelterBtn")){
-                var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
-                callbackMarkersQuery(datamarkers, "shelter");
+                var datamarkers = retrieveGPSMarkers(callbackMarkersQuery, "shelter");
             }
         }
 
