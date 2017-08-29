@@ -39,8 +39,8 @@ function createNewGPSMarker (name, description, positionData)
 
   var postACL = new Parse.ACL(Parse.User.current());
   postACL.setPublicReadAccess(true);
+  postACL.setPublicWriteAccess(false);
   testObject.setACL(postACL);
-
   testObject.set("name", name);
   testObject.set("description",description);
   testObject.set("positionData",positionData);
