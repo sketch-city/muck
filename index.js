@@ -86,6 +86,11 @@ app.get('/alpha1', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/alpha1.html'));
 });
 
+// Page for donation centers after flood
+app.get('/donationMap', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/donationMap.html'));
+});
+
 var port = process.env.PORT || 1337;
 
 var httpServer = require('http').createServer(app);
