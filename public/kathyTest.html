@@ -130,7 +130,13 @@
                   });
 
 
-
+                  document.getElementById("refresh").addEventListener('click', function(){
+                    var mapProp= {
+                        center:new google.maps.LatLng(29.7602626,-95.3702536),
+                        zoom:12,
+                    };
+                    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                  });
 
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
@@ -291,7 +297,7 @@
 
 
         </script>
-<input id="refresh" type="button" value="refresh" onclick="loadMarkers()" />
+<input id="refresh" type="button" value="refresh" />
 <button class="shelterBtn"/>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&callback=myMap"></script>
 
