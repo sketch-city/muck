@@ -30,8 +30,12 @@
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
               <label for="description">Description</label>
               <textarea id="description" rows="4" cols="22"></textarea>
-            </fieldset>
-          </form>
+              <label for="markerType"><br>Your situation:<br></label>
+                <input type="radio" name="markerType" value="needRscue" checked> Need Rescue<br>
+                <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
+                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
+                </fieldset>
+              </form>
         </div>
 
 <script>
@@ -50,35 +54,40 @@
                 objectId : "1001",
                 name: "person1",
                 description: "description1",
-                positionData: new google.maps.LatLng(29.7602626,-95.3702536)
+                positionData: new google.maps.LatLng(29.7602626,-95.3702536),
+                type: "needRescue"
             };
             markers.push(tempMarker);
             tempMarker = {
                 objectId : "1002",
                 name: "person2",
                 description: "description2",
-                positionData: new google.maps.LatLng(29.7612629,-95.3902536)
+                positionData: new google.maps.LatLng(29.7612629,-95.3902536),
+                type: "needRescue"
             };
             markers.push(tempMarker);
             tempMarker = {
                 objectId : "1003",
                 name: "person3",
                 description: "description3",
-                positionData: new google.maps.LatLng(29.7722616,-95.3802536)
+                positionData: new google.maps.LatLng(29.7722616,-95.3802536),
+                type: "needRescue"
             };
             markers.push(tempMarker);
             tempMarker = {
                 objectId : "1004",
                 name: "person4",
                 description: "description4",
-                positionData: new google.maps.LatLng(29.7332636,-95.3602526)
+                positionData: new google.maps.LatLng(29.7332636,-95.3602526),
+                type: "shelter"
             };
             markers.push(tempMarker);
             tempMarker = {
                 objectId : "1005",
                 name: "person5",
                 description: "description5",
-                positionData: new google.maps.LatLng(29.7542646,-95.3302516)
+                positionData: new google.maps.LatLng(29.7542646,-95.3302516),
+                type: "rescueVehicle"
             };
             markers.push(tempMarker);
 
@@ -86,7 +95,8 @@
             {
                 var markerVisual = new google.maps.Marker({
                     position: marker.positionData,
-                    map: map
+                    map: map,
+                    icon:"/public/assets/images/need-rescue.png"
                   });
                 /*var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.name +
@@ -151,15 +161,18 @@
         {
             var form,
             name = $( "#name" ),
-            description = $( "#description" );
+            description = $( "#description" ),
+            type = $("#markerType");
     
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
                         dialog.dialog('close');
+                        
+                        addEntry();
                         name.val("");
                         description.value = "";
-                        addEntry();
+                        type.val("needRescue");
                     },
                         "Cancel": function () {
                         dialog.dialog('close');

@@ -26,8 +26,12 @@
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
               <label for="description">Description</label>
               <textarea id="description" rows="4" cols="22"></textarea>
-            </fieldset>
-          </form>
+              <label for="markerType"><br>Your situation:<br></label>
+                <input type="radio" name="markerType" value="needRscue" checked> Need Rescue<br>
+                <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
+                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
+                </fieldset>
+              </form>
         </div>
 
 <script>
@@ -57,11 +61,35 @@
                     content: 'Name: ' + marker.name +
                     '<br>Description: ' + marker.description
                   });*/
+                  var type = marker.get("type");
+                  var typeString;
+                  
+                  if (type === "shelter")
+                  {
+                      typeString = "Providing Shelter";
+                      markerVisual.icon = "/public/assets/images/shelter.png";
+                  }
+                  else if (type === "rescueVehicle" )
+                  {
+                      typeString = "Has Rescue Vehicle";
+                      markerVisual.icon = "/public/assets/images/rescueVehicle.png";
+                  }
+                  else if (type === "rescued" )
+                  {
+                      typeString = "Rescued";
+                      markerVisual.icon = "/public/assets/images/rescued.png";
+                  }
+                  else
+                  {
+                      typeString = "Need Rescue";
+                      markerVisual.icon = "/public/assets/images/need-rescue.png";
+                  }
+
                   var infowindow = new google.maps.InfoWindow({
                     content: 'Name: ' + marker.get("name") +
                       '<br>Description: ' + marker.get("description") +
-                      '<br>Date: ' + marker.get("updatedAt")
-              
+                      '<br>Date: ' + marker.get("updatedAt") +
+                      "<br>" + typeString
                     /* + "<br><br>" +
                     "<div id=\"commentEntry" + marker.objectId +  "\">" +
                     "<form>" +
@@ -70,8 +98,10 @@
                     "<input type=\"submit\" onclick=\"submitComment(" + marker.objectId + ")\" value=\"Submit\">" +
                     "</form></div>"*/
                   });
+                  
+                  
 
-
+                  
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
                   });
