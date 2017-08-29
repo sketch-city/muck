@@ -32,7 +32,7 @@
                 <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
-                <label for="pin"><br>PIN for later edits:<br></label>
+                <label for="pin"><br>4-digit PIN for later edits:<br></label>
                 <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4">
                 </fieldset>
               </form>
@@ -271,6 +271,36 @@
     function markerRescued(objectId)
     {
         alert("objectId is rescued: " + objectId);
+        
+        
+        
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+        
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+        
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.equalTo("_id", objectId);
+        query.find({
+            success: function(results) {
+              var markerParse = results[0];
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  alert("You are now marked as rescued!");
+              }
+              else
+              {
+                  alert("Incorrect PIN");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
     }
 
 
