@@ -70,10 +70,10 @@ function retrieveGPSMarkers (callbackFunction)
   var gpsMarker = Parse.Object.extend("GPSMarkerObject");
   var query = new Parse.Query(gpsMarker);
   query.descending("updatedAt")
-  query.limit(1000);
+  query.limit(5000);
   query.find({
     success: function(results) {
-      alert("Successfully retrieved " + results.length + " gps markers.");
+      //alert("Successfully retrieved " + results.length + " gps markers.");
       // Do something with the returned Parse.Object values
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
