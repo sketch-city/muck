@@ -98,6 +98,8 @@ function deleteGPSMarker (callbackFunction)
 
   var gpsMarker = Parse.Object.extend("GPSMarkerObject");
   var query = new Parse.Query(gpsMarker);
+  query.descending("updatedAt")
+  query.limit=10000;
   query.find({
     success: function(results) {
       alert("Successfully retrieved " + results.length + " gps markers.");
