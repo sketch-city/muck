@@ -7,7 +7,7 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
-        <script src="/public/assets/js/testingfunctions.js"></script>
+        <script src="/public/assets/js/alantestingfunctions.js"></script>
         <link rel="stylesheet" href="/public/assets/css/bootstrap-grid.min.css">
         <link rel="stylesheet" href="/public/assets/css/bootstrap-reboot.min.css">
         <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
@@ -18,7 +18,7 @@
                 display:none;
             }
             body{
-                font-family: 'Open Sans', sans-serif; 
+                font-family: 'Open Sans', sans-serif;
             }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -107,14 +107,14 @@
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt");
-              
+
                   if (type === "needRescue")
                   {
                       contentString +=
                               "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
                   }
-              
-                
+
+
                   var infowindow = new google.maps.InfoWindow({
                     content: contentString
 
@@ -275,16 +275,16 @@
         //alert("objectId is: " + objectId + " comment is: " + commentDiv.val());
         //TODO send this info to parse
     }
-    
+
     function markerRescued(objectId)
-    {       
+    {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
-        
+
         Parse.$ = jQuery;
         Parse.initialize("cardforgegame","brian"); // Your App Name
         Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
         Parse.useMasterKey = true;
-        
+
         var gpsMarker = Parse.Object.extend("GPSMarkerObject");
         var query = new Parse.Query(gpsMarker);
         query.get(objectId, {
