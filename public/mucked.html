@@ -102,7 +102,7 @@
                       '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt");
 
-                  if (type === "needRescue")
+                  if (type === "muckedHome")
                   {
                       contentString +=
                               "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
@@ -286,7 +286,7 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "rescued");
+                  markerParse.set("type", "muckedOut");
                   markerParse.save();
                   alert("You are now marked as rescued! Refresh the page to update.");
               }
