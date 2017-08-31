@@ -175,8 +175,13 @@
 
                 if (type === "volunteer" )
                 {
-                    typeString = "Volunteer";
+                    typeString = "Volunteer Available";
                     markerVisual.icon = "/public/assets/images/volunteer.png";
+                }
+                else if (type === "volunteerBusy" )
+                {
+                    typeString = "Volunteer Busy";
+                    markerVisual.icon = "/public/assets/images/volunteerBusy.png";
                 }
                 else if (type === "muckedOut" )
                 {
@@ -201,10 +206,15 @@
                               "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
                   }
 
-                  if (type === "volunteer")
+                  else if (type === "volunteer")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerHidden(\'" + marker.id + "\')\">Delete</button>"
+                              "<br><button type=\"button\" onclick=\"markerVolunteerBusy(\'" + marker.id + "\')\">Mark as Busy</button>"
+                  }
+                  else if (type === "volunteerBusy")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerVolunteerFree(\'" + marker.id + "\')\">Mark as Free</button>"
                   }
 
 
@@ -228,7 +238,7 @@
                   infowindow.open(map,markerVisual);
                   });
                 
-                 if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer')
+                 if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer' || type == 'volunteerBusy')
                 { 
                     markerVisual.setMap(map);
                 } else {
@@ -326,8 +336,13 @@
 
                 if (type === "volunteer" )
                 {
-                    typeString = "Volunteer";
+                    typeString = "Volunteer Available";
                     iconName = "/public/assets/images/volunteer.png";
+                }
+                else if (type === "volunteerBusy" )
+                {
+                    typeString = "Volunteer Busy";
+                    iconName = "/public/assets/images/volunteerBusy.png";
                 }
                 else if (type === "muckedOut" )
                 {
@@ -419,6 +434,68 @@
                   markerParse.set("type", "hidden");
                   markerParse.save();
                   alert("Your pin has been deleted! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerVolunteerFree(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "volunteer");
+                  markerParse.save();
+                  alert("You are now marked as free! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerVolunteerBusy(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "volunteerBusy");
+                  markerParse.save();
+                  alert("You are now marked as free! Refresh the page to update.");
               }
               else
               {
