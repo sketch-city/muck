@@ -78,7 +78,7 @@
                     <div>Name<br>
                   <input type="text" name="name" id="nameForm" value="" class="text ui-widget-content ui-corner-all"></div>
                   <div>Phone Number<br>
-                  <input type="number" name="phone" id="phoneForm" value=""></div>
+                  <input type="text" name="phone" id="phoneForm" value=""></div>
                   <div>Address<br>
                     <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
                     <div>Description<br>
@@ -98,7 +98,8 @@
         var mapProp= {
             center:new google.maps.LatLng(29.7602626,-95.3702536),
             zoom:12,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            gestureHandling: "greedy"
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
@@ -110,6 +111,10 @@
         
             mouseHoldTimeOut = setTimeout(function() {
                 if (!mouseMoved) {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                    
                     mapAddressBarMarkers.forEach(function(marker) {
                               marker.setMap(null);
                             });
