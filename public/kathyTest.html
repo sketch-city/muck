@@ -139,7 +139,12 @@
                   infowindow.open(map,markerVisual);
                   });
 
-                 markerVisual.setMap(map);
+                if (type == 'needRescue' || type =='rescued' || type == 'rescueVehicle' || type =='shelter')
+                { 
+                    markerVisual.setMap(map);
+                } else {
+                    markerVisual.setMap(null);
+                }
             });
         };
 
