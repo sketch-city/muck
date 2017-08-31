@@ -43,7 +43,7 @@
                 <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle</div>
-                <div>PIN for later edits:<br>
+                <div>4-digit PIN to make later edits:<br>
                     <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
                 </fieldset>
               </form>
@@ -101,7 +101,11 @@
                     typeString = "Rescued";
                     markerVisual.icon = "/public/assets/images/Rescued_Small.png";
                 }
-                else
+                else if (type === "muckedHome" || type === "muckedOut" || type === "volunteer")
+                {
+                
+                }
+                else if (type === "needRescue")
                 {
                     typeString = "Need Rescue";
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
@@ -155,7 +159,12 @@
                   infowindow.open(map,markerVisual);
                   });
 
-                 markerVisual.setMap(map);
+                if (type == 'needRescue' || type =='rescued' || type == 'rescueVehicle' || type =='shelter' || type =='shelterClosed')
+                { 
+                    markerVisual.setMap(map);
+                } else {
+                    markerVisual.setMap(null);
+                }
             });
         };
 
@@ -217,6 +226,7 @@
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
+                        
                         else
                         {
                             dialog.dialog('close');
@@ -254,7 +264,7 @@
                 else if (type === "shelterClosed")
                 {
                     typeString = "Closed Shelter";
-                    iconName.icon = "/public/assets/images/Shelter_Small_Closed.png";
+                    iconName = "/public/assets/images/Shelter_Small_Closed.png";
                 }
                 else if (type === "rescueVehicle" )
                 {
@@ -266,7 +276,7 @@
                     typeString = "Rescued";
                     iconName = "/public/assets/images/Rescued_Small.png";
                 }
-                else
+                else if (type === "needRescue")
                 {
                     typeString = "Need Rescue";
                     iconName = "/public/assets/images/Needs_Rescue_Small.png";
@@ -300,7 +310,7 @@
         //alert("objectId is: " + objectId + " comment is: " + commentDiv.val());
         //TODO send this info to parse
     }
-    
+
     function markerRescued(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
@@ -323,7 +333,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -331,7 +341,7 @@
             }
           });
     }
-
+    
     function markerShelterClosed(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
@@ -354,7 +364,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -385,7 +395,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -422,7 +432,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {

@@ -43,7 +43,7 @@
                 <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
                 <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle</div>
-                <div>PIN for later edits:<br>
+                <div>4-digit PIN to make later edits:<br>
                     <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
                 </fieldset>
               </form>
@@ -226,6 +226,7 @@
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
+                        
                         else
                         {
                             dialog.dialog('close');
@@ -332,7 +333,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -363,7 +364,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -394,7 +395,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
@@ -431,7 +432,7 @@
               }
               else
               {
-                  alert("Incorrect PIN, please try again.");
+                  alert("Incorrect 4-digit PIN, please try again.");
               }
             },
             error: function(error) {
