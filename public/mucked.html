@@ -62,6 +62,25 @@
               </form>
         </div>
 
+        <div id="muckedHomeDialog">
+                <form>
+                <fieldset>
+                    <div>Name<br>
+                  <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
+                  <div>Phone Number<br>
+                  <input type="number" name="phone" id="phone" value=""></div>
+                  <div>Address<br>
+                    <input id="addressBar" class="controls" type="text" placeholder="Enter address here"></div>
+                    <div>Description<br>
+                      <textarea id="description" rows="4" cols="22"></textarea></div>
+                      <div>Your situation:<br>
+                    <input type="radio" name="markerType" value="muckedHome" checked> Mucked Home<br>
+                    <div>4 Digit Verification (please remember):<br>
+                        <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
+                    </fieldset>
+                  </form>
+            </div>
+
 <script>
     function myMap() {
         var mapProp= {
