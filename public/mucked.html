@@ -51,7 +51,7 @@
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
               <div>Phone Number<br>
               <input type="number" name="phone" id="phone" value=""></div>
-              <div>Description<br>
+              <div>Address<br>
                   <textarea id="description" rows="4" cols="22"></textarea></div>
                   <div>Your situation:<br>
                 <input type="radio" name="markerType" value="muckedHome" checked> Mucked Home<br>
@@ -173,7 +173,7 @@
                 var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
-                      '<br>Description: ' + marker.get("description") +
+                      '<br>Address: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt");
 
                   if (type === "muckedHome")
