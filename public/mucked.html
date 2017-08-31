@@ -83,6 +83,8 @@
             </div>
 
 <script>
+    var mapAddressBarMarkers;
+    
     function myMap() {
         var mapProp= {
             center:new google.maps.LatLng(29.7602626,-95.3702536),
@@ -100,7 +102,7 @@
           searchBox.setBounds(map.getBounds());
         });
         
-        var addressMarkers = [];
+        mapAddressBarMarkers = [];
  
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
@@ -109,10 +111,10 @@
             }
             
             // Clear out the old markers.
-          addressMarkers.forEach(function(marker) {
+          mapAddressBarMarkers.forEach(function(marker) {
             marker.setMap(null);
           });
-          addressMarkers = [];
+          mapAddressBarMarkers = [];
 
           // For each place, get the icon, name and location.
           var bounds = new google.maps.LatLngBounds();
@@ -130,13 +132,13 @@
             };
 
             // Create a marker for each place.
-            /*
-            addressMarkers.push(new google.maps.Marker({
+            
+            mapAddressBarMarkers.push(new google.maps.Marker({
               map: map,
               title: place.name,
               position: place.geometry.location
             }));
-            */
+            
 
             if (place.geometry.viewport) {
               // Only geocodes have viewport.
@@ -383,6 +385,10 @@
                             $("input:radio[name=markerType]")[0].checked = true;
                             phone.val("");
                             pin.val("");
+                            // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
                         }
                     },
                         "Cancel": function () {
