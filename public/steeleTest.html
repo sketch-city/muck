@@ -116,22 +116,22 @@
                   if (type === "needRescue")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
+                              "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>";
                   }
                   else if (type === "shelter")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerShelterClosed(\'" + marker.id + "\')\">Close Shelter</button>"
+                              "<br><button type=\"button\" onclick=\"markerShelterClosed(\'" + marker.id + "\')\">Close Shelter</button>";
                   }
                   else if (type === "shelterClosed")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerShelterOpen(\'" + marker.id + "\')\">Reopen Shelter</button>"
+                              "<br><button type=\"button\" onclick=\"markerShelterOpen(\'" + marker.id + "\')\">Reopen Shelter</button>";
                   }
                   else if (type === "rescueVehicle")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerDelete(\'" + marker.id + "\')\">Delete</button>"
+                              "<br><button type=\"button\" onclick=\"markerDelete(\'" + marker.id + "\')\">Delete</button>";
                   }
 
 
@@ -254,7 +254,7 @@
                 else if (type === "shelterClosed")
                 {
                     typeString = "Closed Shelter";
-                    markerVisual.icon = "/public/assets/images/Shelter_Small_Closed.png";
+                    iconName.icon = "/public/assets/images/Shelter_Small_Closed.png";
                 }
                 else if (type === "rescueVehicle" )
                 {
