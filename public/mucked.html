@@ -205,13 +205,15 @@
             } else {
               bounds.extend(place.geometry.location);
             }
+
+            document.getElementById("muckForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            addMarker(place.geometry.location)
+            });
           });
           map.fitBounds(bounds);
 
-          document.getElementById("muckForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            addMarker(place.geometry.location)
-          });
+
 
             
         });
