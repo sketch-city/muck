@@ -16,7 +16,6 @@
         <style>
             #newEntryDialog {
                 display:none;
-                float:left;
             }
             body{
                 font-family: 'Open Sans', sans-serif;
@@ -34,18 +33,18 @@
         <div id="newEntryDialog">
             <form>
             <fieldset>
-                <label for="name">Name<br></label>
-              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
-              <label for="name"><br>Phone Number<br></label>
-              <input type="number" name="phone" id="phone" value="">
-              <label for="description"><br>Description<br></label>
-              <textarea id="description" rows="4" cols="22"></textarea>
-              <label for="markerType"><br>Your situation:<br></label>
+                <div><label for="name">Name<br></label>
+              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
+              <div><label for="number"><br>Phone Number<br></label>
+              <input type="number" name="phone" id="phone" value=""></div>
+              <div><label for="description"><br>Description<br></label>
+                  <textarea id="description" rows="4" cols="22"></textarea></div>
+                  <div><label for="markerType"><br>Your situation:<br></label>
                 <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
                 <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
-                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle
-                <label for="pin"><br>PIN for later edits:<br></label>
-                <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4">
+                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle</div>
+                <div><label for="pin"><br>PIN for later edits:<br></label>
+                    <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
                 </fieldset>
               </form>
         </div>
