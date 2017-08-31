@@ -128,6 +128,11 @@
                       contentString +=
                               "<br><button type=\"button\" onclick=\"markerShelterOpen(\'" + marker.id + "\')\">Reopen Shelter</button>"
                   }
+                  else if (type === "rescueVehicle")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerDelete(\'" + marker.id + "\')\">Delete</button>"
+                  }
 
 
                   var infowindow = new google.maps.InfoWindow({
@@ -346,6 +351,44 @@
                   markerParse.set("type", "shelter");
                   markerParse.save();
                   alert("Your shelter is now marked as open! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerDelete(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "shelter");
+                  markerParse.destroy({
+                    success: function(markerParse) {
+                      alert("Your shelter is now marked as open! Refresh the page to update.");
+                    },
+                    error: function(markerParse, error) {
+                      alert("Couldn't delete. Error: " + error.code + " " + error.message);
+                    }
+                  });
+                  
               }
               else
               {
