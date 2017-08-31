@@ -110,6 +110,9 @@
         
             mouseHoldTimeOut = setTimeout(function() {
                 if (!mouseMoved) {
+                    mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
                     mapAddressBarMarkers.push(new google.maps.Marker({
                         map: map,
                         position: event.latLng,
