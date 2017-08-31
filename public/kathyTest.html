@@ -98,9 +98,9 @@
                 }
                 else if (type === "muckedHome" || type === "muckedOut" || type === "volunteer")
                 {
-                    continue;
+                
                 }
-                else
+                else if (type === "needRescue")
                 {
                     typeString = "Need Rescue";
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
@@ -245,7 +245,7 @@
                     typeString = "Rescued";
                     iconName = "/public/assets/images/Rescued_Small.png";
                 }
-                else
+                else if (type === "needRescue")
                 {
                     typeString = "Need Rescue";
                     iconName = "/public/assets/images/Needs_Rescue_Small.png";
