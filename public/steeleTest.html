@@ -35,11 +35,10 @@
             }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Texas Rescue Map</title>
+        <title>Texas Muck Map</title>
 </head>
 <body>
-
-<img style="height: 75px;" src="/public/assets/images/logo.png">
+<h2><img style="height: 75px;" src="/public/assets/images/logo.png">Muck Map</h2>
 
 <input id="addressBar" class="controls" type="text" placeholder="Enter address here">
 <div id="googleMap" style="width:100%;height:400px;"></div>
@@ -51,21 +50,40 @@
               <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
               <div>Phone Number<br>
               <input type="number" name="phone" id="phone" value=""></div>
-              <div>Description<br>
+              <div>Address<br>
                   <textarea id="description" rows="4" cols="22"></textarea></div>
                   <div>Your situation:<br>
-                <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
-                <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
-                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle</div>
-                <div>4-digit PIN to make later edits:<br>
+                <input type="radio" name="markerType" value="muckedHome"> Mucked Home<br>
+                <input type="radio" name="markerType" value="volunteer"> Volunteer</div>
+                <div>4-Digit PIN (please remember):<br>
                     <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
                 </fieldset>
               </form>
         </div>
 
+        <div id="muckedHomeDialog" class="text-center">
+                <br>
+                <h2>Does your house need mucking? Submit it to our map below:</h2>
+                <form id="muckForm">
+                <fieldset>
+                    <div>Name<br>
+                  <input type="text" name="name" id="nameForm" value="" class="text ui-widget-content ui-corner-all"></div>
+                  <div>Phone Number<br>
+                  <input type="number" name="phone" id="phoneForm" value=""></div>
+                  <div>Address<br>
+                    <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
+                    <div>Description<br>
+                      <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
+                    <div>4-Digit PIN (please remember):<br>
+                        <input type="text" name="pin" id="pinForm" pattern="[0-9]{4}" maxlength="4"></div>
+                    </fieldset>
+                    <br>
+                    <button type="submit">Submit</button>
+                  </form>
+            </div>
+
 <script>
-    
-    
+    var mapAddressBarMarkers;
     
     function myMap() {
         var mapProp= {
@@ -73,21 +91,20 @@
             zoom:12,
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-        
+
+        //code for map address bar
         var input = document.getElementById("addressBar");
         var searchBox = new google.maps.places.SearchBox(input);
-        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
         
         var addressMarkers = [];
-        
-        //code for address bar
+ 
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
-            
             if (places.length == 0) {
                 return;
             }
@@ -114,11 +131,13 @@
             };
 
             // Create a marker for each place.
+            /*
             addressMarkers.push(new google.maps.Marker({
               map: map,
               title: place.name,
               position: place.geometry.location
             }));
+            */
 
             if (place.geometry.viewport) {
               // Only geocodes have viewport.
@@ -127,11 +146,77 @@
               bounds.extend(place.geometry.location);
             }
           });
-          map.fitBounds(bounds);
-
-            
+          map.fitBounds(bounds);           
         });
         
+        //code for form address bar
+        var inputForm = document.getElementById("addressBarForm");
+        var searchBoxForm = new google.maps.places.SearchBox(inputForm);
+
+        var addressMarkersForm = [];
+ 
+        searchBoxForm.addListener('places_changed', function() {
+            var places = searchBoxForm.getPlaces();
+            
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          addressMarkersForm.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          addressMarkersForm = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            
+            addressMarkersForm.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            }));
+            
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+
+            document.getElementById("muckForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMarkerForm(place.geometry.location);
+                //clear markers
+                addressMarkersForm.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  addressMarkersForm = [];
+            });
+          });
+          map.fitBounds(bounds);
+        });
+        
+        $( "#submit" ).click(function() {
+
+        alert( "Handler for .click() called." );
+
+       });
 
         function callbackMarkersQuery(datamarkers)
       {
@@ -157,61 +242,48 @@
                   var typeString;
 
 
-                if (type === "shelter")
+                if (type === "volunteer" )
                 {
-                    typeString = "Providing Shelter";
-                    markerVisual.icon = "/public/assets/images/Shelter_Small.png";
+                    typeString = "Volunteer Available";
+                    markerVisual.icon = "/public/assets/images/volunteer.png";
                 }
-                else if (type === "shelterClosed")
+                else if (type === "volunteerBusy" )
                 {
-                    typeString = "Closed Shelter";
-                    markerVisual.icon = "/public/assets/images/Shelter_Small_Closed.png";
+                    typeString = "Volunteer Busy";
+                    markerVisual.icon = "/public/assets/images/volunteerBusy.png";
                 }
-                else if (type === "rescueVehicle" )
+                else if (type === "muckedOut" )
                 {
-                    typeString = "Has Rescue Vehicle";
-                    markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
-                }
-                else if (type === "rescued" )
-                {
-                    typeString = "Rescued";
+                    typeString = "Mucked Out";
                     markerVisual.icon = "/public/assets/images/Rescued_Small.png";
                 }
-                else if (type === "muckedHome" || type === "muckedOut" || type === "volunteer")
+                else if (type === "muckedHome")
                 {
-                
-                }
-                else if (type === "needRescue")
-                {
-                    typeString = "Need Rescue";
+                    typeString = "Mucked Home";
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 
                 var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
-                      '<br>Description: ' + marker.get("description") +
+                      '<br>Address: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt");
 
-                  if (type === "needRescue")
+                  if (type === "muckedHome")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>";
+                              "<br><button type=\"button\" onclick=\"markerMucked(\'" + marker.id + "\')\">House is Mucked</button>"
                   }
-                  else if (type === "shelter")
+
+                  else if (type === "volunteer")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerShelterClosed(\'" + marker.id + "\')\">Close Shelter</button>";
+                              "<br><button type=\"button\" onclick=\"markerVolunteerBusy(\'" + marker.id + "\')\">Mark as Busy</button>"
                   }
-                  else if (type === "shelterClosed")
+                  else if (type === "volunteerBusy")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerShelterOpen(\'" + marker.id + "\')\">Reopen Shelter</button>";
-                  }
-                  else if (type === "rescueVehicle")
-                  {
-                      contentString +=
-                              "<br><button type=\"button\" onclick=\"markerDelete(\'" + marker.id + "\')\">Delete</button>";
+                              "<br><button type=\"button\" onclick=\"markerVolunteerFree(\'" + marker.id + "\')\">Mark as Free</button>"
                   }
 
 
@@ -234,8 +306,8 @@
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
                   });
-
-                if (type == 'needRescue' || type =='rescued' || type == 'rescueVehicle' || type =='shelter' || type =='shelterClosed')
+                
+                 if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer' || type == 'volunteerBusy')
                 { 
                     markerVisual.setMap(map);
                 } else {
@@ -294,6 +366,7 @@
             var phone = $("#phone");
             var pin = $("#pin");
 
+                
             var dialog = $("#newEntryDialog").dialog({
                 buttons: {
                     "Add": function () {
@@ -302,7 +375,6 @@
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
-                        
                         else
                         {
                             dialog.dialog('close');
@@ -332,29 +404,24 @@
                 //alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
                 var typeString, iconName;
 
-                if (type === "shelter")
+                if (type === "volunteer" )
                 {
-                    typeString = "Providing Shelter";
-                    iconName = "/public/assets/images/Shelter_Small.png";
+                    typeString = "Volunteer Available";
+                    iconName = "/public/assets/images/volunteer.png";
                 }
-                else if (type === "shelterClosed")
+                else if (type === "volunteerBusy" )
                 {
-                    typeString = "Closed Shelter";
-                    iconName = "/public/assets/images/Shelter_Small_Closed.png";
+                    typeString = "Volunteer Busy";
+                    iconName = "/public/assets/images/volunteerBusy.png";
                 }
-                else if (type === "rescueVehicle" )
+                else if (type === "muckedOut" )
                 {
-                    typeString = "Has Rescue Vehicle";
-                    iconName = "/public/assets/images/Rescuer_Small.png";
-                }
-                else if (type === "rescued" )
-                {
-                    typeString = "Rescued";
+                    typeString = "Mucked Out";
                     iconName = "/public/assets/images/Rescued_Small.png";
                 }
-                else if (type === "needRescue")
+                else if (type === "muckedHome")
                 {
-                    typeString = "Need Rescue";
+                    typeString = "Mucked Home";
                     iconName = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 
@@ -375,6 +442,47 @@
                   createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
             }
         }
+        
+        function addMarkerForm(latLng)
+        {
+            var name = $( "#nameForm" );
+            var description = $( "#descriptionForm" );
+            var phone = $("#phoneForm");
+            var address = $("addressBarForm");
+            var pin = $("#pinForm");
+
+            if (isNaN(pin.val()) || pin.val().length !== 4)
+            {
+                alert("Invalid PIN, must be 4 digits");
+            }
+            else
+            {
+                addEntry();
+                name.val("");
+                description.val("");
+                phone.val("");
+                pin.val("");
+                address.val("");
+            }
+      
+            function addEntry() {
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: "/public/assets/images/Needs_Rescue_Small.png"
+                  });
+                var infowindow = new google.maps.InfoWindow({
+                    content: "Mucked Home" +
+                    '<br>Name: ' + name.val() +
+                    '<br>Phone Number: ' + phone.val() +
+                    '<br>Address: ' + address.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: Just Now '
+                  });
+                  infowindow.open(map,marker);
+                  createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
+            }
+        }
 
 
     }
@@ -387,7 +495,7 @@
         //TODO send this info to parse
     }
 
-    function markerRescued(objectId)
+    function markerMucked(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
 
@@ -403,13 +511,44 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "rescued");
+                  markerParse.set("type", "muckedOut");
                   markerParse.save();
-                  alert("You are now marked as rescued! Refresh the page to update.");
+                  alert("You are now marked as helped! Refresh the page to update.");
               }
               else
               {
-                  alert("Incorrect 4-digit PIN, please try again.");
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+
+    function markerHidden(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "hidden");
+                  markerParse.save();
+                  alert("Your pin has been deleted! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
               }
             },
             error: function(error) {
@@ -418,7 +557,7 @@
           });
     }
     
-    function markerShelterClosed(objectId)
+    function markerVolunteerFree(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
 
@@ -434,13 +573,13 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "shelterClosed");
+                  markerParse.set("type", "volunteer");
                   markerParse.save();
-                  alert("Your shelter is now marked as closed! Refresh the page to update.");
+                  alert("You are now marked as free! Refresh the page to update.");
               }
               else
               {
-                  alert("Incorrect 4-digit PIN, please try again.");
+                  alert("Incorrect PIN, please try again.");
               }
             },
             error: function(error) {
@@ -449,7 +588,7 @@
           });
     }
     
-    function markerShelterOpen(objectId)
+    function markerVolunteerBusy(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
 
@@ -465,13 +604,13 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "shelter");
+                  markerParse.set("type", "volunteerBusy");
                   markerParse.save();
-                  alert("Your shelter is now marked as open! Refresh the page to update.");
+                  alert("You are now marked as busy! Refresh the page to update.");
               }
               else
               {
-                  alert("Incorrect 4-digit PIN, please try again.");
+                  alert("Incorrect PIN, please try again.");
               }
             },
             error: function(error) {
@@ -479,66 +618,27 @@
             }
           });
     }
-    
-    function markerDelete(objectId)
-    {
-        var enteredPin = prompt("Please enter your 4-digit PIN:");
-
-        Parse.$ = jQuery;
-        Parse.initialize("cardforgegame","brian"); // Your App Name
-        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
-        Parse.useMasterKey = true;
-
-        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
-        var query = new Parse.Query(gpsMarker);
-        query.get(objectId, {
-            success: function(markerParse) {
-              var pin = markerParse.get("pin");
-              if (enteredPin === pin)
-              {
-                  markerParse.destroy({
-                    success: function(markerParse) {
-                      alert("Your marker is now deleted! Refresh the page to update.");
-                    },
-                    error: function(markerParse, error) {
-                      alert("Couldn't delete. Error: " + error.code + " " + error.message);
-                    }
-                  });
-                  
-              }
-              else
-              {
-                  alert("Incorrect 4-digit PIN, please try again.");
-              }
-            },
-            error: function(error) {
-              alert("Error: " + error.code + " " + error.message);
-            }
-          });
-    }
-
 
 
         </script>
 <!--<input id="refresh" type="button" value="refresh" />
 <button class="shelterBtn"></button> -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&libraries=places&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&libraries=places&callback=myMap"></script>
 
   <div class="container my-5">
     <section id="intro">
-      <h2>If you need rescue or if you are a rescuer or open shelter, tap on the map to mark your location!</h2>
-      <p class="lead">Texas Rescue Map aims to make it simpler for people needing rescue to coordinate with nearby rescuers and shelters. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you.</p>
+      <p class="lead">Texas Muck Map aims to make it simpler for people with flooded homes to coordinate with nearby volunteers. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you.</p>
       <div class="card-deck mb-5">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> If you need rescue:</h4>
-            <p class="card-text">Pin your location to let volunteers know where you are and make it easier for them to find you.</p>
+            <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> If your house needs mucking:</h4>
+            <p class="card-text">Use our form above to pinpoint your location on our map to let volunteers know where you are and make it easier for them to find you.</p>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> If you are a rescuer:</h4>
-            <p class="card-text">Pin your location to let people in the area know you have a water vehicle or shelter available. Find people who have marked themselves as needing rescue.</p>
+            <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> If you are a volunteer:</h4>
+            <p class="card-text">Navigate the map to find homes near you that need mucking. Pin your location to let people in the area know you are available. Find people who have marked themselves as needing help.</p>
           </div>
         </div>
       </div>
@@ -546,8 +646,9 @@
     <section id="resources" class="mb-5">
       <h2>Resources:</h2>
       <ul class="list-group">
+        <li class="list-group-item"><a href="http://www.chron.com/life/article/Here-s-what-to-do-if-your-house-floods-11956593.php?cmpid=twitter-desktop"> Chron: How to cleanup after flooding and file a claim</a></li>
+        <li class="list-group-item"><a href="http://harveyneeds.org/"> Harvey Needs - Dashboard for All Disaster Relief and Recovery Resources</a></li>
         <li class="list-group-item"><a href="https://www.reddit.com/r/houston/comments/6wnw3j/harvey_emergency_quick_reference/">Emergency Quick Reference</a></li>
-        <li class="list-group-item"><a href="http://houstonharveyrescue.com/rescuesindex.php"> Additional Site Inputting People Needing Hurricane Rescue</a></li>
         <li class="list-group-item"><a href="https://docs.google.com/spreadsheets/d/14GHRHQ_7cqVrj0B7HCTVE5EbfpNFMbSI9Gi8azQyn-k/edit#gid=0">Shelter Availability Reference</a></li>
       </ul>
     </section>
