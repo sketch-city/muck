@@ -64,7 +64,7 @@
 
         <div id="muckedHomeDialog" class="text-center">
                 <h2>Does your house need mucking?</h2>
-                <form>
+                <form id="muckForm">
                 <fieldset>
                     <div>Name<br>
                   <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
@@ -90,7 +90,6 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-        //MAP ADDRESS BAR
         var input = document.getElementById("addressBar");
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -148,61 +147,10 @@
           });
           map.fitBounds(bounds);
 
-            
-        });
-        
-        //FORM ADDRESS BAR
-        var input = document.getElementById("addressBarForm");
-        var searchBox = new google.maps.places.SearchBox(input);
-
-        var addressMarkers = [];
-        
-        //code for address bar
-        searchBox.addListener('places_changed', function() {
-            var places = searchBox.getPlaces();
-            
-            if (places.length == 0) {
-                return;
-            }
-            
-            // Clear out the old markers.
-          addressMarkers.forEach(function(marker) {
-            marker.setMap(null);
+          document.getElementById("muckForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            addMarker(place.geometry.location)
           });
-          addressMarkers = [];
-
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Create a marker for each place.
-            
-            addressMarkers.push(new google.maps.Marker({
-              map: map,
-              title: place.name,
-              position: place.geometry.location
-            }));
-            
-
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
 
             
         });
