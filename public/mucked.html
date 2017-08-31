@@ -95,10 +95,6 @@
                     typeString = "Mucked Home";
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                 }
-                else 
-                {
-                    markerVisual.setMap(null);
-                }
 
                 var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
@@ -132,8 +128,13 @@
                   google.maps.event.addListener(markerVisual, 'click', function() {
                   infowindow.open(map,markerVisual);
                   });
-
-                 markerVisual.setMap(map);
+                
+                 if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer')
+                { 
+                    markerVisual.setMap(map);
+                } else {
+                    markerVisual.setMap(null);
+                }
             });
         };
 
