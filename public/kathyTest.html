@@ -78,17 +78,17 @@
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
-        
+
         var addressMarkers = [];
-        
+
         //code for address bar
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
-            
+
             if (places.length == 0) {
                 return;
             }
-            
+
             // Clear out the old markers.
           addressMarkers.forEach(function(marker) {
             marker.setMap(null);
@@ -126,7 +126,7 @@
           });
           map.fitBounds(bounds);
 
-            
+
         });
 
         function callbackMarkersQuery(datamarkers)
@@ -175,7 +175,7 @@
                 }
                 else if (type === "muckedHome" || type === "muckedOut" || type === "volunteer")
                 {
-                
+
                 }
                 else if (type === "needRescue")
                 {
@@ -232,7 +232,7 @@
                   });
 
                 if (type == 'needRescue' || type =='rescued' || type == 'rescueVehicle' || type =='shelter' || type =='shelterClosed')
-                { 
+                {
                     markerVisual.setMap(map);
                 } else {
                     markerVisual.setMap(null);
@@ -298,7 +298,7 @@
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
-                        
+
                         else
                         {
                             dialog.dialog('close');
@@ -413,7 +413,38 @@
             }
           });
     }
-    
+
+    function markerRescued(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "rescued");
+                  markerParse.save();
+                  alert("You are now marked as rescued! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect 4-digit PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+
     function markerShelterClosed(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
@@ -444,7 +475,7 @@
             }
           });
     }
-    
+
     function markerShelterOpen(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
@@ -475,7 +506,7 @@
             }
           });
     }
-    
+
     function markerDelete(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
@@ -500,7 +531,7 @@
                       alert("Couldn't delete. Error: " + error.code + " " + error.message);
                     }
                   });
-                  
+
               }
               else
               {
