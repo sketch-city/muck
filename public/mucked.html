@@ -39,7 +39,7 @@
 </head>
 <body>
 <h2><img style="height: 75px;" src="/public/assets/images/logo.png">Muck Map</h2>
-<p class="lead"><a href="#muckedHomeDialog">Use the form below if your house needs mucking</a> -or- navigate the map to look for houses that need help or other volunteers! You can also drop a pin of your location on the map by zooming into the spot you're in and clicking or tapping on the map. Thank you!</p>
+<p class="lead"><a href="#muckedHomeDialog">Use the form below if your house needs mucking</a> -or- navigate the map to look for houses that need help or other volunteers! You can also drop a pin of your location on the map with a tap & hold on the map. Thank you!</p>
 <input id="addressBar" class="controls" type="text" placeholder="Enter address here">
 <div id="googleMap" style="width:100%;height:400px;"></div>
 
@@ -93,6 +93,38 @@
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
+        var mouseMoved = false;
+        var mouseHoldTimeOut;
+        //prevents dragging to register as click
+        google.maps.event.addListener(map, 'mousedown', function(event) {
+            mouseMoved = false;
+        
+            mouseHoldTimeOut = setTimeout(function() {
+                if (!mouseMoved) {
+                    mapAddressBarMarkers.push(new google.maps.Marker({
+                        map: map,
+                        position: event.latLng,
+                        draggable: true
+                      }));
+                    addMarker(event.latLng);
+                }
+            }, 1000);
+        });
+        
+        google.maps.event.addListener(map, 'drag', function(event) {
+            mouseMoved = true;
+            if (mouseHoldTimeOut != null)
+                clearTimeout(mouseHoldTimeOut);
+            
+        });
+        
+        google.maps.event.addListener(map, 'mouseup', function(event) {
+            mouseMoved = true;
+            if (mouseHoldTimeOut != null)
+                clearTimeout(mouseHoldTimeOut);
+            
+        });
+
         //code for map address bar
         var input = document.getElementById("addressBar");
         var searchBox = new google.maps.places.SearchBox(input);
@@ -136,7 +168,8 @@
             mapAddressBarMarkers.push(new google.maps.Marker({
               map: map,
               title: place.name,
-              position: place.geometry.location
+              position: place.geometry.location,
+              draggable: true
             }));
             
 
@@ -355,10 +388,11 @@
         }
         markLocation();
 
-
+        //old function
+        /*
         google.maps.event.addListener(map, 'click', function(event) {
             addMarker(event.latLng);
-        });
+        });*/
 
         function addMarker(latLng)
         {
@@ -398,6 +432,10 @@
                         $("input:radio[name=markerType]")[0].checked = true;
                         phone.val("");
                         pin.val("");
+                        // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
                     }
                 }
             });
