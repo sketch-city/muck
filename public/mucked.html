@@ -22,7 +22,7 @@
             }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Texas Rescue Map</title>
+        <title>Texas Muck Map</title>
 </head>
 <body>
 
@@ -40,9 +40,8 @@
               <div>Description<br>
                   <textarea id="description" rows="4" cols="22"></textarea></div>
                   <div>Your situation:<br>
-                <input type="radio" name="markerType" value="needRescue" checked> Need Rescue<br>
-                <input type="radio" name="markerType" value="shelter"> Providing Shelter<br>
-                <input type="radio" name="markerType" value="rescueVehicle"> Has Rescue Vehicle</div>
+                <input type="radio" name="markerType" value="needRescue" checked> Mucked Home<br>
+                <input type="radio" name="markerType" value="rescueVehicle"> Volunteer</div>
                 <div>PIN for later edits:<br>
                     <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
                 </fieldset>
@@ -81,24 +80,19 @@
                   var typeString;
 
 
-                if (type === "shelter")
+                if (type === "volunteer" )
                 {
-                    typeString = "Providing Shelter";
-                    markerVisual.icon = "/public/assets/images/Shelter_Small.png";
-                }
-                else if (type === "rescueVehicle" )
-                {
-                    typeString = "Has Rescue Vehicle";
+                    typeString = "Volunteer";
                     markerVisual.icon = "/public/assets/images/Rescuer_Small.png";
                 }
-                else if (type === "rescued" )
+                else if (type === "muckedOut" )
                 {
-                    typeString = "Rescued";
+                    typeString = "Mucked Out";
                     markerVisual.icon = "/public/assets/images/Rescued_Small.png";
                 }
-                else
+                else if (type === "muckedHome")
                 {
-                    typeString = "Need Rescue";
+                    typeString = "Mucked Home";
                     markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 
@@ -226,24 +220,19 @@
                 //alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
                 var typeString, iconName;
 
-                if (type === "shelter")
+                if (type === "volunteer" )
                 {
-                    typeString = "Providing Shelter";
-                    iconName = "/public/assets/images/Shelter_Small.png";
-                }
-                else if (type === "rescueVehicle" )
-                {
-                    typeString = "Has Rescue Vehicle";
+                    typeString = "Volunteer";
                     iconName = "/public/assets/images/Rescuer_Small.png";
                 }
-                else if (type === "rescued" )
+                else if (type === "muckedOut" )
                 {
-                    typeString = "Rescued";
+                    typeString = "Mucked Out";
                     iconName = "/public/assets/images/Rescued_Small.png";
                 }
-                else
+                else if (type === "muckedHome")
                 {
-                    typeString = "Need Rescue";
+                    typeString = "Mucked Home";
                     iconName = "/public/assets/images/Needs_Rescue_Small.png";
                 }
 

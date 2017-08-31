@@ -96,6 +96,10 @@
                     typeString = "Rescued";
                     markerVisual.icon = "/public/assets/images/Rescued_Small.png";
                 }
+                else if (type === "muckedHome" || type === "muckedOut" || type === "volunteer")
+                {
+                    continue;
+                }
                 else
                 {
                     typeString = "Need Rescue";
