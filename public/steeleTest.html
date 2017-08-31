@@ -86,6 +86,11 @@
                     typeString = "Providing Shelter";
                     markerVisual.icon = "/public/assets/images/Shelter_Small.png";
                 }
+                else if (type === "shelterClosed")
+                {
+                    typeString = "Closed Shelter";
+                    markerVisual.icon = "/public/assets/images/Shelter_Small_Closed.png";
+                }
                 else if (type === "rescueVehicle" )
                 {
                     typeString = "Has Rescue Vehicle";
@@ -112,6 +117,16 @@
                   {
                       contentString +=
                               "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
+                  }
+                  else if (type === "shelter")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerShelterClosed(\'" + marker.id + "\')\">Close Shelter</button>"
+                  }
+                  else if (type === "shelterClosed")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerShelterOpen(\'" + marker.id + "\')\">Reopen Shelter</button>"
                   }
 
 
@@ -231,6 +246,11 @@
                     typeString = "Providing Shelter";
                     iconName = "/public/assets/images/Shelter_Small.png";
                 }
+                else if (type === "shelterClosed")
+                {
+                    typeString = "Closed Shelter";
+                    markerVisual.icon = "/public/assets/images/Shelter_Small_Closed.png";
+                }
                 else if (type === "rescueVehicle" )
                 {
                     typeString = "Has Rescue Vehicle";
@@ -276,7 +296,7 @@
         //TODO send this info to parse
     }
 
-    function markerRescued(objectId)
+    function markerShelterClosed(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
 
@@ -292,9 +312,40 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "rescued");
+                  markerParse.set("type", "shelterClosed");
                   markerParse.save();
-                  alert("You are now marked as rescued! Refresh the page to update.");
+                  alert("Your shelter is now marked as closed! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerShelterOpen(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "shelter");
+                  markerParse.save();
+                  alert("Your shelter is now marked as open! Refresh the page to update.");
               }
               else
               {
