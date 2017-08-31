@@ -95,7 +95,8 @@
         var mapProp= {
             center:new google.maps.LatLng(29.7602626,-95.3702536),
             zoom:12,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            gestureHandling: "greedy"
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
