@@ -20,6 +20,19 @@
             body{
                 font-family: 'Open Sans', sans-serif;
             }
+            #addressBar {
+                background-color: #fff;
+                font-size: 15px;
+                font-weight: 300;
+                margin-left: 12px;
+                margin-top: 12px;
+                padding: 0 11px 0 13px;
+                text-overflow: ellipsis;
+                width: 60%;
+            }
+            #addressBar:focus {
+                border-color: #4d90fe;
+            }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Texas Muck Map</title>
@@ -55,6 +68,64 @@
             zoom:12,
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+        var input = document.getElementById("addressBar");
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+        
+        var addressMarkers = [];
+        
+        //code for address bar
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+            
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          addressMarkers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          addressMarkers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            addressMarkers.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+
+            
+        });
 
         function callbackMarkersQuery(datamarkers)
       {
