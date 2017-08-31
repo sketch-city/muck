@@ -410,10 +410,9 @@
               var pin = markerParse.get("pin");
               if (enteredPin === pin)
               {
-                  markerParse.set("type", "shelter");
                   markerParse.destroy({
                     success: function(markerParse) {
-                      alert("Your shelter is now marked as open! Refresh the page to update.");
+                      alert("Your marker is now deleted! Refresh the page to update.");
                     },
                     error: function(markerParse, error) {
                       alert("Couldn't delete. Error: " + error.code + " " + error.message);
