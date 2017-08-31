@@ -270,7 +270,7 @@
                   if (type === "muckedHome")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
+                              "<br><button type=\"button\" onclick=\"markerMucked(\'" + marker.id + "\')\">House is Mucked</button>"
                   }
 
                   else if (type === "volunteer")
@@ -493,7 +493,7 @@
         //TODO send this info to parse
     }
 
-    function markerRescued(objectId)
+    function markerMucked(objectId)
     {
         var enteredPin = prompt("Please enter your 4-digit PIN:");
 
