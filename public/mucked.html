@@ -108,6 +108,12 @@
                               "<br><button type=\"button\" onclick=\"markerRescued(\'" + marker.id + "\')\">I Am Rescued!</button>"
                   }
 
+                  if (type === "volunteer")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerHidden(\'" + marker.id + "\')\">Delete</button>"
+                  }
+
 
                   var infowindow = new google.maps.InfoWindow({
                     content: contentString
@@ -301,6 +307,36 @@
           });
     }
 
+    function markerHidden(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "hidden");
+                  markerParse.save();
+                  alert("Your pin has been deleted! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
 
 
         </script>
