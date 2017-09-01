@@ -630,7 +630,7 @@
             {
                 alert("Invalid PIN, must be 4 digits");
             }
-            else if (!address.val() || !name.val() || !phone.val())
+            else if (address.val() == '' || name.val() == '' || phone.val() == '')
             {
                 alert("You are missing a field (name, phone, or address)");
             }
