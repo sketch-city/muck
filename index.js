@@ -51,6 +51,11 @@ app.get('/muckmap', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/mucked.html'));
 });
 
+// Texas Muck Map Only
+app.get('/muckmap/map', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/muckedMapOnly.html'));
+});
+
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 app.get('/test', function(req, res) {
