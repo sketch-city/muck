@@ -288,23 +288,23 @@
         });
 
         //code for volunteer form address bar
-        var inputForm = document.getElementById("addressBarForm2");
-        var searchBoxForm = new google.maps.places.SearchBox(inputForm);
+        var inputForm2 = document.getElementById("addressBarForm2");
+        var searchBoxForm2 = new google.maps.places.SearchBox(inputForm);
 
-        var addressMarkersForm = [];
+        var addressMarkersForm2 = [];
  
-        searchBoxForm.addListener('places_changed', function() {
-            var places = searchBoxForm.getPlaces();
+        searchBoxForm2.addListener('places_changed', function() {
+            var places = searchBoxForm2.getPlaces();
             
             if (places.length == 0) {
                 return;
             }
             
             // Clear out the old markers.
-          addressMarkersForm.forEach(function(marker) {
+          addressMarkersForm2.forEach(function(marker) {
             marker.setMap(null);
           });
-          addressMarkersForm = [];
+          addressMarkersForm2 = [];
 
           // For each place, get the icon, name and location.
           var bounds = new google.maps.LatLngBounds();
@@ -323,7 +323,7 @@
 
             // Create a marker for each place.
             
-            addressMarkersForm.push(new google.maps.Marker({
+            addressMarkersForm2.push(new google.maps.Marker({
               map: map,
               title: place.name,
               position: place.geometry.location
@@ -341,10 +341,10 @@
                 event.preventDefault();
                 addMarkerForm(place.geometry.location, true);
                 //clear markers
-                addressMarkersForm.forEach(function(marker) {
+                addressMarkersForm2.forEach(function(marker) {
                     marker.setMap(null);
                   });
-                  addressMarkersForm = [];
+                  addressMarkersForm2 = [];
             });
           });
           map.fitBounds(bounds);
