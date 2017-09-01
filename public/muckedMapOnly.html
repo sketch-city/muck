@@ -38,8 +38,48 @@
         <title>Texas Muck Map</title>
 </head>
 <body>
+
 <input id="addressBar" class="controls" type="text" placeholder="Enter address here">
-<div id="googleMap" style="width:100%;"></div>
+<div id="googleMap" style="width:100%;height:400px;"></div>
+
+        <div id="newEntryDialog">
+            <form>
+            <fieldset>
+                <div>Name<br>
+              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
+              <div>Phone Number<br>
+              <input type="number" name="phone" id="phone" value=""></div>
+              <div>Address<br>
+                  <textarea id="description" rows="4" cols="22"></textarea></div>
+                  <div>Your situation:<br>
+                <input type="radio" name="markerType" value="muckedHome"> Mucked Home<br>
+                <input type="radio" name="markerType" value="volunteer"> Volunteer</div>
+                <div>4-Digit PIN (please remember):<br>
+                    <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
+                </fieldset>
+              </form>
+        </div>
+
+        <div id="muckedHomeDialog" class="text-center" style="display: none;">
+                <br>
+                <h2>Does your house need mucking? Submit it to our map:</h2>
+                <form id="muckForm">
+                <fieldset>
+                    <div>Name<br>
+                  <input type="text" name="name" id="nameForm" value="" class="text ui-widget-content ui-corner-all"></div>
+                  <div>Phone Number<br>
+                  <input type="text" name="phone" id="phoneForm" value=""></div>
+                  <div>Address<br>
+                    <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
+                    <div>Description<br>
+                      <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
+                    <div>4-Digit PIN (please remember):<br>
+                        <input type="text" name="pin" id="pinForm" pattern="[0-9]{4}" maxlength="4"></div>
+                    </fieldset>
+                    <br>
+                    <button type="submit">Submit</button>
+                  </form>
+            </div>
 
 <script>
     var mapAddressBarMarkers;
@@ -200,6 +240,14 @@
               bounds.extend(place.geometry.location);
             }
 
+            document.getElementById("muckForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMarkerForm(place.geometry.location);
+                //clear markers
+                addressMarkersForm.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  addressMarkersForm = [];
             });
           });
           map.fitBounds(bounds);
@@ -353,7 +401,138 @@
             addMarker(event.latLng);
         });*/
 
+        function addMarker(latLng)
+        {
+            var name = $( "#name" );
+            var description = $( "#description" );
+            var phone = $("#phone");
+            var pin = $("#pin");
 
+                
+            var dialog = $("#newEntryDialog").dialog({
+                buttons: {
+                    "Add": function () {
+                        //alert(pin.val() + " " + pin.val().length);
+                        if (isNaN(pin.val()) || pin.val().length !== 4)
+                        {
+                            alert("Invalid PIN, must be 4 digits");
+                        }
+                        else
+                        {
+                            dialog.dialog('close');
+                            addEntry();
+                            name.val("");
+                            description.val("");
+                            $("input:radio[name=markerType]")[0].checked = true;
+                            phone.val("");
+                            pin.val("");
+                            // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
+                        }
+                    },
+                        "Cancel": function () {
+                         name.val("");
+                        description.val("");
+                        dialog.dialog('close');
+                        $("input:radio[name=markerType]")[0].checked = true;
+                        phone.val("");
+                        pin.val("");
+                        // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
+                    }
+                }
+            });
+            dialog.dialog('open');
+
+            function addEntry() {
+                var type = $("input:radio[name=markerType]:checked").val();
+
+                //alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
+                var typeString, iconName;
+
+                if (type === "volunteer" )
+                {
+                    typeString = "Volunteer Available";
+                    iconName = "/public/assets/images/volunteer.png";
+                }
+                else if (type === "volunteerBusy" )
+                {
+                    typeString = "Volunteer Busy";
+                    iconName = "/public/assets/images/volunteerBusy.png";
+                }
+                else if (type === "muckedOut" )
+                {
+                    typeString = "Mucked Out";
+                    iconName = "/public/assets/images/Rescued_Small.png";
+                }
+                else if (type === "muckedHome")
+                {
+                    typeString = "Mucked Home";
+                    iconName = "/public/assets/images/Needs_Rescue_Small.png";
+                }
+
+                //TODO this needs to be added to global array markers instead
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: iconName
+                  });
+                var infowindow = new google.maps.InfoWindow({
+                    content: typeString +
+                    '<br>Name: ' + name.val() +
+                    '<br>Phone Number: ' + phone.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: Just Now '
+                  });
+                  infowindow.open(map,marker);
+                  createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
+            }
+        }
+        
+        function addMarkerForm(latLng)
+        {
+            var name = $( "#nameForm" );
+            var description = $( "#descriptionForm" );
+            var phone = $("#phoneForm");
+            var address = $("addressBarForm");
+            var pin = $("#pinForm");
+
+            if (isNaN(pin.val()) || pin.val().length !== 4)
+            {
+                alert("Invalid PIN, must be 4 digits");
+            }
+            else
+            {
+                addEntry();
+                name.val("");
+                description.val("");
+                phone.val("");
+                pin.val("");
+                address.val("");
+            }
+      
+            function addEntry() {
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: "/public/assets/images/Needs_Rescue_Small.png"
+                  });
+                var infowindow = new google.maps.InfoWindow({
+                    content: "Mucked Home" +
+                    '<br>Name: ' + name.val() +
+                    '<br>Phone Number: ' + phone.val() +
+                    '<br>Address: ' + address.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: Just Now '
+                  });
+                  infowindow.open(map,marker);
+                  createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
+            }
+        }
 
 
     }
@@ -495,5 +674,6 @@
 <!--<input id="refresh" type="button" value="refresh" />
 <button class="shelterBtn"></button> -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&libraries=places&callback=myMap"></script>
+
 </body>
 </html>
