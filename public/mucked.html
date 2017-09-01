@@ -510,7 +510,7 @@
                 buttons: {
                     "Add": function () {
                         //alert(pin.val() + " " + pin.val().length);
-                        if (isNaN(pin.val()) || pin.val().length !== 4)
+                        if (isNaN(pin.val()) || pin.val().length != 4)
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
@@ -598,7 +598,7 @@
             var address = $("addressBarForm");
             var pin = $("#pinForm");
 
-            if (isNaN(pin.val()) || pin.val().length !== 4)
+            if (isNaN(pin.val()) || pin.val().length != 4)
             {
                 alert("Invalid PIN, must be 4 digits");
             }
