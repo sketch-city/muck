@@ -43,13 +43,33 @@
 <br>
 <p class="lead">If your house got flooded during the storm, then it might need to be mucked. Mucking means activities like removing wet carpets, flooring, dry wall, mud, or other items to prepare a flooded home for drying out and renovations. </p>
 <br>
-<p class="lead"><a href="#muckedHomeDialog">Does your house need mucking? Click here to add it to our map!</a></p>
-<p>-or-</p> 
-<p class="lead"><a href="#googleMap">Are you a volunteer? Click here to navigate to our map to look for houses that need help or other volunteers! </a></p>
-<p>-or</p>
+<div class="container my-5">
+    <section id="intro">
+        <div class="card-deck mb-5">
+        <a href="#muckedHomeDialog">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> If your house needs mucking:</h4>
+                <p class="card-text">Use our form above to pinpoint your location on our map to let volunteers know where you are and make it easier for them to find you.</p>
+            </div>
+            </div>
+        </a> 
+        <a href="#volunteerDialog">   
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> If you are a volunteer:</h4>
+                <p class="card-text">Navigate the map to find homes near you that need mucking. Pin your location to let people in the area know you are available. Find people who have marked themselves as needing help.</p>
+            </div>
+            </div>
+        </a>
+        </div>
+    </section>
+</div>
+<br>
 <p class="lead"><a href="#resources">Want to learn more? Click here to view a list of resources!</a></p>
 <br>
-<p class="lead">You can also drop a pin of your location on the map with a tap & hold on the map. Thank you for helping those affected by Hurricane Harvey!</p>
+<p class="lead"><p class="lead">Texas Muck Map aims to make it simpler for people with flooded homes to coordinate with nearby volunteers. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you. Once you're signed up, simply use the map to identify opportunities, then reach out to offer or request mucking assistance. You can also drop a pin of your location on the map with a tap & hold on the map. Thank you for helping those affected by Hurricane Harvey!</p>
+<br>
 </div>
 <input id="addressBar" class="controls" type="text" placeholder="Enter address here">
 <div id="googleMap" style="width:100%;height:400px;"></div>
@@ -805,25 +825,8 @@
 <button class="shelterBtn"></button> -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&libraries=places&callback=myMap"></script>
 
-  <div class="container my-5">
-    <section id="intro">
-      <p class="lead">Texas Muck Map aims to make it simpler for people with flooded homes to coordinate with nearby volunteers. Zoom into your current location on the map and tap on it to drop a custom pin. Please include a phone number and any extra information in the description to help locate and identify you. Once you're signed up, simply use the map to identify opportunities, then reach out to offer or request mucking assistance.</p>
-      <div class="card-deck mb-5">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> If your house needs mucking:</h4>
-            <p class="card-text">Use our form above to pinpoint your location on our map to let volunteers know where you are and make it easier for them to find you.</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> If you are a volunteer:</h4>
-            <p class="card-text">Navigate the map to find homes near you that need mucking. Pin your location to let people in the area know you are available. Find people who have marked themselves as needing help.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="resources" class="mb-5">
+    <div class="container my-5" id="resources">
+    <section class="mb-5">
       <h2>Resources:</h2>
       <ul class="list-group">
         <li class="list-group-item"><a href="https://docs.google.com/document/d/1R1ub-L-bqhLjYtmpTm1yUMijRltK0U7TFw3zm66yz0w/edit">Mucking Tools and Procedures</a></li>
