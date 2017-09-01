@@ -57,7 +57,7 @@ function editMarkerInfo(objectId,name,description,positionData,type,phone)
       });
 }
 
-function createNewGPSMarker (name, description, positionData,type,phone,pin)
+function createNewGPSMarker (name, description, positionData,type,phone,pin, address)
 {
   //alert("attempting save gps marker");
   // Replace this line with the one on your Quickstart Guide Page
@@ -78,6 +78,7 @@ function createNewGPSMarker (name, description, positionData,type,phone,pin)
   testObject.set("type",type);
   testObject.set("phone",phone);
   testObject.set("pin",pin);
+  testObject.set("address",address);
 
 
   testObject.save(null, {

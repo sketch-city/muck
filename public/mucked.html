@@ -417,7 +417,8 @@
                 var contentString = typeString +
                       '<br>Name: ' + marker.get("name") +
                       '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
-                      '<br>Address: ' + marker.get("description") +
+                      '<br>Address: ' + marker.get("address") +
+                      '<br>Description: ' + marker.get("description") +
                       '<br>Date: ' + marker.get("updatedAt");
 
                   if (type === "muckedHome")
@@ -653,7 +654,7 @@
                         '<br>Description: ' + description.val() +
                         '<br>Date: Just Now '
                     });
-                    createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
+                    createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val(), address.val());
                     infowindow.open(map,marker);
                   }
                   else 
@@ -671,7 +672,7 @@
                         '<br>Description: ' + description.val() +
                         '<br>Date: Just Now '
                     });
-                    createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val());
+                    createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val(), address.val());
                     infowindow.open(map,marker);
                   }
         }
