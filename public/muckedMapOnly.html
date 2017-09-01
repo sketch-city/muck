@@ -97,6 +97,7 @@
         var mouseMoved = false;
         var mouseHoldTimeOut;
         //prevents dragging to register as click
+        /*
         google.maps.event.addListener(map, 'mousedown', function(event) {
             mouseMoved = false;
         
@@ -118,6 +119,7 @@
                 }
             }, 1000);
         });
+        */
         
         google.maps.event.addListener(map, 'drag', function(event) {
             mouseMoved = true;
