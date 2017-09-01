@@ -141,6 +141,7 @@
             gestureHandling: "greedy"
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        var lastOpenMarker;
 
         var mouseMoved = false;
         var mouseHoldTimeOut;
@@ -459,7 +460,10 @@
                   });*/
 
                   google.maps.event.addListener(markerVisual, 'click', function() {
-                  infowindow.open(map,markerVisual);
+                      if (lastOpenMarker)
+                      infowindow.close(map,lastOpenMarker);
+                  lastOpenMarker = marker;
+                    infowindow.open(map,markerVisual);
                   });
                 
                  if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer' || type == 'volunteerBusy')
@@ -602,7 +606,13 @@
                     '<br>Description: ' + description.val() +
                     '<br>Date: Just Now '
                   });
-                  infowindow.open(map,marker);
+                  
+                  if (lastOpenMarker)
+                      infowindow.close(map,lastOpenMarker);
+                  lastOpenMarker = marker;
+                    infowindow.open(map,marker);
+                    
+                  
                   createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
             }
         }
@@ -662,6 +672,9 @@
                         '<br>Date: Just Now '
                     });
                     createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val(), address.val());
+                    if (lastOpenMarker)
+                      infowindow.close(map,lastOpenMarker);
+                    lastOpenMarker = marker;
                     infowindow.open(map,marker);
                   }
                   else 
@@ -680,6 +693,9 @@
                         '<br>Date: Just Now '
                     });
                     createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val(), address.val());
+                    if (lastOpenMarker)
+                      infowindow.close(map,lastOpenMarker);
+                  lastOpenMarker = marker;
                     infowindow.open(map,marker);
                   }
         }
