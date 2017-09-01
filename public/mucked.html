@@ -624,27 +624,42 @@
             }
       
             function addEntry() {
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: map,
-                    icon: "/public/assets/images/Needs_Rescue_Small.png"
-                  });
-                var infowindow = new google.maps.InfoWindow({
-                    content: "Mucked Home" +
-                    '<br>Name: ' + name.val() +
-                    '<br>Phone Number: ' + phone.val() +
-                    '<br>Address: ' + address.val() +
-                    '<br>Description: ' + description.val() +
-                    '<br>Date: Just Now '
-                  });
-                  infowindow.open(map,marker);
+
                   if (!volunteer)
                   {
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: "/public/assets/images/Needs_Rescue_Small.png"
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "Mucked Home" +
+                        '<br>Name: ' + name.val() +
+                        '<br>Phone Number: ' + phone.val() +
+                        '<br>Address: ' + address.val() +
+                        '<br>Description: ' + description.val() +
+                        '<br>Date: Just Now '
+                    });
                     createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
+                    infowindow.open(map,marker);
                   }
                   else 
                   {
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: "/public/assets/images/volunteer.png"
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "Volunteer" +
+                        '<br>Name: ' + name.val() +
+                        '<br>Phone Number: ' + phone.val() +
+                        '<br>Address: ' + address.val() +
+                        '<br>Description: ' + description.val() +
+                        '<br>Date: Just Now '
+                    });
                     createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val());
+                    infowindow.open(map,marker);
                   }
         }
 
