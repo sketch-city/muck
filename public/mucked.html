@@ -82,7 +82,7 @@
                   <div>Phone Number<br>
                   <input type="text" name="phone" id="phoneForm" value=""></div>
                   <div>Address<br>
-                    <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
+                    <input id="addressBarForm1" class="controls" type="text" placeholder="Enter address here"></div>
                     <div>Description<br>
                       <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
                     <div>4-Digit PIN (please remember):<br>
@@ -103,7 +103,7 @@
                       <div>Phone Number<br>
                       <input type="text" name="phone" id="phoneForm" value=""></div>
                       <div>Address<br>
-                        <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
+                        <input id="addressBarForm2" class="controls" type="text" placeholder="Enter address here"></div>
                         <div>Description<br>
                           <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
                         <div>4-Digit PIN (please remember):<br>
@@ -224,7 +224,7 @@
         });
         
         //code for form address bar
-        var inputForm = document.getElementById("addressBarForm");
+        var inputForm = document.getElementById("addressBarForm1");
         var searchBoxForm = new google.maps.places.SearchBox(inputForm);
 
         var addressMarkersForm = [];
@@ -282,6 +282,60 @@
                   });
                   addressMarkersForm = [];
             });
+
+          });
+          map.fitBounds(bounds);
+        });
+
+        //code for volunteer form address bar
+        var inputForm = document.getElementById("addressBarForm2");
+        var searchBoxForm = new google.maps.places.SearchBox(inputForm);
+
+        var addressMarkersForm = [];
+ 
+        searchBoxForm.addListener('places_changed', function() {
+            var places = searchBoxForm.getPlaces();
+            
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          addressMarkersForm.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          addressMarkersForm = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            
+            addressMarkersForm.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            }));
+            
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
 
             document.getElementById("volunteerForm").addEventListener("submit", function(event) {
                 event.preventDefault();
