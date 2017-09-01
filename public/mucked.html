@@ -428,7 +428,7 @@
                   if (type === "muckedHome")
                   {
                       contentString +=
-                              "<br><button type=\"button\" onclick=\"markerMucked(\'" + marker.id + "\')\">House is Mucked</button>"
+                              "<br><button type=\"button\" onclick=\"markerMucked(\'" + marker.id + "\')\">Mark as Mucked</button>"
                   }
 
                   else if (type === "volunteer")
@@ -729,7 +729,7 @@
               {
                   markerParse.set("type", "muckedOut");
                   markerParse.save();
-                  alert("You are now marked as helped! Refresh the page to update.");
+                  alert("You are now marked as mucked! Refresh the page to update.");
               }
               else
               {
