@@ -141,7 +141,7 @@
             gestureHandling: "greedy"
         };
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-        var lastOpenMarker;
+        var lastOpenWindow;
 
         var mouseMoved = false;
         var mouseHoldTimeOut;
@@ -460,9 +460,9 @@
                   });*/
 
                   google.maps.event.addListener(markerVisual, 'click', function() {
-                      if (lastOpenMarker)
-                      infowindow.close(map,lastOpenMarker);
-                  lastOpenMarker = marker;
+                      if (lastOpenWindow)
+                      lastOpenWindow.close();
+                  lastOpenWindow = infowindow;
                     infowindow.open(map,markerVisual);
                   });
                 
@@ -607,9 +607,9 @@
                     '<br>Date: Just Now '
                   });
                   
-                  if (lastOpenMarker)
-                      infowindow.close(map,lastOpenMarker);
-                  lastOpenMarker = marker;
+                  if (lastOpenWindow)
+                      lastOpenWindow.close();
+                  lastOpenWindow = infowindow;
                     infowindow.open(map,marker);
                     
                   
@@ -672,9 +672,9 @@
                         '<br>Date: Just Now '
                     });
                     createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val(), address.val());
-                    if (lastOpenMarker)
-                      infowindow.close(map,lastOpenMarker);
-                    lastOpenMarker = marker;
+                    if (lastOpenWindow)
+                      lastOpenWindow.close();
+                  lastOpenWindow = infowindow;
                     infowindow.open(map,marker);
                   }
                   else 
@@ -693,9 +693,9 @@
                         '<br>Date: Just Now '
                     });
                     createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val(), address.val());
-                    if (lastOpenMarker)
-                      infowindow.close(map,lastOpenMarker);
-                  lastOpenMarker = marker;
+                    if (lastOpenWindow)
+                      lastOpenWindow.close();
+                  lastOpenWindow = infowindow;
                     infowindow.open(map,marker);
                   }
         }
