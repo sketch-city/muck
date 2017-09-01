@@ -100,8 +100,7 @@
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
-        
-        var addressMarkers = [];
+
  
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();

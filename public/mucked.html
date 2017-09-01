@@ -527,7 +527,7 @@
                 buttons: {
                     "Add": function () {
                         //alert(pin.val() + " " + pin.val().length);
-                        if (isNaN(pin) || pin.length != 4)
+                        if (isNaN(pin.val()) || pin.val().length != 4)
                         {
                             alert("Invalid PIN, must be 4 digits");
                         }
