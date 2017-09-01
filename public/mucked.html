@@ -74,7 +74,7 @@
 
         <div id="muckedHomeDialog" class="text-center">
                 <br>
-                <h2>Does your house need mucking? Submit it to our map:</h2>
+                <h2>Does your house need mucking? Submit your location to our map:</h2>
                 <form id="muckForm">
                 <fieldset>
                     <div>Name<br>
@@ -92,6 +92,27 @@
                     <button type="submit">Submit</button>
                   </form>
             </div>
+        
+            <div id="volunteerDialog" class="text-center">
+                    <br>
+                    <h2>Are you a volunteer? Submit your location to our map:</h2>
+                    <form id="volunteerForm">
+                    <fieldset>
+                        <div>Name<br>
+                      <input type="text" name="name" id="nameForm" value="" class="text ui-widget-content ui-corner-all"></div>
+                      <div>Phone Number<br>
+                      <input type="text" name="phone" id="phoneForm" value=""></div>
+                      <div>Address<br>
+                        <input id="addressBarForm" class="controls" type="text" placeholder="Enter address here"></div>
+                        <div>Description<br>
+                          <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
+                        <div>4-Digit PIN (please remember):<br>
+                            <input type="text" name="pin" id="pinForm" pattern="[0-9]{4}" maxlength="4"></div>
+                        </fieldset>
+                        <br>
+                        <button type="submit">Submit</button>
+                      </form>
+                </div>
 
 <script>
     var mapAddressBarMarkers;
@@ -255,6 +276,16 @@
             document.getElementById("muckForm").addEventListener("submit", function(event) {
                 event.preventDefault();
                 addMarkerForm(place.geometry.location);
+                //clear markers
+                addressMarkersForm.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  addressMarkersForm = [];
+            });
+
+            document.getElementById("volunteerForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMarkerForm(place.geometry.location, true);
                 //clear markers
                 addressMarkersForm.forEach(function(marker) {
                     marker.setMap(null);
@@ -505,7 +536,7 @@
             }
         }
         
-        function addMarkerForm(latLng)
+        function addMarkerForm(latLng, volunteer = false)
         {
             var name = $( "#nameForm" );
             var description = $( "#descriptionForm" );
@@ -542,8 +573,14 @@
                     '<br>Date: Just Now '
                   });
                   infowindow.open(map,marker);
-                  createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
-            }
+                  if (!volunteer)
+                  {
+                    createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val());
+                  }
+                  else 
+                  {
+                    createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val());
+                  }
         }
 
 
