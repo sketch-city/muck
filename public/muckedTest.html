@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://npmcdn.com/parse@1.9.2/dist/parse.min.js"></script>
+        <script src="/public/assets/js/testingfunctions.js"></script>
+        <link rel="stylesheet" href="/public/assets/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="/public/assets/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/public/assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/public/assets/css/style.css">
+        <style>
+            #newEntryDialog {
+                display:none;
+            }
+            body{
+                font-family: 'Open Sans', sans-serif;
+            }
+            #addressBar {
+                background-color: #fff;
+                font-size: 15px;
+                font-weight: 300;
+                margin-left: 12px;
+                margin-top: 12px;
+                padding: 0 11px 0 13px;
+                text-overflow: ellipsis;
+                width: 60%;
+            }
+            #addressBar:focus {
+                border-color: #4d90fe;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Texas Muck Map</title>
+</head>
+<body>
+<div class="container">
+<img style="width: 350px;" src="/public/assets/images/TMMLogo.png">
+<br>
+<p class="lead">If your house got flooded during the storm, then it might need to be mucked. Mucking means activities like removing wet carpets, flooring, dry wall, mud, or other items to prepare a flooded home for drying out and renovations. </p>
+<div class="container my-8">
+    <section id="intro">
+        <div class="card-deck mb-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fa fa-life-ring" aria-hidden="true"></i> <a href="#muckedHomeDialog">Click here if your house needs mucking</a></h4>
+                    <p class="card-text">Use our form to pinpoint your location on our map to let volunteers know where you are and make it easier for them to find you.</p>
+                </div>
+            </div>  
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fa fa-medkit" aria-hidden="true"></i> <a href="#volunteerDialog">Click here if you are a volunteer</a></h4>
+                    <p class="card-text">Use our form to pinpoint your location to let people in the area know you are available. Navigate the map to find homes near you that need mucking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<p class="lead text-center"><a href="#resources">Want to learn more? Click here to view a list of resources!</a></p>
+<p class="lead"><p class="lead">You can also drop a pin of your location on the map with a tap & hold on the map. Once you're signed up, simply use the map to identify opportunities, then reach out to offer or request mucking assistance. Thank you for helping those affected by Hurricane Harvey!</p>
+<br>
+</div>
+<input id="addressBar" class="controls" type="text" placeholder="Enter address here">
+<div id="googleMap" style="width:100%;height:550px;"></div>
+<a href="https://www.texasrescuemap.com/muckmap/map">Click here to view just the map!</a>
+
+        <div id="newEntryDialog">
+            <form>
+            <fieldset>
+                <div>Name<br>
+              <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"></div>
+              <div>Phone Number<br>
+              <input type="number" name="phone" id="phone" value=""></div>
+              <div>Address<br>
+                  <textarea id="description" rows="4" cols="22"></textarea></div>
+                  <div>Your situation:<br>
+                <input type="radio" name="markerType" value="muckedHome"> Mucked Home<br>
+                <input type="radio" name="markerType" value="volunteer"> Volunteer</div>
+                <div>4-Digit PIN (please remember):<br>
+                    <input type="text" name="pin" id="pin" pattern="[0-9]{4}" maxlength="4"></div>
+                </fieldset>
+              </form>
+        </div>
+
+        <div id="muckedHomeDialog" class="text-center">
+                <br>
+                <h2>Does your house need mucking? Submit your location to our map:</h2>
+                <form id="muckForm">
+                <fieldset>
+                    <div>Name<br>
+                  <input type="text" name="name" id="nameForm" value="" class="text ui-widget-content ui-corner-all"></div>
+                  <div>Phone Number<br>
+                  <input type="text" name="phone" id="phoneForm" value=""></div>
+                  <div>Address<br>
+                    <input id="addressBarForm1" class="controls" type="text" placeholder="Enter address here"></div>
+                    <div>Description<br>
+                      <textarea id="descriptionForm" rows="4" cols="22"></textarea></div>
+                    <div>4-Digit PIN (please remember):<br>
+                        <input type="text" name="pin" id="pinForm" pattern="[0-9]{4}" maxlength="4"></div>
+                    </fieldset>
+                    <br>
+                    <button type="submit">Submit</button>
+                  </form>
+                  <p><a href="#googleMap">Go to map!</a> -or- <a href="#">Go to top!</a></p>
+            </div>
+        
+            <div id="volunteerDialog" class="text-center">
+                    <br>
+                    <h2>Are you a volunteer? Submit your location to our map:</h2>
+                    <form id="volunteerForm">
+                    <fieldset>
+                        <div>Name<br>
+                      <input type="text" name="name" id="nameForm2" value="" class="text ui-widget-content ui-corner-all"></div>
+                      <div>Phone Number<br>
+                      <input type="text" name="phone" id="phoneForm2" value=""></div>
+                      <div>Address<br>
+                        <input id="addressBarForm2" class="controls" type="text" placeholder="Enter address here"></div>
+                        <div>Description<br>
+                          <textarea id="descriptionForm2" rows="4" cols="22"></textarea></div>
+                        <div>4-Digit PIN (please remember):<br>
+                            <input type="text" name="pin" id="pinForm2" pattern="[0-9]{4}" maxlength="4"></div>
+                        </fieldset>
+                        <br>
+                        <button type="submit">Submit</button>
+                      </form>
+                      <p><a href="#googleMap">Go to map!</a> -or- <a href="#">Go to top!</a></p>
+                </div>
+
+<script>
+    var mapAddressBarMarkers;
+    
+    function myMap() {
+        var mapProp= {
+            center:new google.maps.LatLng(29.7602626,-95.3702536),
+            zoom:12,
+            disableDefaultUI: true,
+            gestureHandling: "greedy"
+        };
+        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+        var mouseMoved = false;
+        var mouseHoldTimeOut;
+        //prevents dragging to register as click
+        google.maps.event.addListener(map, 'mousedown', function(event) {
+            mouseMoved = false;
+        
+            mouseHoldTimeOut = setTimeout(function() {
+                if (!mouseMoved) {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                    
+                    mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
+                    mapAddressBarMarkers.push(new google.maps.Marker({
+                        map: map,
+                        position: event.latLng,
+                        draggable: true
+                      }));
+                    addMarker(event.latLng);
+                }
+            }, 1000);
+        });
+        
+        google.maps.event.addListener(map, 'drag', function(event) {
+            mouseMoved = true;
+            if (mouseHoldTimeOut != null)
+                clearTimeout(mouseHoldTimeOut);
+            
+        });
+        
+        google.maps.event.addListener(map, 'mouseup', function(event) {
+            mouseMoved = true;
+            if (mouseHoldTimeOut != null)
+                clearTimeout(mouseHoldTimeOut);
+            
+        });
+
+        //code for map address bar
+        var input = document.getElementById("addressBar");
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+        
+        mapAddressBarMarkers = [];
+ 
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          mapAddressBarMarkers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          mapAddressBarMarkers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            
+            mapAddressBarMarkers.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location,
+              draggable: true
+            }));
+            
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);           
+        });
+        
+        //code for form address bar
+        var inputForm = document.getElementById("addressBarForm1");
+        var searchBoxForm = new google.maps.places.SearchBox(inputForm);
+
+        var addressMarkersForm = [];
+ 
+        searchBoxForm.addListener('places_changed', function() {
+            var places = searchBoxForm.getPlaces();
+            
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          addressMarkersForm.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          addressMarkersForm = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            
+            addressMarkersForm.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            }));
+            
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+
+            document.getElementById("muckForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMarkerForm(place.geometry.location);
+                //clear markers
+                addressMarkersForm.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  addressMarkersForm = [];
+            });
+
+          });
+          map.fitBounds(bounds);
+        });
+
+        //code for volunteer form address bar
+        var inputForm2 = document.getElementById("addressBarForm2");
+        var searchBoxForm2 = new google.maps.places.SearchBox(inputForm2);
+
+        var addressMarkersForm2 = [];
+ 
+        searchBoxForm2.addListener('places_changed', function() {
+            var places = searchBoxForm2.getPlaces();
+            
+            if (places.length == 0) {
+                return;
+            }
+            
+            // Clear out the old markers.
+          addressMarkersForm2.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          addressMarkersForm2 = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            
+            addressMarkersForm2.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            }));
+            
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+
+            document.getElementById("volunteerForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                addMarkerForm(place.geometry.location, true);
+                //clear markers
+                addressMarkersForm2.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  addressMarkersForm2 = [];
+            });
+          });
+          map.fitBounds(bounds);
+        });
+        
+        $( "#submit" ).click(function() {
+
+        alert( "Handler for .click() called." );
+
+       });
+
+        function callbackMarkersQuery(datamarkers)
+      {
+        //alert("callback function handling " + datamarkers.length + "data markers");
+          var markers = []; //load from parse here
+          //TODO: placeholder markers
+
+          datamarkers.forEach(function(marker, index, array)
+          {
+            //alert("for each loop handling datamarker");
+            //alert("posdata" + marker.get("positionData"));
+          //  alert("name" + marker.get("name"));
+              var markerVisual = new google.maps.Marker({
+                  position: marker.get("positionData"),
+                  map: map,
+                  icon: "/public/assets/images/Shelter_Small.png"
+                });
+                /*var infowindow = new google.maps.InfoWindow({
+                    content: 'Name: ' + marker.name +
+                    '<br>Description: ' + marker.description
+                  });*/
+                  var type = marker.get("type");
+                  var typeString;
+
+
+                if (type === "volunteer" )
+                {
+                    typeString = "Volunteer Available";
+                    markerVisual.icon = "/public/assets/images/volunteer.png";
+                }
+                else if (type === "volunteerBusy" )
+                {
+                    typeString = "Volunteer Busy";
+                    markerVisual.icon = "/public/assets/images/volunteerBusy.png";
+                }
+                else if (type === "muckedOut" )
+                {
+                    typeString = "Mucked Out";
+                    markerVisual.icon = "/public/assets/images/Rescued_Small.png";
+                }
+                else if (type === "muckedHome")
+                {
+                    typeString = "Mucked Home";
+                    markerVisual.icon = "/public/assets/images/Needs_Rescue_Small.png";
+                }
+
+                var contentString = typeString +
+                      '<br>Name: ' + marker.get("name") +
+                      '<br>Phone Number: <a href="tel:' + marker.get("phone") + '">' + marker.get("phone") + '</a>' +
+                      '<br>Address: ' + marker.get("address") +
+                      '<br>Description: ' + marker.get("description") +
+                      '<br>Date: ' + marker.get("updatedAt");
+
+                  if (type === "muckedHome")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerMucked(\'" + marker.id + "\')\">House is Mucked</button>"
+                  }
+
+                  else if (type === "volunteer")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerVolunteerBusy(\'" + marker.id + "\')\">Mark as Busy</button>"
+                  }
+                  else if (type === "volunteerBusy")
+                  {
+                      contentString +=
+                              "<br><button type=\"button\" onclick=\"markerVolunteerFree(\'" + marker.id + "\')\">Mark as Free</button>"
+                  }
+
+
+                  var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+
+
+                  });
+
+                  /*
+                  document.getElementById("refresh").addEventListener('click', function(){
+                    var mapProp= {
+                        center:new google.maps.LatLng(29.7602626,-95.3702536),
+                        zoom:12,
+                    };
+                    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                    markLocation();
+                  });*/
+
+                  google.maps.event.addListener(markerVisual, 'click', function() {
+                  infowindow.open(map,markerVisual);
+                  });
+                
+                 if (type == 'muckedHome' || type =='muckedOut' || type == 'volunteer' || type == 'volunteerBusy')
+                { 
+                    markerVisual.setMap(map);
+                } else {
+                    markerVisual.setMap(null);
+                }
+            });
+        };
+
+        function loadMarkers() {
+
+        var datamarkers = retrieveGPSMarkers(callbackMarkersQuery);
+
+      }
+
+        loadMarkers();
+
+
+        function markLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+
+        function showPosition(position) {
+
+            var currentLocation = new google.maps.Circle({
+                center:new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
+                radius:100,
+                strokeColor:"#0000FF",
+                strokeOpacity:0.8,
+                strokeWeight:2,
+                fillColor:"#0000FF",
+                fillOpacity:0.4,
+                clickable:false
+              });
+            currentLocation.setMap(map);
+
+            map.setZoom(14);
+            map.setCenter(currentLocation.center);
+
+        }
+        markLocation();
+
+        //old function
+        /*
+        google.maps.event.addListener(map, 'click', function(event) {
+            addMarker(event.latLng);
+        });*/
+
+        function addMarker(latLng)
+        {
+            var name = $( "#name" );
+            var description = $( "#description" );
+            var phone = $("#phone");
+            var pin = $("#pin");
+
+                
+            var dialog = $("#newEntryDialog").dialog({
+                buttons: {
+                    "Add": function () {
+                        //alert(pin.val() + " " + pin.val().length);
+                        if (isNaN(pin.val()) || pin.val().length != 4)
+                        {
+                            alert("Invalid PIN, must be 4 digits");
+                        }
+                        else
+                        {
+                            dialog.dialog('close');
+                            addEntry();
+                            name.val("");
+                            description.val("");
+                            $("input:radio[name=markerType]")[0].checked = true;
+                            phone.val("");
+                            pin.val("");
+                            // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
+                        }
+                    },
+                        "Cancel": function () {
+                         name.val("");
+                        description.val("");
+                        dialog.dialog('close');
+                        $("input:radio[name=markerType]")[0].checked = true;
+                        phone.val("");
+                        pin.val("");
+                        // Clear out the old markers.
+                            mapAddressBarMarkers.forEach(function(marker) {
+                              marker.setMap(null);
+                            });
+                    }
+                }
+            });
+            dialog.dialog('open');
+
+            function addEntry() {
+                var type = $("input:radio[name=markerType]:checked").val();
+
+                //alert("Adding entry: " + name.val() + " " + description.val() + " " + type);
+                var typeString, iconName;
+
+                if (type === "volunteer" )
+                {
+                    typeString = "Volunteer Available";
+                    iconName = "/public/assets/images/volunteer.png";
+                }
+                else if (type === "volunteerBusy" )
+                {
+                    typeString = "Volunteer Busy";
+                    iconName = "/public/assets/images/volunteerBusy.png";
+                }
+                else if (type === "muckedOut" )
+                {
+                    typeString = "Mucked Out";
+                    iconName = "/public/assets/images/Rescued_Small.png";
+                }
+                else if (type === "muckedHome")
+                {
+                    typeString = "Mucked Home";
+                    iconName = "/public/assets/images/Needs_Rescue_Small.png";
+                }
+
+                //TODO this needs to be added to global array markers instead
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: iconName
+                  });
+                var infowindow = new google.maps.InfoWindow({
+                    content: typeString +
+                    '<br>Name: ' + name.val() +
+                    '<br>Phone Number: ' + phone.val() +
+                    '<br>Description: ' + description.val() +
+                    '<br>Date: Just Now '
+                  });
+                  infowindow.open(map,marker);
+                  createNewGPSMarker(name.val(),description.val(),latLng,type,phone.val(),pin.val());
+            }
+        }
+        
+        function addMarkerForm(latLng, volunteer = false)
+        {
+            if(!volunteer)
+            {
+                var name = $( "#nameForm" );
+                var description = $( "#descriptionForm" );
+                var phone = $("#phoneForm");
+                var address = $("#addressBarForm1");
+                var pin = $("#pinForm");
+            }
+            else 
+            {
+                var name = $( "#nameForm2" );
+                var description = $( "#descriptionForm2" );
+                var phone = $("#phoneForm2");
+                var address = $("#addressBarForm2");
+                var pin = $("#pinForm2");
+            }
+
+            if (isNaN(pin.val()) || pin.val().length != 4)
+            {
+                alert("Invalid PIN, must be 4 digits");
+            }
+            else if (address.val().length == 0 || name.val().length == 0 || phone.val().length == 0)
+            {
+                alert("You are missing a field (name, phone, or address)");
+            }
+            else
+            {
+                addEntry();
+                name.val("");
+                description.val("");
+                phone.val("");
+                pin.val("");
+                address.val("");
+            }
+      
+            function addEntry() {
+
+                  if (!volunteer)
+                  {
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: "/public/assets/images/Needs_Rescue_Small.png"
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "Mucked Home" +
+                        '<br>Name: ' + name.val() +
+                        '<br>Phone Number: ' + phone.val() +
+                        '<br>Address: ' + address.val() +
+                        '<br>Description: ' + description.val() +
+                        '<br>Date: Just Now '
+                    });
+                    createNewGPSMarker(name.val(),description.val(),latLng,"muckedHome",phone.val(),pin.val(), address.val());
+                    infowindow.open(map,marker);
+                  }
+                  else 
+                  {
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: "/public/assets/images/volunteer.png"
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "Volunteer" +
+                        '<br>Name: ' + name.val() +
+                        '<br>Phone Number: ' + phone.val() +
+                        '<br>Address: ' + address.val() +
+                        '<br>Description: ' + description.val() +
+                        '<br>Date: Just Now '
+                    });
+                    createNewGPSMarker(name.val(),description.val(),latLng,"volunteer",phone.val(),pin.val(), address.val());
+                    infowindow.open(map,marker);
+                  }
+        }
+
+
+    }
+
+    function submitComment(objectId)
+    {
+        var commentDiv = $( "#comment" + objectId );
+
+        //alert("objectId is: " + objectId + " comment is: " + commentDiv.val());
+        //TODO send this info to parse
+    }
+
+    function markerMucked(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "muckedOut");
+                  markerParse.save();
+                  alert("You are now marked as helped! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+
+    function markerHidden(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "hidden");
+                  markerParse.save();
+                  alert("Your pin has been deleted! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerVolunteerFree(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "volunteer");
+                  markerParse.save();
+                  alert("You are now marked as free! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    
+    function markerVolunteerBusy(objectId)
+    {
+        var enteredPin = prompt("Please enter your 4-digit PIN:");
+
+        Parse.$ = jQuery;
+        Parse.initialize("cardforgegame","brian"); // Your App Name
+        Parse.serverURL = 'https://cardforge.herokuapp.com/parse'; // Your Server URL
+        Parse.useMasterKey = true;
+
+        var gpsMarker = Parse.Object.extend("GPSMarkerObject");
+        var query = new Parse.Query(gpsMarker);
+        query.get(objectId, {
+            success: function(markerParse) {
+              var pin = markerParse.get("pin");
+              if (enteredPin === pin)
+              {
+                  markerParse.set("type", "volunteerBusy");
+                  markerParse.save();
+                  alert("You are now marked as busy! Refresh the page to update.");
+              }
+              else
+              {
+                  alert("Incorrect PIN, please try again.");
+              }
+            },
+            error: function(error) {
+              alert("Error: " + error.code + " " + error.message);
+            }
+          });
+    }
+    }
+
+        </script>
+
+<!--<input id="refresh" type="button" value="refresh" />
+<button class="shelterBtn"></button> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcDdbLMRqoSW-sAPr1iLW0WV7OrlzThcg&libraries=places&callback=myMap"></script>
+
+    <div class="container my-5" id="resources">
+    <section class="mb-5">
+      <h2>Resources:</h2>
+      <ul class="list-group">
+        <li class="list-group-item"><a href="https://docs.google.com/document/d/1R1ub-L-bqhLjYtmpTm1yUMijRltK0U7TFw3zm66yz0w/edit">Mucking Tools and Procedures</a></li>
+        <li class="list-group-item"><a href="http://www.chron.com/life/article/Here-s-what-to-do-if-your-house-floods-11956593.php?cmpid=twitter-desktop"> Chron: How to cleanup after flooding and file a claim</a></li>
+        <li class="list-group-item"><a href="http://harveyneeds.org/"> Harvey Needs - Dashboard for All Disaster Relief and Recovery Resources</a></li>
+        <li class="list-group-item"><a href="https://www.reddit.com/r/houston/comments/6wnw3j/harvey_emergency_quick_reference/">Emergency Quick Reference</a></li>
+        <li class="list-group-item"><a href="https://docs.google.com/spreadsheets/d/14GHRHQ_7cqVrj0B7HCTVE5EbfpNFMbSI9Gi8azQyn-k/edit#gid=0">Shelter Availability Reference</a></li>  
+    </ul>
+    </section>
+  </div>
+  <footer>
+    <div class="container">
+      <p class="small">Disclaimer: Texasrescuemap.com is not liable for damages, including loss of life, limb, or property. This site is a volunteer-run website and is not affiliated with any government organization. Please do not wait for rescue! If someone else shows up first, go with them! We cannot guarantee rescues. Please call 911 for emergencies.</p>
+    </div>
+  </footer>
+</body>
+</html>
